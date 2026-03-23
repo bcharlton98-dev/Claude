@@ -3,8 +3,8 @@ export interface UserProfile {
   username: string
   avatar: string
   level: number
-  xp: number
-  xpToNextLevel: number
+  qp: number
+  qpToNextLevel: number
   gems: number
   streak: number
   longestStreak: number
@@ -29,10 +29,9 @@ export interface DailyStats {
   steps: number
   goal: number
   calories: number
-  distance: number // miles
+  distance: number
   activeMinutes: number
-  xpEarned: number
-  questsCompleted: number
+  qpEarned: number
 }
 
 export interface DailyQuest {
@@ -41,7 +40,7 @@ export interface DailyQuest {
   description: string
   target: number
   current: number
-  xpReward: number
+  qpReward: number
   gemReward: number
   type: 'steps' | 'distance' | 'active_minutes' | 'social'
   completed: boolean
@@ -51,15 +50,27 @@ export interface Challenge {
   id: string
   name: string
   description: string
-  type: 'leaderboard' | 'collective' | 'streak' | 'target' | 'teams'
+  type: 'leaderboard' | 'team_leaderboard' | 'virtual_race' | 'group_target' | 'streak'
   mode: 'public' | 'private'
   participants: Participant[]
   collectiveGoal?: number
   collectiveProgress?: number
+  // Virtual race fields
+  raceName?: string
+  raceDistance?: number // total miles
+  raceProgress?: number // miles completed
+  mapEmoji?: string
+  waypoints?: Waypoint[]
   startDate: string
   endDate: string
   isActive: boolean
   createdBy: string
+}
+
+export interface Waypoint {
+  name: string
+  mile: number
+  reached: boolean
 }
 
 export interface Participant {
@@ -67,13 +78,15 @@ export interface Participant {
   avatar: string
   steps: number
   streak: number
+  team?: string
   isYou?: boolean
 }
 
 export interface WeeklyLeague {
   name: string
+  icon: string
   color: string
-  minXP: number
+  minQP: number
 }
 
 export interface Notification {
@@ -91,8 +104,8 @@ export const userProfile: UserProfile = {
   username: '@alexwalks',
   avatar: 'AC',
   level: 14,
-  xp: 2340,
-  xpToNextLevel: 3000,
+  qp: 2340,
+  qpToNextLevel: 3000,
   gems: 285,
   streak: 12,
   longestStreak: 31,
@@ -120,22 +133,21 @@ export const todayStats: DailyStats = {
   calories: 312,
   distance: 3.7,
   activeMinutes: 48,
-  xpEarned: 65,
-  questsCompleted: 1,
+  qpEarned: 65,
 }
 
 export const dailyQuests: DailyQuest[] = [
-  { id: '1', title: 'Daily Walker', description: 'Walk 10,000 steps today', target: 10000, current: 7842, xpReward: 50, gemReward: 5, type: 'steps', completed: false },
-  { id: '2', title: 'Morning Move', description: 'Log 15 active minutes before noon', target: 15, current: 15, xpReward: 25, gemReward: 2, type: 'active_minutes', completed: true },
-  { id: '3', title: 'Distance Tracker', description: 'Walk 5 miles today', target: 5, current: 3.7, xpReward: 40, gemReward: 3, type: 'distance', completed: false },
-  { id: '4', title: 'Team Spirit', description: 'Cheer a teammate in a challenge', target: 1, current: 0, xpReward: 15, gemReward: 1, type: 'social', completed: false },
+  { id: '1', title: 'Daily Walker', description: 'Walk 10,000 steps today', target: 10000, current: 7842, qpReward: 50, gemReward: 5, type: 'steps', completed: false },
+  { id: '2', title: 'Morning Move', description: 'Log 15 active minutes before noon', target: 15, current: 15, qpReward: 25, gemReward: 2, type: 'active_minutes', completed: true },
+  { id: '3', title: 'Distance Tracker', description: 'Walk 5 miles today', target: 5, current: 3.7, qpReward: 40, gemReward: 3, type: 'distance', completed: false },
+  { id: '4', title: 'Team Spirit', description: 'Cheer a teammate in a challenge', target: 1, current: 0, qpReward: 15, gemReward: 1, type: 'social', completed: false },
 ]
 
 export const challenges: Challenge[] = [
   {
     id: '1',
     name: 'March Madness Steps',
-    description: 'Who can walk the most in March? Our annual team battle!',
+    description: 'Who can walk the most this month?',
     type: 'leaderboard',
     mode: 'private',
     participants: [
@@ -153,29 +165,45 @@ export const challenges: Challenge[] = [
   },
   {
     id: '2',
-    name: 'Walk to the Moon!',
-    description: 'Together we\'re walking 2,000,000 steps. Can we make it?',
-    type: 'collective',
+    name: 'NYC to LA Virtual Race',
+    description: 'Walk 2,775 miles together across America!',
+    type: 'virtual_race',
     mode: 'private',
-    collectiveGoal: 2_000_000,
-    collectiveProgress: 1_508_900,
-    participants: [
-      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true },
-      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22 },
-      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18 },
-      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15 },
-      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9 },
-      { name: 'Taylor M.', avatar: 'TM', steps: 198_700, streak: 6 },
+    collectiveGoal: 5_550_000, // ~2775 miles in steps
+    collectiveProgress: 3_108_900,
+    raceName: 'Cross-Country USA',
+    raceDistance: 2775,
+    raceProgress: 1554,
+    mapEmoji: '🗺️',
+    waypoints: [
+      { name: 'New York, NY', mile: 0, reached: true },
+      { name: 'Philadelphia, PA', mile: 97, reached: true },
+      { name: 'Pittsburgh, PA', mile: 370, reached: true },
+      { name: 'Indianapolis, IN', mile: 713, reached: true },
+      { name: 'St. Louis, MO', mile: 953, reached: true },
+      { name: 'Oklahoma City, OK', mile: 1424, reached: true },
+      { name: 'Amarillo, TX', mile: 1700, reached: false },
+      { name: 'Albuquerque, NM', mile: 1987, reached: false },
+      { name: 'Flagstaff, AZ', mile: 2300, reached: false },
+      { name: 'Los Angeles, CA', mile: 2775, reached: false },
     ],
-    startDate: '2026-03-01',
-    endDate: '2026-03-31',
+    participants: [
+      { name: 'Alex Chen', avatar: 'AC', steps: 568_500, streak: 12, isYou: true },
+      { name: 'Sarah K.', avatar: 'SK', steps: 589_400, streak: 22 },
+      { name: 'Mike R.', avatar: 'MR', steps: 476_100, streak: 18 },
+      { name: 'Jordan P.', avatar: 'JP', steps: 445_000, streak: 15 },
+      { name: 'Casey L.', avatar: 'CL', steps: 531_200, streak: 9 },
+      { name: 'Taylor M.', avatar: 'TM', steps: 498_700, streak: 6 },
+    ],
+    startDate: '2026-02-01',
+    endDate: '2026-05-31',
     isActive: true,
     createdBy: 'Alex Chen',
   },
   {
     id: '3',
     name: 'Streak Survivors',
-    description: 'Don\'t break the chain! Last person standing wins.',
+    description: "Don't break the chain! Last one standing wins.",
     type: 'streak',
     mode: 'public',
     participants: [
@@ -192,37 +220,58 @@ export const challenges: Challenge[] = [
   },
   {
     id: '4',
-    name: 'Corporate Wellness Q1',
-    description: 'Company-wide walking challenge. Hit 10K daily!',
-    type: 'target',
+    name: 'Sales vs Engineering',
+    description: 'Which team walks more? Bragging rights on the line!',
+    type: 'team_leaderboard',
     mode: 'private',
     participants: [
-      { name: 'Team Alpha', avatar: 'TA', steps: 1_200_000, streak: 0 },
-      { name: 'Team Beta', avatar: 'TB', steps: 1_150_000, streak: 0 },
-      { name: 'Team Gamma', avatar: 'TG', steps: 980_000, streak: 0 },
+      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22, team: 'Engineering' },
+      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true, team: 'Engineering' },
+      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9, team: 'Engineering' },
+      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18, team: 'Sales' },
+      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15, team: 'Sales' },
+      { name: 'Taylor M.', avatar: 'TM', steps: 198_700, streak: 6, team: 'Sales' },
     ],
-    startDate: '2026-01-01',
+    startDate: '2026-03-01',
     endDate: '2026-03-31',
     isActive: true,
     createdBy: 'HR Admin',
   },
+  {
+    id: '5',
+    name: '10K Every Day',
+    description: 'Hit 10,000 steps every single day this month.',
+    type: 'group_target',
+    mode: 'private',
+    collectiveGoal: 310_000, // 10K * 31 days
+    collectiveProgress: 218_420,
+    participants: [
+      { name: 'Alex Chen', avatar: 'AC', steps: 78_420, streak: 12, isYou: true },
+      { name: 'Sarah K.', avatar: 'SK', steps: 82_000, streak: 22 },
+      { name: 'Mike R.', avatar: 'MR', steps: 58_000, streak: 18 },
+    ],
+    startDate: '2026-03-01',
+    endDate: '2026-03-31',
+    isActive: true,
+    createdBy: 'Alex Chen',
+  },
 ]
 
 export const weeklyLeagues: WeeklyLeague[] = [
-  { name: 'Bronze', color: '#CD7F32', minXP: 0 },
-  { name: 'Silver', color: '#C0C0C0', minXP: 500 },
-  { name: 'Gold', color: '#FFD700', minXP: 1500 },
-  { name: 'Platinum', color: '#E5E4E2', minXP: 3000 },
-  { name: 'Diamond', color: '#B9F2FF', minXP: 5000 },
-  { name: 'Champion', color: '#FF6B35', minXP: 10000 },
+  { name: 'Bronze', icon: '🥉', color: '#CD7F32', minQP: 0 },
+  { name: 'Silver', icon: '🥈', color: '#C0C0C0', minQP: 500 },
+  { name: 'Gold', icon: '🥇', color: '#FFD700', minQP: 1500 },
+  { name: 'Platinum', icon: '💎', color: '#E5E4E2', minQP: 3000 },
+  { name: 'Diamond', icon: '🔷', color: '#B9F2FF', minQP: 5000 },
+  { name: 'Champion', icon: '👑', color: '#FF6B35', minQP: 10000 },
 ]
 
 export const notifications: Notification[] = [
-  { id: '1', message: '🔥 Sarah K. just passed you in March Madness Steps! You\'re now #3.', type: 'competitive', time: '2 min ago', read: false },
-  { id: '2', message: '🎉 You earned the "Morning Move" quest reward! +25 XP, +2 gems', type: 'achievement', time: '1 hour ago', read: false },
-  { id: '3', message: '👣 You\'re 2,158 steps away from your daily goal. Time for an evening walk?', type: 'reminder', time: '3 hours ago', read: true },
-  { id: '4', message: '🤝 Walk to the Moon is 75.4% complete! Only 491,100 steps to go!', type: 'social', time: '5 hours ago', read: true },
-  { id: '5', message: '🏆 You advanced to Gold league this week! Keep it up!', type: 'achievement', time: '1 day ago', read: true },
+  { id: '1', message: 'Sarah K. just passed you in March Madness Steps! You\'re now #3.', type: 'competitive', time: '2 min ago', read: false },
+  { id: '2', message: 'You earned the "Morning Move" quest reward! +25 QP, +2 gems', type: 'achievement', time: '1 hour ago', read: false },
+  { id: '3', message: 'You\'re 2,158 steps away from your daily goal. Evening walk?', type: 'reminder', time: '3 hours ago', read: true },
+  { id: '4', message: 'NYC to LA race: You just passed Oklahoma City! 1,554 mi down.', type: 'social', time: '5 hours ago', read: true },
+  { id: '5', message: 'You advanced to Gold league! Keep it up!', type: 'achievement', time: '1 day ago', read: true },
 ]
 
 export const weeklyStepData = [

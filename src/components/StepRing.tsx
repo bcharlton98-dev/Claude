@@ -5,12 +5,11 @@ interface StepRingProps {
   strokeWidth?: number
 }
 
-export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }: StepRingProps) {
+export default function StepRing({ current, goal, size = 160, strokeWidth = 10 }: StepRingProps) {
   const radius = (size - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   const progress = Math.min(current / goal, 1)
   const offset = circumference - progress * circumference
-  const percentage = Math.round(progress * 100)
 
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
@@ -20,7 +19,7 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#e2e8f0"
+          stroke="#f1f5f9"
           strokeWidth={strokeWidth}
         />
         <circle
@@ -28,7 +27,7 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={progress >= 1 ? '#10b981' : '#34d399'}
+          stroke={progress >= 1 ? '#22c55e' : '#4ade80'}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -37,9 +36,8 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className="text-3xl font-bold text-slate-800">{current.toLocaleString()}</span>
-        <span className="text-sm text-slate-500">/ {goal.toLocaleString()}</span>
-        <span className="text-xs font-semibold text-emerald-600 mt-0.5">{percentage}%</span>
+        <span className="text-3xl font-extrabold text-slate-800 tracking-tight">{current.toLocaleString()}</span>
+        <span className="text-xs text-slate-400 font-medium">of {goal.toLocaleString()}</span>
       </div>
     </div>
   )
