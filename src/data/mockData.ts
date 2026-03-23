@@ -8,12 +8,38 @@ export interface UserProfile {
   gems: number
   streak: number
   longestStreak: number
+  streakFreezes: number
+  streakFreezesMax: number
   league: string
   leagueRank: number
   totalSteps: number
   joinDate: string
   connectedDevice: string
   badges: Badge[]
+  adaptiveGoal: AdaptiveGoal
+}
+
+export interface AdaptiveGoal {
+  baseline: number
+  currentGoal: number
+  weekNumber: number
+  history: { week: number; goal: number; avgSteps: number }[]
+}
+
+export interface HabitStack {
+  id: string
+  anchor: string
+  habit: string
+  icon: string
+  active: boolean
+}
+
+export interface StreakMilestone {
+  days: number
+  label: string
+  icon: string
+  reward: string
+  reached: boolean
 }
 
 export interface Badge {
@@ -80,6 +106,8 @@ export interface Participant {
   streak: number
   team?: string
   isYou?: boolean
+  kudos: number
+  kudosFromYou?: boolean
 }
 
 export interface WeeklyLeague {
@@ -109,11 +137,30 @@ export const userProfile: UserProfile = {
   gems: 285,
   streak: 12,
   longestStreak: 31,
+  streakFreezes: 2,
+  streakFreezesMax: 2,
   league: 'Gold',
   leagueRank: 3,
   totalSteps: 1_847_230,
   joinDate: '2026-01-15',
   connectedDevice: 'Apple Watch',
+  adaptiveGoal: {
+    baseline: 4_200,
+    currentGoal: 7_500,
+    weekNumber: 10,
+    history: [
+      { week: 1, goal: 4_700, avgSteps: 5_100 },
+      { week: 2, goal: 5_200, avgSteps: 5_800 },
+      { week: 3, goal: 5_700, avgSteps: 6_200 },
+      { week: 4, goal: 6_200, avgSteps: 6_900 },
+      { week: 5, goal: 6_500, avgSteps: 7_100 },
+      { week: 6, goal: 7_000, avgSteps: 7_400 },
+      { week: 7, goal: 7_500, avgSteps: 7_800 },
+      { week: 8, goal: 7_500, avgSteps: 8_200 },
+      { week: 9, goal: 7_500, avgSteps: 8_600 },
+      { week: 10, goal: 7_500, avgSteps: 7_842 },
+    ],
+  },
   badges: [
     { id: '1', name: 'First Steps', description: 'Complete your first day', icon: '👟', earned: true, earnedDate: '2026-01-15' },
     { id: '2', name: 'Week Warrior', description: '7-day streak', icon: '🔥', earned: true, earnedDate: '2026-01-22' },
@@ -151,12 +198,12 @@ export const challenges: Challenge[] = [
     type: 'leaderboard',
     mode: 'private',
     participants: [
-      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22 },
-      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18 },
-      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true },
-      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15 },
-      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9 },
-      { name: 'Taylor M.', avatar: 'TM', steps: 198_700, streak: 6 },
+      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22, kudos: 14 },
+      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18, kudos: 11, kudosFromYou: true },
+      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true, kudos: 9 },
+      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15, kudos: 7 },
+      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9, kudos: 5 },
+      { name: 'Taylor M.', avatar: 'TM', steps: 198_700, streak: 6, kudos: 3 },
     ],
     startDate: '2026-03-01',
     endDate: '2026-03-31',
@@ -188,12 +235,12 @@ export const challenges: Challenge[] = [
       { name: 'Los Angeles, CA', mile: 2775, reached: false },
     ],
     participants: [
-      { name: 'Alex Chen', avatar: 'AC', steps: 568_500, streak: 12, isYou: true },
-      { name: 'Sarah K.', avatar: 'SK', steps: 589_400, streak: 22 },
-      { name: 'Mike R.', avatar: 'MR', steps: 476_100, streak: 18 },
-      { name: 'Jordan P.', avatar: 'JP', steps: 445_000, streak: 15 },
-      { name: 'Casey L.', avatar: 'CL', steps: 531_200, streak: 9 },
-      { name: 'Taylor M.', avatar: 'TM', steps: 498_700, streak: 6 },
+      { name: 'Alex Chen', avatar: 'AC', steps: 568_500, streak: 12, isYou: true, kudos: 12 },
+      { name: 'Sarah K.', avatar: 'SK', steps: 589_400, streak: 22, kudos: 18, kudosFromYou: true },
+      { name: 'Mike R.', avatar: 'MR', steps: 476_100, streak: 18, kudos: 8 },
+      { name: 'Jordan P.', avatar: 'JP', steps: 445_000, streak: 15, kudos: 6 },
+      { name: 'Casey L.', avatar: 'CL', steps: 531_200, streak: 9, kudos: 10 },
+      { name: 'Taylor M.', avatar: 'TM', steps: 498_700, streak: 6, kudos: 4 },
     ],
     startDate: '2026-02-01',
     endDate: '2026-05-31',
@@ -207,11 +254,11 @@ export const challenges: Challenge[] = [
     type: 'streak',
     mode: 'public',
     participants: [
-      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22 },
-      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18 },
-      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15 },
-      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true },
-      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9 },
+      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22, kudos: 16 },
+      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18, kudos: 13 },
+      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15, kudos: 9 },
+      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true, kudos: 7 },
+      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9, kudos: 4 },
     ],
     startDate: '2026-03-10',
     endDate: '2026-04-10',
@@ -225,12 +272,12 @@ export const challenges: Challenge[] = [
     type: 'team_leaderboard',
     mode: 'private',
     participants: [
-      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22, team: 'Engineering' },
-      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true, team: 'Engineering' },
-      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9, team: 'Engineering' },
-      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18, team: 'Sales' },
-      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15, team: 'Sales' },
-      { name: 'Taylor M.', avatar: 'TM', steps: 198_700, streak: 6, team: 'Sales' },
+      { name: 'Sarah K.', avatar: 'SK', steps: 289_400, streak: 22, team: 'Engineering', kudos: 11 },
+      { name: 'Alex Chen', avatar: 'AC', steps: 268_500, streak: 12, isYou: true, team: 'Engineering', kudos: 8 },
+      { name: 'Casey L.', avatar: 'CL', steps: 231_200, streak: 9, team: 'Engineering', kudos: 5 },
+      { name: 'Mike R.', avatar: 'MR', steps: 276_100, streak: 18, team: 'Sales', kudos: 10, kudosFromYou: true },
+      { name: 'Jordan P.', avatar: 'JP', steps: 245_000, streak: 15, team: 'Sales', kudos: 7 },
+      { name: 'Taylor M.', avatar: 'TM', steps: 198_700, streak: 6, team: 'Sales', kudos: 2 },
     ],
     startDate: '2026-03-01',
     endDate: '2026-03-31',
@@ -246,9 +293,9 @@ export const challenges: Challenge[] = [
     collectiveGoal: 310_000, // 10K * 31 days
     collectiveProgress: 218_420,
     participants: [
-      { name: 'Alex Chen', avatar: 'AC', steps: 78_420, streak: 12, isYou: true },
-      { name: 'Sarah K.', avatar: 'SK', steps: 82_000, streak: 22 },
-      { name: 'Mike R.', avatar: 'MR', steps: 58_000, streak: 18 },
+      { name: 'Alex Chen', avatar: 'AC', steps: 78_420, streak: 12, isYou: true, kudos: 6 },
+      { name: 'Sarah K.', avatar: 'SK', steps: 82_000, streak: 22, kudos: 9, kudosFromYou: true },
+      { name: 'Mike R.', avatar: 'MR', steps: 58_000, streak: 18, kudos: 4 },
     ],
     startDate: '2026-03-01',
     endDate: '2026-03-31',
@@ -282,4 +329,20 @@ export const weeklyStepData = [
   { day: 'Fri', steps: 10500 },
   { day: 'Sat', steps: 14200 },
   { day: 'Sun', steps: 7842 },
+]
+
+export const streakMilestones: StreakMilestone[] = [
+  { days: 3, label: 'Getting Started', icon: '🌱', reward: '+10 gems', reached: true },
+  { days: 7, label: 'Week Warrior', icon: '🔥', reward: '+25 gems', reached: true },
+  { days: 14, label: 'Committed', icon: '💪', reward: '+50 gems', reached: false },
+  { days: 30, label: 'Habit Formed', icon: '⭐', reward: '+100 gems', reached: false },
+  { days: 60, label: 'Dedicated Walker', icon: '🏔️', reward: '+200 gems', reached: false },
+  { days: 100, label: 'Unstoppable', icon: '👑', reward: '+500 gems', reached: false },
+]
+
+export const habitStacks: HabitStack[] = [
+  { id: '1', anchor: 'After my morning coffee', habit: 'take a 10-minute walk', icon: '☕', active: true },
+  { id: '2', anchor: 'After parking at work', habit: 'walk one extra lap around the lot', icon: '🚗', active: true },
+  { id: '3', anchor: 'After lunch', habit: 'do a 15-minute walk break', icon: '🥗', active: false },
+  { id: '4', anchor: 'Before watching TV', habit: 'walk around the block', icon: '📺', active: false },
 ]

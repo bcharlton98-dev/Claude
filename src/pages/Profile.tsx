@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Watch, ChevronRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import QPBar from '../components/XPBar'
-import { userProfile, weeklyLeagues } from '../data/mockData'
+import { userProfile, weeklyLeagues, streakMilestones } from '../data/mockData'
 
 export default function Profile() {
   const [syncing, setSyncing] = useState(false)
   const currentLeagueIdx = weeklyLeagues.findIndex(l => l.name === userProfile.league)
+  const { adaptiveGoal } = userProfile
 
   return (
     <div className="space-y-4">
@@ -17,10 +18,14 @@ export default function Profile() {
         <h1 className="text-lg font-bold text-slate-800 mt-2">{userProfile.name}</h1>
         <p className="text-xs text-slate-400">{userProfile.username}</p>
 
-        <div className="flex justify-center gap-5 mt-3">
+        <div className="flex justify-center gap-4 mt-3">
           <div className="text-center">
             <p className="text-sm font-bold">🔥 {userProfile.streak}</p>
             <p className="text-[10px] text-slate-400">Streak</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-bold">🧊 {userProfile.streakFreezes}</p>
+            <p className="text-[10px] text-slate-400">Freezes</p>
           </div>
           <div className="text-center">
             <p className="text-sm font-bold">💎 {userProfile.gems}</p>
@@ -47,6 +52,60 @@ export default function Profile() {
           <p className="text-xl font-bold text-slate-800">🔥 {userProfile.longestStreak}</p>
           <p className="text-[10px] text-slate-400 font-medium">Best Streak</p>
         </div>
+      </div>
+
+      {/* Streak Milestones */}
+      <div className="bg-white rounded-xl p-3.5">
+        <h3 className="text-sm font-semibold text-slate-700 mb-2">🔥 Streak Milestones</h3>
+        <div className="space-y-1.5">
+          {streakMilestones.map(m => (
+            <div key={m.days} className={`flex items-center gap-2.5 p-2 rounded-lg ${m.reached ? 'bg-brand-50' : 'bg-slate-50'}`}>
+              <span className={`text-lg ${m.reached ? '' : 'grayscale opacity-40'}`}>{m.icon}</span>
+              <div className="flex-1">
+                <p className={`text-xs font-semibold ${m.reached ? 'text-brand-700' : 'text-slate-400'}`}>{m.label}</p>
+                <p className="text-[10px] text-slate-400">{m.days} day streak · {m.reward}</p>
+              </div>
+              {m.reached && <span className="text-xs text-brand-500">✓</span>}
+            </div>
+          ))}
+        </div>
+
+        {/* Streak Freeze Info */}
+        <div className="mt-3 flex items-center gap-2 bg-sky-50 rounded-lg px-3 py-2">
+          <span className="text-lg">🧊</span>
+          <div className="flex-1">
+            <p className="text-xs font-semibold text-sky-700">Streak Freezes</p>
+            <p className="text-[10px] text-sky-500">Protects your streak on rest days. You have {userProfile.streakFreezes} of {userProfile.streakFreezesMax}.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Adaptive Goal Progress */}
+      <div className="bg-white rounded-xl p-3.5">
+        <h3 className="text-sm font-semibold text-slate-700 mb-2">🎯 Goal Journey</h3>
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <p className="text-[10px] text-slate-400">Started at</p>
+            <p className="text-sm font-bold text-slate-600">{adaptiveGoal.baseline.toLocaleString()} steps</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[10px] text-slate-400">Current goal</p>
+            <p className="text-sm font-bold text-brand-600">{adaptiveGoal.currentGoal.toLocaleString()} steps</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] text-slate-400">Target</p>
+            <p className="text-sm font-bold text-gold-500">10,000 steps</p>
+          </div>
+        </div>
+        <div className="h-2.5 bg-slate-100 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-brand-400 to-brand-500 rounded-full transition-all"
+            style={{ width: `${((adaptiveGoal.currentGoal - adaptiveGoal.baseline) / (10000 - adaptiveGoal.baseline)) * 100}%` }}
+          />
+        </div>
+        <p className="text-[10px] text-slate-400 mt-1.5 text-center">
+          Your goal adapts each week based on your actual steps
+        </p>
       </div>
 
       {/* League */}

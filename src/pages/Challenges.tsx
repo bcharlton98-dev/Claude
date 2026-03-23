@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, ChevronRight, Crown } from 'lucide-react'
+import { Plus, ChevronRight, Crown, Heart } from 'lucide-react'
 import { challenges, type Challenge, type Participant } from '../data/mockData'
 
 const typeConfig: Record<string, { icon: string; color: string }> = {
@@ -16,6 +16,34 @@ const typeLabels: Record<string, string> = {
   virtual_race: 'Virtual Race',
   group_target: 'Group Target',
   streak: 'Streak',
+}
+
+function KudosButton({ participant, onKudos }: { participant: Participant; onKudos: () => void }) {
+  const [justGave, setJustGave] = useState(false)
+  const hasGiven = participant.kudosFromYou || justGave
+
+  return (
+    <button
+      onClick={(e) => {
+        e.stopPropagation()
+        if (!hasGiven && !participant.isYou) {
+          setJustGave(true)
+          onKudos()
+        }
+      }}
+      disabled={participant.isYou}
+      className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-semibold transition-all ${
+        participant.isYou
+          ? 'bg-slate-50 text-slate-300'
+          : hasGiven
+          ? 'bg-rose-50 text-rose-500'
+          : 'bg-slate-50 text-slate-400 hover:bg-rose-50 hover:text-rose-400'
+      }`}
+    >
+      <Heart size={10} fill={hasGiven ? 'currentColor' : 'none'} />
+      <span>{participant.kudos + (justGave && !participant.kudosFromYou ? 1 : 0)}</span>
+    </button>
+  )
 }
 
 function ProgressBar({ current, total, color = 'bg-sky-500' }: { current: number; total: number; color?: string }) {
@@ -95,6 +123,7 @@ function TeamLeaderboard({ participants }: { participants: Participant[] }) {
               <div key={p.name} className={`flex items-center gap-2 text-xs ${p.isYou ? 'text-brand-700 font-semibold' : 'text-slate-500'}`}>
                 <span className="w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center text-[10px] font-semibold text-slate-500">{p.avatar}</span>
                 <span className="flex-1">{p.name} {p.isYou && '(You)'}</span>
+                <KudosButton participant={p} onKudos={() => {}} />
                 <span>{p.steps.toLocaleString()}</span>
               </div>
             ))}
@@ -127,6 +156,7 @@ function Leaderboard({ participants, sortBy = 'steps' }: { participants: Partici
           <span className={`flex-1 text-xs font-medium ${p.isYou ? 'text-brand-700' : 'text-slate-600'}`}>
             {p.name} {p.isYou && <span className="text-brand-400">(You)</span>}
           </span>
+          <KudosButton participant={p} onKudos={() => {}} />
           <span className="text-xs font-bold text-slate-600">
             {sortBy === 'streak' ? `🔥 ${p.streak}d` : p.steps.toLocaleString()}
           </span>
