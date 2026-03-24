@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom'
-import { Home, Swords, Calculator, User, BarChart3 } from 'lucide-react'
+import { Mountain, Swords, Calculator, User, BarChart3 } from 'lucide-react'
 
 const navItems = [
-  { to: '/', icon: Home, label: 'Home' },
+  { to: '/', icon: Mountain, label: 'Home' },
   { to: '/progress', icon: BarChart3, label: 'Progress' },
   { to: '/challenges', icon: Swords, label: 'Quests', center: true },
   { to: '/calculator', icon: Calculator, label: 'Calc' },
