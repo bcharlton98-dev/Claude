@@ -129,103 +129,93 @@ export default function Dashboard() {
       {/* ═══ BENTO GRID ═══ */}
 
       {/* ── Section: TODAY ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">TODAY</span>
-        <div className="relative pt-7">
-          {/* Row 1: Hero stats card (wide) + Step Ring (square) */}
-          <div className="grid grid-cols-5 gap-3">
-            {/* Hero stats — StrideKick style */}
-            <div className="col-span-3 bg-white rounded-[22px] card-shadow relative overflow-hidden grain px-5 py-5">
-              <div className="flex items-end gap-1.5">
-                <span className="text-[48px] font-extrabold text-forest-600 tabular-nums leading-none tracking-tight">
-                  {todayStats.steps.toLocaleString()}
-                </span>
-              </div>
-              <span className="text-[11px] font-bold text-warm-400 mt-0.5 block">steps</span>
-              <div className="flex items-end gap-5 mt-3">
-                <div>
-                  <span className="text-xl font-extrabold text-peach-500 tabular-nums leading-none">{todayStats.distance}</span>
-                  <span className="text-[10px] font-bold text-warm-400 ml-1">mi</span>
-                </div>
-                <div>
-                  <span className="text-xl font-extrabold text-mustard-500 tabular-nums leading-none">{todayStats.activeMinutes}</span>
-                  <span className="text-[10px] font-bold text-warm-400 ml-1">min</span>
-                </div>
-              </div>
-            </div>
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-forest-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-forest-600">Today</span>
+        </div>
 
-            {/* Goal gauge — semicircle arc */}
-            <div className="col-span-2 bg-white rounded-[22px] card-shadow flex flex-col items-center justify-center py-4 px-3 relative overflow-hidden grain">
-              <svg width={100} height={62} viewBox="0 0 100 62">
-                <defs>
-                  <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#aec2a0" />
-                    <stop offset="100%" stopColor="#4A6741" />
-                  </linearGradient>
-                </defs>
-                {/* Background arc */}
-                <path
-                  d="M 10 55 A 40 40 0 0 1 90 55"
-                  fill="none" stroke="#e8e0d4" strokeWidth={7} strokeLinecap="round"
-                />
-                {/* Progress arc */}
-                <path
-                  d="M 10 55 A 40 40 0 0 1 90 55"
-                  fill="none" stroke="url(#gaugeGrad)" strokeWidth={7} strokeLinecap="round"
-                  strokeDasharray={`${Math.min(goalPct, 100) * 1.257} 125.7`}
-                  className="transition-all duration-1000 ease-out"
-                />
-                {/* Percentage text */}
-                <text x={50} y={50} textAnchor="middle" fontSize={22} fontWeight={800} fill="#4A6741" fontFamily="inherit">
-                  {goalPct}%
-                </text>
-              </svg>
-              <p className="text-[9px] text-warm-400 font-bold mt-0.5 tabular-nums">of {todayStats.goal.toLocaleString()}</p>
+          {/* Hero card: steps + ring unified */}
+          <div className="bg-white rounded-[22px] card-shadow relative overflow-hidden grain px-5 py-5">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-end gap-1.5">
+                  <span className="text-[72px] font-extrabold text-forest-600 tabular-nums leading-none tracking-tight">
+                    {todayStats.steps.toLocaleString()}
+                  </span>
+                </div>
+                <span className="text-[11px] font-bold text-warm-400 mt-0.5 block">steps</span>
+                <div className="flex items-end gap-5 mt-3">
+                  <div>
+                    <span className="text-xl font-extrabold text-peach-500 tabular-nums leading-none">{todayStats.distance}</span>
+                    <span className="text-[10px] font-bold text-warm-400 ml-1">mi</span>
+                  </div>
+                  <div>
+                    <span className="text-xl font-extrabold text-mustard-500 tabular-nums leading-none">{todayStats.activeMinutes}</span>
+                    <span className="text-[10px] font-bold text-warm-400 ml-1">min</span>
+                  </div>
+                </div>
+              </div>
+              {/* Goal ring */}
+              <div className="flex flex-col items-center">
+                <svg width={120} height={120} viewBox="0 0 120 120" className="-rotate-90">
+                  <circle cx={60} cy={60} r={50} fill="none" stroke="#e8e0d4" strokeWidth={8} />
+                  <circle
+                    cx={60} cy={60} r={50} fill="none"
+                    stroke="url(#heroRingGrad)" strokeWidth={8} strokeLinecap="round"
+                    strokeDasharray={`${Math.min(goalPct, 100) * 3.14} 314`}
+                    className="transition-all duration-1000 ease-out"
+                  />
+                  <defs>
+                    <linearGradient id="heroRingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#aec2a0" />
+                      <stop offset="100%" stopColor="#4A6741" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div className="absolute flex flex-col items-center justify-center" style={{ width: 120, height: 120 }}>
+                  <span className="text-2xl font-extrabold text-forest-600 tabular-nums">{goalPct}%</span>
+                  <span className="text-[9px] text-warm-400 font-bold">of {todayStats.goal.toLocaleString()}</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Row 2: Health Zone (wide landscape) */}
-          <div className={`${zone.bg} rounded-[20px] px-5 py-3.5 flex items-center gap-3 color-block mt-3`}>
-            <span className="text-xl">{zone.icon}</span>
-            <div className="flex-1">
-              <p className={`text-sm font-extrabold ${zone.color}`}>{zone.label}</p>
-              <p className="text-[10px] text-warm-500 font-medium">
+          {/* Row 2: Health Zone — celebration style */}
+          <div className="rounded-[20px] px-5 py-4 flex items-center gap-3 mt-3 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #8ba67a 0%, #aec2a0 40%, #d4a843 100%)' }}>
+            <span className="text-2xl relative z-10">{zone.icon}</span>
+            <div className="flex-1 relative z-10">
+              <p className="text-[15px] font-extrabold text-white">{zone.label}</p>
+              <p className="text-[11px] text-white/80 font-semibold">
                 {todayStats.steps >= HEALTH_ZONE
                   ? stepsToGo > 0 ? `${stepsToGo.toLocaleString()} to daily goal` : 'Daily goal complete!'
                   : `${(HEALTH_ZONE - todayStats.steps).toLocaleString()} to Health Zone`}
               </p>
             </div>
-            {/* Mini progress arc */}
-            <div className="w-10 h-10 relative">
-              <svg width={40} height={40} className="-rotate-90">
-                <circle cx={20} cy={20} r={16} fill="none" stroke="#e8e0d4" strokeWidth={3} />
-                <circle
-                  cx={20} cy={20} r={16} fill="none"
-                  stroke="#4A6741" strokeWidth={3} strokeLinecap="round"
-                  strokeDasharray={`${Math.min(goalPct, 100) * 1.005} 100.5`}
-                />
-              </svg>
-            </div>
+            {/* Shimmer decoration */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" style={{ animation: 'shimmer 3s ease-in-out infinite' }} />
           </div>
 
           {/* Row 3: QP + Level tiles */}
           <div className="grid grid-cols-2 gap-3 mt-3">
-            <div className="bg-forest-50 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
-              <p className="text-2xl font-extrabold text-forest-600 tabular-nums leading-none">+{todayStats.qpEarned}</p>
-              <p className="text-[10px] text-forest-400 font-bold mt-1">QP earned</p>
+            <div className="bg-forest-600 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
+              <p className="text-2xl font-extrabold text-white tabular-nums leading-none">+{todayStats.qpEarned}</p>
+              <p className="text-[10px] text-forest-200 font-bold mt-1">QP earned</p>
             </div>
             <div className="bg-lavender-50 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
               <p className="text-2xl font-extrabold text-lavender-600 tabular-nums leading-none">Lv{userProfile.level}</p>
               <p className="text-[10px] text-lavender-400 font-bold mt-1">{userProfile.league}</p>
             </div>
           </div>
-        </div>
       </div>
 
       {/* ── Section: JOURNEY ── */}
-      <div className="relative mt-2">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">JOURNEY</span>
-        <div className="relative pt-7">
+      <div className="mt-2">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-mustard-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-mustard-600">Journey</span>
+        </div>
+        <div>
           {/* Progress Path — winding trail for QP */}
           <div className="bg-white rounded-[22px] card-shadow p-4 relative overflow-hidden grain">
             <ProgressPath current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
@@ -253,9 +243,12 @@ export default function Dashboard() {
       </div>
 
       {/* ── Section: FRIENDS ── */}
-      <div className="relative mt-2">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">FRIENDS</span>
-        <div className="relative pt-7">
+      <div className="mt-2">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-peach-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-peach-600">Friends</span>
+        </div>
+        <div>
           <div className="bg-white rounded-[22px] card-shadow relative overflow-hidden grain">
             <div className="flex items-center justify-between px-5 pt-4 pb-2">
               <p className="text-sm font-bold text-warm-700">Today's Steps</p>
@@ -300,13 +293,14 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Nudge card */}
-          <div className={`bg-gradient-to-br ${nudge.accent} border rounded-[22px] p-5 flex items-center gap-4 color-block mt-3`}>
-            <span className="text-3xl shrink-0">{nudge.icon}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-warm-800 leading-snug">{nudge.title}</p>
-              <p className="text-xs text-warm-500 mt-0.5 font-medium">{nudge.subtitle}</p>
+          {/* Nudge card — bold color block */}
+          <div className="rounded-[22px] p-5 flex items-center gap-4 color-block mt-3 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #C67B5C, #D4886A)' }}>
+            <span className="text-3xl shrink-0 relative z-10">{nudge.icon}</span>
+            <div className="flex-1 min-w-0 relative z-10">
+              <p className="text-sm font-bold text-white leading-snug">{nudge.title}</p>
+              <p className="text-xs text-white/70 mt-0.5 font-medium">{nudge.subtitle}</p>
             </div>
+            <div className="absolute top-[-20px] right-[-10px] w-[60px] h-[60px] rounded-full bg-white/10" />
           </div>
         </div>
       </div>

@@ -48,20 +48,20 @@ export default function StepHeatmap() {
   return (
     <div>
       {/* Day labels */}
-      <div className="flex gap-[3px] mb-1 ml-0">
+      <div className="flex gap-[2px] mb-0.5 ml-0">
         {dayLabels.map((d, i) => (
-          <div key={i} className="flex-1 text-center text-[8px] font-bold text-warm-400">{d}</div>
+          <div key={i} className="flex-1 text-center text-[7px] font-bold text-warm-400">{d}</div>
         ))}
       </div>
-      {/* Grid */}
-      <div className="flex flex-col gap-[3px]">
+      {/* Grid — compact dense */}
+      <div className="flex flex-col gap-[2px]">
         {weeks.map((week, wi) => (
-          <div key={wi} className="flex gap-[3px]">
+          <div key={wi} className="flex gap-[2px]">
             {week.map((day, di) => (
               <div
                 key={di}
-                className="flex-1 aspect-square rounded-[4px] transition-colors"
-                style={{ backgroundColor: day ? INTENSITY_COLORS[getIntensity(day.steps)] : 'transparent' }}
+                className="flex-1 rounded-[2px] transition-colors"
+                style={{ backgroundColor: day ? INTENSITY_COLORS[getIntensity(day.steps)] : 'transparent', aspectRatio: '1', maxHeight: '16px' }}
                 title={day ? `${day.date}: ${day.steps.toLocaleString()} steps` : ''}
               />
             ))}
@@ -69,12 +69,12 @@ export default function StepHeatmap() {
         ))}
       </div>
       {/* Legend */}
-      <div className="flex items-center justify-end gap-1 mt-2">
-        <span className="text-[8px] text-warm-400 font-medium mr-1">Less</span>
+      <div className="flex items-center justify-end gap-0.5 mt-1.5">
+        <span className="text-[7px] text-warm-400 font-medium mr-0.5">Less</span>
         {INTENSITY_COLORS.map((c, i) => (
-          <div key={i} className="w-3 h-3 rounded-[3px]" style={{ backgroundColor: c }} />
+          <div key={i} className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
         ))}
-        <span className="text-[8px] text-warm-400 font-medium ml-1">More</span>
+        <span className="text-[7px] text-warm-400 font-medium ml-0.5">More</span>
       </div>
     </div>
   )

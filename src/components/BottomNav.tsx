@@ -30,16 +30,16 @@ export default function BottomNav() {
               {({ isActive }) => (
                 <>
                   {center ? (
-                    <div className={`w-12 h-12 -mt-4 rounded-[18px] flex items-center justify-center shadow-lg transition-all ${
+                    <div className={`w-12 h-12 -mt-4 rounded-[18px] flex items-center justify-center transition-all ${
                       isActive
                         ? 'bg-gradient-to-br from-forest-400 to-forest-600 text-white scale-105'
                         : 'bg-gradient-to-br from-forest-400 to-forest-600 text-white'
-                    }`}>
-                      <Icon size={22} strokeWidth={2.2} />
+                    }`} style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.1), 0 4px 12px rgba(74,103,65,0.3)' }}>
+                      <Icon size={22} strokeWidth={2.2} fill={isActive ? 'currentColor' : 'none'} />
                     </div>
                   ) : (
                     <>
-                      <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+                      <Icon size={22} strokeWidth={isActive ? 2.5 : 2} fill={isActive ? 'currentColor' : 'none'} />
                       <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
                       {isActive && (
                         <div className="absolute -bottom-1 w-5 h-1 rounded-full bg-forest-500 animate-pill" />

@@ -16,9 +16,12 @@ export default function Progress() {
       <h1 className="text-2xl font-extrabold text-warm-800 tracking-tight">Progress</h1>
 
       {/* ── Section: LEVEL ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">LEVEL</span>
-        <div className="relative pt-7">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-lavender-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-lavender-600">Level</span>
+        </div>
+        <div>
           {/* QP Progress Path — winding trail */}
           <div className="bg-white rounded-[22px] p-4 card-shadow grain relative overflow-hidden">
             <ProgressPath current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
@@ -27,17 +30,23 @@ export default function Progress() {
       </div>
 
       {/* ── Section: STREAK ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">STREAK</span>
-        <div className="relative pt-7">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-peach-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-peach-600">Streak</span>
+        </div>
+        <div>
           <StreakPanel />
         </div>
       </div>
 
       {/* ── Section: THIS WEEK ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">WEEK</span>
-        <div className="relative pt-7">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-forest-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-forest-600">Week</span>
+        </div>
+        <div>
           <div className="bg-gradient-to-br from-sage-50 to-cream-50 rounded-[22px] p-5 card-shadow relative overflow-hidden color-block">
             <div className="flex items-center justify-between mb-3 relative">
               <h2 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
@@ -51,7 +60,7 @@ export default function Progress() {
                 <ReferenceLine y={10000} stroke="#e8e0d4" strokeDasharray="3 3" />
                 <Bar dataKey="steps" radius={[8, 8, 0, 0]}>
                   {weeklyStepData.map((entry, i) => (
-                    <Cell key={i} fill={entry.steps >= 10000 ? '#4A6741' : entry.steps >= HEALTH_ZONE ? '#aec2a0' : '#e8e0d4'} />
+                    <Cell key={i} fill={entry.steps >= 10000 ? '#4A6741' : entry.steps >= HEALTH_ZONE ? '#aec2a0' : '#D4C5A9'} />
                   ))}
                 </Bar>
               </BarChart>
@@ -59,7 +68,7 @@ export default function Progress() {
             <div className="flex justify-center gap-4 mt-2 relative">
               <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-forest-500 inline-block" /> Goal</span>
               <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-sage-300 inline-block" /> Health zone</span>
-              <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-cream-200 inline-block" /> Below</span>
+              <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: '#D4C5A9' }} /> Below</span>
             </div>
           </div>
 
@@ -75,18 +84,24 @@ export default function Progress() {
       </div>
 
       {/* ── Section: GOALS ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">GOALS</span>
-        <div className="relative pt-7">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-mustard-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-mustard-600">Goals</span>
+        </div>
+        <div>
           <AdaptiveGoalCard />
         </div>
       </div>
 
       {/* Habit Stacks */}
       {activeStacks.length > 0 && (
-        <div className="relative">
-          <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">HABITS</span>
-          <div className="relative pt-7">
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-1 h-5 rounded-full bg-sage-500" />
+            <span className="text-[12px] font-bold uppercase tracking-widest text-sage-600">Habits</span>
+          </div>
+          <div>
             <div className="bg-gradient-to-br from-mustard-50 to-cream-50 rounded-[22px] p-5 card-shadow relative overflow-hidden color-block">
               <h2 className="text-sm font-bold text-warm-700 mb-3 flex items-center gap-1.5 relative">
                 🔗 Habit Stacks
