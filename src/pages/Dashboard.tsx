@@ -94,37 +94,41 @@ export default function Dashboard() {
       <div>
         <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Today</p>
 
-        {/* Hero: step count + ring — one card, clean */}
+        {/* Hero: vertical stack — ring on top, number below */}
         <div className="bg-white rounded-2xl card-shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-[56px] font-bold text-warm-800 tabular-nums leading-none tracking-tight block">
-                {todayStats.steps.toLocaleString()}
-              </span>
-              <span className="text-xs font-medium text-warm-400 mt-1 block">steps</span>
-              <div className="flex items-center gap-6 mt-4">
-                <div>
-                  <span className="text-lg font-bold text-warm-700 tabular-nums">{todayStats.distance}</span>
-                  <span className="text-[10px] font-medium text-warm-400 ml-1">mi</span>
-                </div>
-                <div>
-                  <span className="text-lg font-bold text-warm-700 tabular-nums">{todayStats.activeMinutes}</span>
-                  <span className="text-[10px] font-medium text-warm-400 ml-1">min</span>
-                </div>
-              </div>
-            </div>
-            {/* Goal ring — smaller, cleaner */}
+          {/* Ring — centered, larger */}
+          <div className="flex justify-center">
             <div className="relative">
-              <svg width={96} height={96} viewBox="0 0 96 96" className="-rotate-90">
-                <circle cx={48} cy={48} r={40} fill="none" stroke="#e8e0d4" strokeWidth={6} />
-                <circle cx={48} cy={48} r={40} fill="none" stroke="#4A6741" strokeWidth={6} strokeLinecap="round"
-                  strokeDasharray={`${Math.min(goalPct, 100) * 2.51} 251`}
+              <svg width={140} height={140} viewBox="0 0 140 140" className="-rotate-90">
+                <circle cx={70} cy={70} r={60} fill="none" stroke="#e8e0d4" strokeWidth={8} />
+                <circle cx={70} cy={70} r={60} fill="none" stroke="#4A6741" strokeWidth={8} strokeLinecap="round"
+                  strokeDasharray={`${Math.min(goalPct, 100) * 3.77} 377`}
                   className="transition-all duration-1000 ease-out" />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-xl font-bold text-forest-600 tabular-nums">{goalPct}%</span>
-                <span className="text-[9px] text-warm-400 font-medium">of {todayStats.goal.toLocaleString()}</span>
+                <span className="text-[44px] font-bold text-warm-800 tabular-nums leading-none tracking-tight">
+                  {todayStats.steps.toLocaleString()}
+                </span>
+                <span className="text-xs font-medium text-warm-400 mt-0.5">steps</span>
               </div>
+            </div>
+          </div>
+
+          {/* Stats row below ring */}
+          <div className="flex items-center justify-center gap-8 mt-5">
+            <div className="text-center">
+              <span className="text-xl font-bold text-warm-700 tabular-nums">{todayStats.distance}</span>
+              <span className="text-[10px] font-medium text-warm-400 ml-1">mi</span>
+            </div>
+            <div className="w-px h-6 bg-cream-200" />
+            <div className="text-center">
+              <span className="text-xl font-bold text-warm-700 tabular-nums">{todayStats.activeMinutes}</span>
+              <span className="text-[10px] font-medium text-warm-400 ml-1">min</span>
+            </div>
+            <div className="w-px h-6 bg-cream-200" />
+            <div className="text-center">
+              <span className="text-xl font-bold text-forest-600 tabular-nums">{goalPct}%</span>
+              <span className="text-[10px] font-medium text-warm-400 ml-1">goal</span>
             </div>
           </div>
         </div>
