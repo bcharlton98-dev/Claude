@@ -7,8 +7,8 @@ export default function StreakPanel() {
 
   return (
     <div className="bg-white rounded-2xl card-shadow overflow-hidden">
-      {/* Header — solid color, no blob */}
-      <div className="bg-peach-500 px-5 py-5">
+      {/* Header — solid with edge highlight */}
+      <div className="bg-peach-500 px-5 py-5 edge-highlight">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <FlameIcon size={32} />
@@ -36,7 +36,7 @@ export default function StreakPanel() {
             return (
               <div key={m.days} className="flex-1 flex flex-col items-center gap-1">
                 <BadgeIcon icon={m.icon} size={16} color={m.reached ? '#2D5E3B' : isActive ? '#9E9284' : '#ddd6cb'} />
-                <div className={`h-2 w-full rounded-full ${m.reached ? 'bg-forest-500' : 'bg-cream-200'}`}>
+                <div className={`h-2 w-full rounded-full ${m.reached ? 'bg-forest-500' : 'bg-forest-100'}`}>
                   {isActive && (
                     <div className="h-full bg-forest-500 rounded-full transition-all"
                       style={{ width: `${Math.min(((userProfile.streak - (streakMilestones[i - 1]?.days || 0)) / (m.days - (streakMilestones[i - 1]?.days || 0))) * 100, 100)}%` }} />

@@ -106,16 +106,18 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Ring — sits in header, glows */}
+          {/* Ring — glowing, premium */}
           <div className="relative mb-1">
-            <svg width={80} height={80} viewBox="0 0 80 80" className="-rotate-90" style={{ filter: 'drop-shadow(0 0 8px rgba(174, 194, 160, 0.4))' }}>
-              <circle cx={40} cy={40} r={33} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={6} />
-              <circle cx={40} cy={40} r={33} fill="none" stroke="white" strokeWidth={6} strokeLinecap="round"
-                strokeDasharray={`${Math.min(goalPct, 100) * 2.07} 207`}
+            <svg width={84} height={84} viewBox="0 0 84 84" className="-rotate-90" style={{ filter: 'drop-shadow(0 0 10px rgba(164, 180, 122, 0.5))' }}>
+              {/* Track — same hue at 20% */}
+              <circle cx={42} cy={42} r={35} fill="none" stroke="rgba(164,180,122,0.2)" strokeWidth={7} />
+              {/* Progress — white with glow */}
+              <circle cx={42} cy={42} r={35} fill="none" stroke="white" strokeWidth={7} strokeLinecap="round"
+                strokeDasharray={`${Math.min(goalPct, 100) * 2.2} 220`}
                 className="transition-all duration-1000 ease-out" />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-lg font-bold text-white tabular-nums">{goalPct}%</span>
+              <span className="text-xl font-bold text-white tabular-nums">{goalPct}%</span>
             </div>
           </div>
         </div>
@@ -130,7 +132,7 @@ export default function Dashboard() {
           { value: todayStats.activeMinutes, unit: 'min', label: 'Active' },
           { value: todayStats.qpEarned, unit: 'QP', label: 'Earned' },
         ].map(s => (
-          <div key={s.label} className="flex-1 bg-white rounded-2xl p-3 text-center" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)' }}>
+          <div key={s.label} className="flex-1 bg-white rounded-2xl p-3 text-center card-elevated">
             <p className="text-lg font-bold text-warm-800 tabular-nums leading-none">
               {typeof s.value === 'number' && s.unit === 'QP' ? `+${s.value}` : s.value}
             </p>
@@ -143,7 +145,7 @@ export default function Dashboard() {
       <div className="relative">
         {/* Subtle glow behind */}
         <div className="absolute inset-0 rounded-2xl" style={{ background: 'radial-gradient(ellipse at center, rgba(74,103,65,0.08), transparent 70%)', transform: 'scale(1.05)', filter: 'blur(20px)' }} />
-        <div className="relative bg-forest-600 rounded-2xl p-5" style={{ boxShadow: '0 2px 8px rgba(74,103,65,0.15), 0 8px 24px rgba(74,103,65,0.1)' }}>
+        <div className="relative bg-forest-600 rounded-2xl p-5 shadow-forest edge-highlight">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-2xl font-bold text-white leading-none">{titleInfo.current.title}</p>
@@ -158,7 +160,7 @@ export default function Dashboard() {
           </div>
           {titleInfo.next && (
             <div className="mt-4">
-              <div className="h-2 bg-forest-700 rounded-full overflow-hidden">
+              <div className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
                 <div className="h-full rounded-full transition-all duration-700" style={{
                   width: `${Math.round(titleInfo.progress * 100)}%`,
                   background: 'linear-gradient(90deg, #a4b47a, #D4A050)',
@@ -179,7 +181,7 @@ export default function Dashboard() {
         </div>
 
         {raceChallenge && raceChallenge.raceProgress && raceChallenge.raceDistance && (
-          <div className="bg-forest-600 rounded-2xl px-4 py-4 flex items-center gap-3 mt-3" style={{ boxShadow: '0 2px 8px rgba(74,103,65,0.15)' }}>
+          <div className="bg-forest-600 rounded-2xl px-4 py-4 flex items-center gap-3 mt-3 shadow-forest edge-highlight">
             <RouteIcon size={20} />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-white">{raceChallenge.raceName}</p>
@@ -198,7 +200,7 @@ export default function Dashboard() {
       <div>
         <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Friends</p>
 
-        <div className="bg-white rounded-2xl" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)' }}>
+        <div className="bg-white rounded-2xl card-shadow">
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
             <p className="text-sm font-bold text-warm-700">Today's Steps</p>
             <p className="text-[10px] text-warm-400 font-medium">{friends.length} friends</p>
@@ -228,7 +230,7 @@ export default function Dashboard() {
         </div>
 
         {/* Nudge — warm, bold */}
-        <div className="bg-peach-500 rounded-2xl p-4 flex items-center gap-4 mt-3" style={{ boxShadow: '0 2px 8px rgba(224,120,64,0.2)' }}>
+        <div className="bg-peach-500 rounded-2xl p-4 flex items-center gap-4 mt-3 shadow-ember edge-highlight">
           <span className="shrink-0">
             {nudge.nudgeType === 'challenge' ? <ChallengeIcon size={24} /> : nudge.nudgeType === 'streak' ? <FlameIconWhite size={24} /> : <StarIcon size={24} color="white" />}
           </span>

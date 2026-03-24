@@ -140,3 +140,20 @@ body {
   to { transform: scaleX(1); }
 }
 .animate-pill { animation: pill-slide 0.2s ease-out; }
+
+/* Dark card top-edge highlight — simulates light hitting the top edge */
+.edge-highlight { box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
+
+/* Elevated card — deeper layered shadow for hero/achievement cards */
+.card-elevated {
+  box-shadow:
+    0 1px 2px rgba(77, 66, 55, 0.05),
+    0 2px 4px rgba(77, 66, 55, 0.05),
+    0 4px 8px rgba(77, 66, 55, 0.04),
+    0 8px 16px rgba(77, 66, 55, 0.03),
+    0 16px 32px rgba(77, 66, 55, 0.02);
+}
+
+/* Hue-matched shadows for colored cards */
+.shadow-forest { box-shadow: 0 2px 8px rgba(45,94,59,0.15), 0 8px 24px rgba(45,94,59,0.1); }
+.shadow-ember { box-shadow: 0 2px 8px rgba(190,115,57,0.2), 0 8px 20px rgba(190,115,57,0.12); }

@@ -28,9 +28,9 @@ export default function BottomNav() {
               {({ isActive }) => (
                 <>
                   {center ? (
-                    <div className={`w-10 h-10 -mt-3 rounded-xl flex items-center justify-center transition-all bg-forest-600 text-white ${
+                    <div className={`w-10 h-10 -mt-3 rounded-xl flex items-center justify-center transition-all bg-forest-600 text-white shadow-forest edge-highlight ${
                       isActive ? 'scale-105' : ''
-                    }`} style={{ boxShadow: '0 2px 8px rgba(74,103,65,0.25)' }}>
+                    }`}>
                       <Icon size={20} strokeWidth={2} fill={isActive ? 'currentColor' : 'none'} />
                     </div>
                   ) : (

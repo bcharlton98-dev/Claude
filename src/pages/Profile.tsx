@@ -12,7 +12,7 @@ export default function Profile() {
   return (
     <div className="space-y-6">
       {/* Header — clean, no blob */}
-      <div className="-mx-5 -mt-6 px-5 pt-6 bg-forest-600">
+      <div className="-mx-5 -mt-6 px-5 pt-6 bg-forest-600 edge-highlight">
         <div className="text-center pb-6">
           <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-forest-600 text-xl font-bold mx-auto">
             {userProfile.avatar}
@@ -24,11 +24,11 @@ export default function Profile() {
 
       {/* Key stats — 2 columns, not 4 */}
       <div className="grid grid-cols-2 gap-3 -mt-3">
-        <div className="bg-white rounded-2xl p-4 text-center card-shadow">
+        <div className="bg-white rounded-2xl p-4 text-center card-elevated">
           <p className="text-2xl font-bold text-warm-800 tabular-nums">{userProfile.lifetimeMiles.toLocaleString()}</p>
           <p className="text-[10px] text-warm-400 font-medium mt-1">Lifetime Miles</p>
         </div>
-        <div className="bg-white rounded-2xl p-4 text-center card-shadow">
+        <div className="bg-white rounded-2xl p-4 text-center card-elevated">
           <p className="text-2xl font-bold text-warm-800 tabular-nums flex items-center justify-center gap-1">
             <FlameIcon size={20} /> {userProfile.longestStreak}
           </p>
@@ -107,7 +107,7 @@ export default function Profile() {
             <p className="text-base font-bold text-warm-700 tabular-nums">10,000</p>
           </div>
         </div>
-        <div className="h-2 bg-cream-200 rounded-full overflow-hidden">
+        <div className="h-2 bg-forest-100 rounded-full overflow-hidden">
           <div className="h-full bg-forest-500 rounded-full transition-all"
             style={{ width: `${((adaptiveGoal.currentGoal - adaptiveGoal.baseline) / (10000 - adaptiveGoal.baseline)) * 100}%` }} />
         </div>

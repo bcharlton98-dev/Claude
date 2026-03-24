@@ -18,7 +18,7 @@ export default function QPBar({ lifetimeMiles }: QPBarProps) {
           <span className="font-semibold text-warm-600">{current.title}</span>
           <span className="tabular-nums">{lifetimeMiles.toLocaleString()} mi</span>
         </div>
-        <div className="h-2 bg-cream-200 rounded-full overflow-hidden">
+        <div className="h-2 bg-forest-100 rounded-full overflow-hidden">
           <div className="h-full bg-forest-500 rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
         </div>
         {next && (

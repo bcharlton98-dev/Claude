@@ -47,7 +47,7 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
         <span>{pct}% complete</span>
         <span className="tabular-nums">{current.toLocaleString()} / {total.toLocaleString()}</span>
       </div>
-      <div className="h-2 bg-cream-100 rounded-full overflow-hidden">
+      <div className="h-2 bg-forest-100 rounded-full overflow-hidden">
         <div className="h-full bg-forest-500 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -133,7 +133,7 @@ function CarouselCard({ challenge, isActive, onClick }: { challenge: Challenge; 
         isActive ? 'ring-2 ring-forest-500' : ''
       }`}
     >
-      <div className={`${thumb.bg} px-4 py-3`}>
+      <div className={`${thumb.bg} px-4 py-3 edge-highlight`}>
         <thumb.Icon size={16} className="text-white/40 absolute top-3 right-3" />
         <p className="text-white text-sm font-bold leading-tight">{challenge.name}</p>
         <p className="text-white/60 text-[10px] font-medium mt-0.5">{typeLabels[challenge.type]}</p>
@@ -149,7 +149,7 @@ function CarouselCard({ challenge, isActive, onClick }: { challenge: Challenge; 
           )}
         </div>
         {challenge.type === 'group_target' && challenge.collectiveGoal && (
-          <div className="h-1.5 bg-cream-100 rounded-full overflow-hidden mt-2">
+          <div className="h-1.5 bg-forest-100 rounded-full overflow-hidden mt-2">
             <div className="h-full bg-forest-500 rounded-full"
               style={{ width: `${Math.round(((challenge.collectiveProgress || 0) / challenge.collectiveGoal) * 100)}%` }} />
           </div>
@@ -163,7 +163,7 @@ function ChallengeDetail({ challenge }: { challenge: Challenge }) {
   const thumb = thumbnailConfig[challenge.type]
   return (
     <div className="bg-white rounded-2xl card-shadow overflow-hidden">
-      <div className={`${thumb.bg} px-4 py-3 flex items-center gap-3`}>
+      <div className={`${thumb.bg} px-4 py-3 flex items-center gap-3 edge-highlight`}>
         <thumb.Icon size={18} className="text-white" />
         <div className="flex-1 min-w-0">
           <h3 className="font-bold text-sm text-white">{challenge.name}</h3>
@@ -243,7 +243,7 @@ export default function Challenges() {
                   <span className="text-[10px] text-forest-600 font-bold bg-forest-50 px-2 py-0.5 rounded-full">+{q.qpReward}</span>
                 </div>
                 {!q.completed && (
-                  <div className="mt-2 h-1.5 bg-cream-100 rounded-full overflow-hidden">
+                  <div className="mt-2 h-1.5 bg-forest-100 rounded-full overflow-hidden">
                     <div className="h-full bg-forest-500 rounded-full transition-all duration-500"
                       style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }} />
                   </div>
@@ -310,7 +310,7 @@ export default function Challenges() {
       )}
 
       {/* CTA — solid color, no blobs, no radial gradients */}
-      <div className="bg-forest-600 rounded-2xl p-6 text-center">
+      <div className="bg-forest-600 rounded-2xl p-6 text-center shadow-forest edge-highlight">
         <Mountain size={28} className="text-forest-300 mx-auto mb-2" />
         <p className="text-white text-lg font-bold">Commit to My Quest</p>
         <p className="text-forest-200 text-xs mt-1 font-medium">Walk 7,500+ steps every day this week</p>
