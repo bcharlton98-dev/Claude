@@ -27,7 +27,7 @@ function getTerrainTheme(): { bg: string; label: string } {
   const currentTerrain = reached.length > 0 ? reached[reached.length - 1].terrain : 'city'
   const themes: Record<string, { bg: string; label: string }> = {
     city: { bg: 'from-forest-600 to-forest-500', label: 'Near Oklahoma City' },
-    plains: { bg: 'from-forest-600 to-forest-500', label: 'Crossing the Plains' },
+    plains: { bg: 'from-forest-600 via-forest-500 to-sage-500', label: 'Crossing the Plains' },
     mountains: { bg: 'from-forest-700 to-forest-500', label: 'Mountain Territory' },
     desert: { bg: 'from-warm-700 to-warm-600', label: 'Desert Stretch' },
     forest: { bg: 'from-forest-700 to-forest-600', label: 'Deep Forest' },
@@ -63,11 +63,12 @@ export default function Dashboard() {
   const titleInfo = getCurrentTitle(userProfile.lifetimeMiles)
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Header — clean, no blobs */}
-      <div className={`-mx-5 -mt-6 px-5 pt-6 pb-6 bg-gradient-to-b ${terrain.bg}`}>
-        {/* WalkQuest Logo */}
-        <div className="mb-4">
+    <div className="flex flex-col gap-5">
+
+      {/* ── HEADER — extends into the step count for visual continuity ── */}
+      <div className={`-mx-5 -mt-6 px-5 pt-6 pb-8 bg-gradient-to-b ${terrain.bg}`}>
+        {/* Logo */}
+        <div className="mb-5">
           <svg width="130" height="28" viewBox="0 0 260 56" fill="none" aria-label="WalkQuest">
             <text x="0" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">Walk</text>
             <text x="120" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">Quest</text>
@@ -78,95 +79,92 @@ export default function Dashboard() {
           </svg>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-white/60 text-xs font-medium">{getGreeting()},</p>
-            <p className="text-white text-lg font-bold tracking-tight">{userProfile.name.split(' ')[0]}</p>
+            <p className="text-white/50 text-xs font-medium">{getGreeting()},</p>
+            <p className="text-white text-xl font-bold tracking-tight">{userProfile.name.split(' ')[0]}</p>
           </div>
           <span className="flex items-center gap-1.5 bg-white/15 text-white px-3 py-1.5 rounded-full text-xs font-bold">
             <FlameIconWhite size={14} /> {userProfile.streak} days
           </span>
         </div>
-        {terrain.label && <p className="text-white/40 text-[10px] font-medium mt-2">{terrain.label}</p>}
+
+        {/* Step count — BIG number lives in the header, not a card */}
+        <div className="flex items-end justify-between">
+          <div>
+            <span className="text-[64px] font-bold text-white tabular-nums leading-none tracking-tight block">
+              {todayStats.steps.toLocaleString()}
+            </span>
+            <div className="flex items-center gap-1 mt-1">
+              <StarIcon size={12} color="rgba(255,255,255,0.6)" />
+              <span className="text-xs text-white/60 font-medium">{zoneLabel}</span>
+              <span className="text-xs text-white/40 font-medium">
+                {todayStats.steps >= HEALTH_ZONE
+                  ? stepsToGo > 0 ? `· ${stepsToGo.toLocaleString()} to goal` : '· Goal complete'
+                  : `· ${(HEALTH_ZONE - todayStats.steps).toLocaleString()} to zone`}
+              </span>
+            </div>
+          </div>
+
+          {/* Ring — sits in header, glows */}
+          <div className="relative mb-1">
+            <svg width={80} height={80} viewBox="0 0 80 80" className="-rotate-90" style={{ filter: 'drop-shadow(0 0 8px rgba(174, 194, 160, 0.4))' }}>
+              <circle cx={40} cy={40} r={33} fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={6} />
+              <circle cx={40} cy={40} r={33} fill="none" stroke="white" strokeWidth={6} strokeLinecap="round"
+                strokeDasharray={`${Math.min(goalPct, 100) * 2.07} 207`}
+                className="transition-all duration-1000 ease-out" />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-lg font-bold text-white tabular-nums">{goalPct}%</span>
+            </div>
+          </div>
+        </div>
+
+        {terrain.label && <p className="text-white/30 text-[10px] font-medium mt-2">{terrain.label}</p>}
       </div>
 
-      {/* ── TODAY ── */}
-      <div>
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Today</p>
-
-        {/* Hero: vertical stack — ring on top, number below */}
-        <div className="bg-white rounded-2xl card-shadow p-6">
-          {/* Ring — centered, larger */}
-          <div className="flex justify-center">
-            <div className="relative">
-              <svg width={140} height={140} viewBox="0 0 140 140" className="-rotate-90">
-                <circle cx={70} cy={70} r={60} fill="none" stroke="#e8e0d4" strokeWidth={8} />
-                <circle cx={70} cy={70} r={60} fill="none" stroke="#4A6741" strokeWidth={8} strokeLinecap="round"
-                  strokeDasharray={`${Math.min(goalPct, 100) * 3.77} 377`}
-                  className="transition-all duration-1000 ease-out" />
-              </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-[44px] font-bold text-warm-800 tabular-nums leading-none tracking-tight">
-                  {todayStats.steps.toLocaleString()}
-                </span>
-                <span className="text-xs font-medium text-warm-400 mt-0.5">steps</span>
-              </div>
-            </div>
+      {/* Stats row — overlaps the header with negative margin */}
+      <div className="flex gap-3 -mt-5">
+        {[
+          { value: todayStats.distance, unit: 'mi', label: 'Distance' },
+          { value: todayStats.activeMinutes, unit: 'min', label: 'Active' },
+          { value: todayStats.qpEarned, unit: 'QP', label: 'Earned' },
+        ].map(s => (
+          <div key={s.label} className="flex-1 bg-white rounded-2xl p-3 text-center" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04)' }}>
+            <p className="text-lg font-bold text-warm-800 tabular-nums leading-none">
+              {typeof s.value === 'number' && s.unit === 'QP' ? `+${s.value}` : s.value}
+            </p>
+            <p className="text-[10px] text-warm-400 font-medium mt-1">{s.unit}</p>
           </div>
+        ))}
+      </div>
 
-          {/* Stats row below ring */}
-          <div className="flex items-center justify-center gap-8 mt-5">
-            <div className="text-center">
-              <span className="text-xl font-bold text-warm-700 tabular-nums">{todayStats.distance}</span>
-              <span className="text-[10px] font-medium text-warm-400 ml-1">mi</span>
-            </div>
-            <div className="w-px h-6 bg-cream-200" />
-            <div className="text-center">
-              <span className="text-xl font-bold text-warm-700 tabular-nums">{todayStats.activeMinutes}</span>
-              <span className="text-[10px] font-medium text-warm-400 ml-1">min</span>
-            </div>
-            <div className="w-px h-6 bg-cream-200" />
-            <div className="text-center">
-              <span className="text-xl font-bold text-forest-600 tabular-nums">{goalPct}%</span>
-              <span className="text-[10px] font-medium text-warm-400 ml-1">goal</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Health Zone — single line indicator, not a card */}
-        <div className="flex items-center gap-2 mt-3 px-1">
-          <StarIcon size={14} color="#4A6741" />
-          <span className="text-xs font-semibold text-forest-600">{zoneLabel}</span>
-          <span className="text-xs text-warm-400 font-medium">
-            {todayStats.steps >= HEALTH_ZONE
-              ? stepsToGo > 0 ? `· ${stepsToGo.toLocaleString()} to goal` : '· Goal complete'
-              : `· ${(HEALTH_ZONE - todayStats.steps).toLocaleString()} to zone`}
-          </span>
-        </div>
-
-        {/* Title progress — unified card */}
-        <div className="bg-forest-600 rounded-2xl p-4 mt-4">
+      {/* ── TITLE CARD — breaks the system, feels like an achievement ── */}
+      <div className="relative">
+        {/* Subtle glow behind */}
+        <div className="absolute inset-0 rounded-2xl" style={{ background: 'radial-gradient(ellipse at center, rgba(74,103,65,0.08), transparent 70%)', transform: 'scale(1.05)', filter: 'blur(20px)' }} />
+        <div className="relative bg-forest-600 rounded-2xl p-5" style={{ boxShadow: '0 2px 8px rgba(74,103,65,0.15), 0 8px 24px rgba(74,103,65,0.1)' }}>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-lg font-bold text-white leading-none">{titleInfo.current.title}</p>
+              <p className="text-2xl font-bold text-white leading-none">{titleInfo.current.title}</p>
               <p className="text-xs text-forest-200 font-medium mt-1">{userProfile.lifetimeMiles.toLocaleString()} miles walked</p>
             </div>
-            <div className="text-right">
-              <p className="text-sm font-bold text-white tabular-nums">+{todayStats.qpEarned} QP</p>
-              <p className="text-[10px] text-forest-200 font-medium">today</p>
-            </div>
+            {titleInfo.next && (
+              <div className="text-right">
+                <p className="text-xs text-forest-200 font-medium">Next</p>
+                <p className="text-sm font-bold text-white">{titleInfo.next.title}</p>
+              </div>
+            )}
           </div>
           {titleInfo.next && (
-            <div className="mt-3">
-              <div className="flex justify-between text-[10px] text-forest-200 font-medium mb-1">
-                <span>{titleInfo.current.title}</span>
-                <span>{titleInfo.next.title}</span>
+            <div className="mt-4">
+              <div className="h-2 bg-forest-700 rounded-full overflow-hidden">
+                <div className="h-full rounded-full transition-all duration-700" style={{
+                  width: `${Math.round(titleInfo.progress * 100)}%`,
+                  background: 'linear-gradient(90deg, #aec2a0, #d4a843)',
+                }} />
               </div>
-              <div className="h-1.5 bg-forest-700 rounded-full overflow-hidden">
-                <div className="h-full bg-white/80 rounded-full transition-all duration-700"
-                  style={{ width: `${Math.round(titleInfo.progress * 100)}%` }} />
-              </div>
-              <p className="text-[10px] text-forest-200 font-medium mt-1">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</p>
+              <p className="text-[11px] text-forest-200 font-medium mt-1.5">{titleInfo.milesToNext.toLocaleString()} mi remaining</p>
             </div>
           )}
         </div>
@@ -174,22 +172,22 @@ export default function Dashboard() {
 
       {/* ── JOURNEY ── */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Journey</p>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Journey</p>
 
         <div className="bg-white rounded-2xl card-shadow p-4">
           <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
         </div>
 
         {raceChallenge && raceChallenge.raceProgress && raceChallenge.raceDistance && (
-          <div className="bg-forest-600 rounded-2xl px-5 py-4 flex items-center gap-3 mt-3">
-            <RouteIcon size={22} />
+          <div className="bg-forest-600 rounded-2xl px-4 py-4 flex items-center gap-3 mt-3" style={{ boxShadow: '0 2px 8px rgba(74,103,65,0.15)' }}>
+            <RouteIcon size={20} />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-white">{raceChallenge.raceName}</p>
               <p className="text-xs text-forest-200 font-medium tabular-nums">
                 {raceChallenge.raceProgress.toLocaleString()} / {raceChallenge.raceDistance.toLocaleString()} mi
               </p>
             </div>
-            <p className="text-lg font-bold text-white tabular-nums">
+            <p className="text-xl font-bold text-white tabular-nums">
               {Math.round((raceChallenge.raceProgress / raceChallenge.raceDistance) * 100)}%
             </p>
           </div>
@@ -198,16 +196,16 @@ export default function Dashboard() {
 
       {/* ── FRIENDS ── */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Friends</p>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Friends</p>
 
-        <div className="bg-white rounded-2xl card-shadow">
+        <div className="bg-white rounded-2xl" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03)' }}>
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
             <p className="text-sm font-bold text-warm-700">Today's Steps</p>
             <p className="text-[10px] text-warm-400 font-medium">{friends.length} friends</p>
           </div>
-          <div className="divide-y divide-cream-100">
+          <div>
             {[...friends].sort((a, b) => b.stepsToday - a.stepsToday).map((f, i) => (
-              <div key={f.id} className={`flex items-center gap-3 px-4 py-3 ${f.isYou ? 'bg-forest-50/40' : ''}`}>
+              <div key={f.id} className={`flex items-center gap-3 px-4 py-3 ${f.isYou ? 'bg-forest-50/50' : ''} ${i > 0 ? 'border-t border-cream-100' : ''}`}>
                 <RankCircle rank={i + 1} size={24} />
                 <AvatarCircle name={f.name} size={28} />
                 <div className="flex-1 min-w-0">
@@ -229,8 +227,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Nudge — solid terracotta, no blob */}
-        <div className="bg-peach-500 rounded-2xl p-4 flex items-center gap-4 mt-3">
+        {/* Nudge — warm, bold */}
+        <div className="bg-peach-500 rounded-2xl p-4 flex items-center gap-4 mt-3" style={{ boxShadow: '0 2px 8px rgba(224,120,64,0.2)' }}>
           <span className="shrink-0">
             {nudge.nudgeType === 'challenge' ? <ChallengeIcon size={24} /> : nudge.nudgeType === 'streak' ? <FlameIconWhite size={24} /> : <StarIcon size={24} color="white" />}
           </span>
