@@ -70,19 +70,23 @@ export default function Progress() {
         <div className="mt-6">
           <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Habits</p>
           <div className="bg-white rounded-2xl p-4 card-shadow">
-            <h2 className="text-sm font-bold text-warm-700 mb-3 flex items-center gap-1.5">
-              <LinkIcon size={14} /> Habit Stacks
-            </h2>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
+                <LinkIcon size={14} /> Habit Stacks
+              </h2>
+              <span className="text-xs text-warm-400 font-medium">0/{activeStacks.length} today</span>
+            </div>
             <div className="space-y-2">
               {activeStacks.map(h => (
-                <div key={h.id} className="flex items-center gap-3 bg-cream-50 rounded-xl px-4 py-3">
-                  <HabitIcon icon={h.icon} size={16} />
-                  <p className="text-xs text-warm-600 font-medium">
+                <div key={h.id} className="flex items-center gap-3 bg-cream-50 rounded-xl px-4 py-3 border-l-3 border-forest-400">
+                  <HabitIcon icon={h.icon} size={18} />
+                  <p className="text-sm text-warm-600 font-medium">
                     <span className="font-bold text-warm-700">{h.anchor}</span>, {h.habit}
                   </p>
                 </div>
               ))}
             </div>
+            <p className="text-xs text-warm-400 mt-3 text-center">Build your routine</p>
           </div>
         </div>
       )}

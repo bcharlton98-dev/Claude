@@ -48,20 +48,20 @@ export default function StepHeatmap() {
   return (
     <div>
       {/* Day labels */}
-      <div className="flex gap-[2px] mb-0.5 ml-0">
+      <div className="flex gap-1 mb-0.5 ml-0">
         {dayLabels.map((d, i) => (
           <div key={i} className="flex-1 text-center text-xs font-bold text-warm-400 leading-snug">{d}</div>
         ))}
       </div>
       {/* Grid — compact dense */}
-      <div className="flex flex-col gap-[2px]">
+      <div className="flex flex-col gap-1">
         {weeks.map((week, wi) => (
-          <div key={wi} className="flex gap-[2px]">
+          <div key={wi} className="flex gap-1">
             {week.map((day, di) => (
               <div
                 key={di}
-                className="flex-1 rounded-[2px] transition-colors"
-                style={{ backgroundColor: day ? INTENSITY_COLORS[getIntensity(day.steps)] : 'transparent', aspectRatio: '1', maxHeight: '16px' }}
+                className="flex-1 rounded-sm transition-colors"
+                style={{ backgroundColor: day ? INTENSITY_COLORS[getIntensity(day.steps)] : 'transparent', aspectRatio: '1' }}
                 title={day ? `${day.date}: ${day.steps.toLocaleString()} steps` : ''}
               />
             ))}
@@ -72,7 +72,7 @@ export default function StepHeatmap() {
       <div className="flex items-center justify-end gap-0.5 mt-1.5">
         <span className="text-xs text-warm-400 font-medium mr-0.5 leading-snug">Less</span>
         {INTENSITY_COLORS.map((c, i) => (
-          <div key={i} className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
+          <div key={i} className="w-3 h-3 rounded-sm" style={{ backgroundColor: c }} />
         ))}
         <span className="text-xs text-warm-400 font-medium ml-0.5 leading-snug">More</span>
       </div>

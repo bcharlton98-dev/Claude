@@ -22,34 +22,46 @@ const typeLabels: Record<string, string> = {
 
 type Tab = 'browse' | 'mine' | 'invites'
 
+function formatShortDate(dateStr: string): string {
+  const d = new Date(dateStr)
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+}
+
+function formatNumber(n: number): string {
+  return n.toLocaleString()
+}
+
 function ChallengeCard({ challenge, onClick }: { challenge: Challenge; onClick: () => void }) {
   const thumb = thumbnailConfig[challenge.type] || { bg: 'bg-forest-600' }
   const yourRank = [...challenge.participants].sort((a, b) => b.steps - a.steps).findIndex(p => p.isYou) + 1
   const pct = challenge.collectiveGoal ? Math.round(((challenge.collectiveProgress || 0) / challenge.collectiveGoal) * 100) : null
 
   return (
-    <button onClick={onClick} className="w-full rounded-2xl overflow-hidden bg-white card-shadow btn-press text-left">
+    <button onClick={onClick} className="w-full rounded-2xl overflow-hidden card-shadow btn-press text-left">
       <div className={`${thumb.bg} px-4 py-3 edge-highlight`}>
         <p className="text-white text-sm font-bold leading-tight">{challenge.name}</p>
         <p className="text-white/50 text-xs font-medium mt-0.5 leading-normal">{typeLabels[challenge.type]}</p>
       </div>
-      <div className="px-4 py-3">
+      <div className="bg-cream-50 px-4 py-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
             <Users size={12} className="text-warm-400" />
             <span className="text-xs text-warm-500 font-medium">{challenge.participants.length} participants</span>
           </div>
           {yourRank > 0 && (
-            <span className="text-xs font-bold text-forest-600 bg-forest-50 px-2 py-0.5 rounded-full leading-tight">#{yourRank}</span>
+            <span className="text-sm font-extrabold text-forest-700 bg-forest-100 px-3 py-1 rounded-full leading-tight">#{yourRank}</span>
           )}
         </div>
         {pct !== null && (
-          <div className="h-1.5 bg-forest-100 rounded-full overflow-hidden mt-2">
-            <div className="h-full bg-forest-500 rounded-full" style={{ width: `${pct}%` }} />
+          <div className="flex items-center gap-2 mt-2">
+            <div className="flex-1 h-1.5 bg-forest-100 rounded-full overflow-hidden">
+              <div className="h-full bg-forest-500 rounded-full" style={{ width: `${pct}%` }} />
+            </div>
+            <span className="text-xs font-bold text-forest-600 shrink-0">{pct}%</span>
           </div>
         )}
-        <p className="text-xs text-warm-300 font-medium mt-2 leading-normal">
-          {new Date(challenge.startDate).toLocaleDateString()} — {new Date(challenge.endDate).toLocaleDateString()}
+        <p className="text-xs text-warm-400 font-medium mt-2 leading-normal">
+          {formatShortDate(challenge.startDate)} — {formatShortDate(challenge.endDate)}
         </p>
       </div>
     </button>
@@ -90,25 +102,37 @@ export default function Challenges() {
           <h2 className="text-sm font-bold text-warm-700">Daily Quests</h2>
         </div>
         <div className="space-y-2">
-          {dailyQuests.map(q => (
-            <div key={q.id} className={`bg-white rounded-2xl p-4 flex items-center gap-3 card-shadow ${q.completed ? 'opacity-50' : ''}`}>
-              <span className="w-8 flex items-center justify-center shrink-0">
-                {q.completed ? <CheckIcon size={20} /> : q.type === 'steps' ? <ShoeIcon size={20} /> : q.type === 'distance' ? <RouteIcon size={20} /> : q.type === 'active_minutes' ? <ClockIcon size={20} /> : <WaveIcon size={20} />}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-center">
-                  <p className={`font-semibold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>{q.title}</p>
-                  <span className="text-xs text-forest-600 font-bold bg-forest-50 px-2 py-0.5 rounded-full leading-tight">+{q.qpReward}</span>
-                </div>
-                {!q.completed && (
-                  <div className="mt-2 h-1.5 bg-forest-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-forest-500 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }} />
+          {dailyQuests.map(q => {
+            const questPct = Math.min(Math.round((q.current / q.target) * 100), 100)
+            return (
+              <div key={q.id} className={`bg-white rounded-2xl p-4 flex items-start gap-3 card-shadow ${q.completed ? 'opacity-50' : ''}`}>
+                <span className="bg-forest-50 rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
+                  {q.completed ? <CheckIcon size={20} /> : q.type === 'steps' ? <ShoeIcon size={20} /> : q.type === 'distance' ? <RouteIcon size={20} /> : q.type === 'active_minutes' ? <ClockIcon size={20} /> : <WaveIcon size={20} />}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center">
+                    <p className={`font-semibold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>{q.title}</p>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {!q.completed && <span className="text-xs font-medium text-warm-400">{questPct}%</span>}
+                      <span className="text-xs text-forest-600 font-bold bg-forest-50 px-2 py-0.5 rounded-full leading-tight">+{q.qpReward}</span>
+                    </div>
                   </div>
-                )}
+                  {q.description && (
+                    <p className={`text-xs mt-0.5 leading-normal ${q.completed ? 'text-warm-300' : 'text-warm-400'}`}>{q.description}</p>
+                  )}
+                  {!q.completed && (
+                    <>
+                      <div className="mt-2 h-2 bg-forest-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-forest-500 rounded-full transition-all duration-500"
+                          style={{ width: `${questPct}%` }} />
+                      </div>
+                      <p className="text-xs text-warm-400 mt-1 font-medium">{formatNumber(q.current)} / {formatNumber(q.target)}</p>
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
 
