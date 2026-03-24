@@ -26,11 +26,11 @@ export default function Profile() {
       {/* Stats — overlap the header */}
       <div className="grid grid-cols-2 gap-3 -mt-8">
         <div className="bg-white rounded-2xl p-4 text-center card-elevated">
-          <p className="text-2xl font-bold text-warm-800 tabular-nums">{userProfile.lifetimeMiles.toLocaleString()}</p>
+          <p className="text-2xl font-bold text-olive-500 tabular-nums">{userProfile.lifetimeMiles.toLocaleString()}</p>
           <p className="text-xs text-warm-400 font-medium mt-1 leading-tight">Lifetime Miles</p>
         </div>
         <div className="bg-white rounded-2xl p-4 text-center card-elevated">
-          <p className="text-2xl font-bold text-warm-800 tabular-nums flex items-center justify-center gap-1">
+          <p className="text-2xl font-bold text-ember-500 tabular-nums flex items-center justify-center gap-1">
             <FlameIcon size={20} /> {userProfile.longestStreak}
           </p>
           <p className="text-xs text-warm-400 font-medium mt-1 leading-tight">Best Streak</p>
@@ -40,15 +40,15 @@ export default function Profile() {
       {/* Secondary stats */}
       <div className="flex gap-3 mt-3">
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
-          <FlameIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">{userProfile.streak}d</span>
-          <span className="text-xs text-warm-500 font-medium leading-tight">streak</span>
+          <FlameIcon size={14} /><span className="text-xs font-bold text-ember-500 tabular-nums">{userProfile.streak}d</span>
+          <span className="text-xs text-warm-400 font-medium leading-tight">streak</span>
         </div>
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
-          <GemIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">{userProfile.gems}</span>
+          <GemIcon size={14} /><span className="text-xs font-bold text-gold-400 tabular-nums">{userProfile.gems}</span>
           <span className="text-xs text-warm-500 font-medium leading-tight">gems</span>
         </div>
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
-          <TrophyIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">#{userProfile.leagueRank}</span>
+          <TrophyIcon size={14} /><span className="text-xs font-bold text-forest-600 tabular-nums">#{userProfile.leagueRank}</span>
           <span className="text-xs text-warm-500 font-medium leading-tight">{userProfile.league}</span>
         </div>
       </div>
@@ -72,17 +72,17 @@ export default function Profile() {
                 <div className="grid grid-cols-3 gap-3">
                   <div className="text-center">
                     <p className="text-xs text-warm-400 font-medium mb-1 leading-tight">Week</p>
-                    <p className="text-lg font-bold text-warm-800 tabular-nums">{weekAvgSteps.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-forest-600 tabular-nums">{weekAvgSteps.toLocaleString()}</p>
                     <p className="text-xs text-warm-400 font-medium leading-tight">steps/day</p>
                   </div>
                   <div className="text-center border-x border-cream-200">
                     <p className="text-xs text-warm-400 font-medium mb-1 leading-tight">Month</p>
-                    <p className="text-lg font-bold text-warm-800 tabular-nums">{monthAvgSteps.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-forest-600 tabular-nums">{monthAvgSteps.toLocaleString()}</p>
                     <p className="text-xs text-warm-400 font-medium leading-tight">steps/day</p>
                   </div>
                   <div className="text-center">
                     <p className="text-xs text-warm-400 font-medium mb-1 leading-tight">Year</p>
-                    <p className="text-lg font-bold text-warm-800 tabular-nums">{yearAvgSteps.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-forest-600 tabular-nums">{yearAvgSteps.toLocaleString()}</p>
                     <p className="text-xs text-warm-400 font-medium leading-tight">steps/day</p>
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export default function Profile() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-xs text-warm-400 font-medium leading-tight">Started at</p>
-              <p className="text-base font-bold text-warm-700 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
+              <p className="text-base font-bold text-warm-500 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
             </div>
             <div className="text-center">
               <p className="text-xs text-warm-400 font-medium leading-tight">Current</p>
@@ -164,6 +164,10 @@ export default function Profile() {
           <div className="h-2 bg-forest-100 rounded-full overflow-hidden">
             <div className="h-full bg-forest-500 rounded-full transition-all"
               style={{ width: `${((adaptiveGoal.currentGoal - adaptiveGoal.baseline) / (10000 - adaptiveGoal.baseline)) * 100}%` }} />
+          </div>
+          <div className="flex justify-between mt-1.5">
+            <span className="text-xs font-bold text-forest-600 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</span>
+            <span className="text-xs font-medium text-warm-400 tabular-nums">10,000</span>
           </div>
         </div>
       </div>

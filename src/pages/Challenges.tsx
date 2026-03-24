@@ -49,7 +49,7 @@ function ChallengeCard({ challenge, onClick }: { challenge: Challenge; onClick: 
             <span className="text-xs text-warm-500 font-medium">{challenge.participants.length} participants</span>
           </div>
           {yourRank > 0 && (
-            <span className="text-sm font-extrabold text-forest-700 bg-forest-100 px-3 py-1 rounded-full leading-tight">#{yourRank}</span>
+            <span className="text-sm font-bold text-forest-700 bg-forest-100 px-3 py-1 rounded-full leading-tight">#{yourRank}</span>
           )}
         </div>
         {pct !== null && (
@@ -126,7 +126,10 @@ export default function Challenges() {
                         <div className="h-full bg-forest-500 rounded-full transition-all duration-500"
                           style={{ width: `${questPct}%` }} />
                       </div>
-                      <p className="text-xs text-warm-400 mt-1 font-medium">{formatNumber(q.current)} / {formatNumber(q.target)}</p>
+                      <div className="flex justify-between mt-1">
+                      <span className="text-xs font-bold text-forest-600 tabular-nums">{formatNumber(q.current)}</span>
+                      <span className="text-xs font-medium text-warm-400 tabular-nums">{formatNumber(q.target)}</span>
+                    </div>
                     </>
                   )}
                 </div>

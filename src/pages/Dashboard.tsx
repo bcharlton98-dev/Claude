@@ -86,10 +86,11 @@ export default function Dashboard() {
           <div>
             <span className="text-7xl font-bold text-white tabular-nums leading-none tracking-tighter block">
               {todayStats.steps.toLocaleString()}
+              <span className="text-2xl font-semibold text-white/40 ml-1">steps</span>
             </span>
             <div className="flex items-center gap-4 mt-2">
-              <span className="text-sm text-white/70 font-medium">{todayStats.distance} mi</span>
-              <span className="text-sm text-white/70 font-medium">{todayStats.activeMinutes} min</span>
+              <span className="text-sm font-medium"><span className="font-bold text-olive-200 tabular-nums">{todayStats.distance}</span> <span className="text-white/40">mi</span></span>
+              <span className="text-sm font-medium"><span className="font-bold text-gold-200 tabular-nums">{todayStats.activeMinutes}</span> <span className="text-white/40">min</span></span>
             </div>
           </div>
 
@@ -132,8 +133,8 @@ export default function Dashboard() {
               <p className="text-xs text-white/50 font-medium mt-1">{userProfile.lifetimeMiles.toLocaleString()} lifetime miles</p>
             </div>
             <div className="text-right">
-              <p className="text-lg font-bold text-gold-300 tabular-nums">+{todayStats.qpEarned}</p>
-              <p className="text-xs text-white/40 font-medium leading-tight">QP today</p>
+              <p className="text-lg font-bold text-gold-300 tabular-nums">+{todayStats.qpEarned} <span className="text-xs font-medium text-white/40">QP</span></p>
+              <p className="text-xs text-white/40 font-medium leading-tight">today</p>
             </div>
           </div>
           {titleInfo.next && (
@@ -146,7 +147,7 @@ export default function Dashboard() {
               </div>
               <div className="flex justify-between mt-1.5">
                 <span className="text-xs text-white/40 font-medium leading-tight">{titleInfo.current.title}</span>
-                <span className="text-xs text-gold-300 font-medium leading-tight">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</span>
+                <span className="text-xs font-medium leading-tight"><span className="font-bold text-gold-300 tabular-nums">{titleInfo.milesToNext.toLocaleString()}</span> <span className="text-white/40">mi to {titleInfo.next.title}</span></span>
               </div>
             </div>
           )}
@@ -177,8 +178,10 @@ export default function Dashboard() {
             <RouteIcon size={20} />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-bold text-white">{raceChallenge.raceName}</p>
-              <p className="text-xs text-forest-200 font-medium tabular-nums">
-                {raceChallenge.raceProgress.toLocaleString()} / {raceChallenge.raceDistance.toLocaleString()} mi
+              <p className="text-xs font-medium tabular-nums">
+                <span className="text-white font-bold">{raceChallenge.raceProgress.toLocaleString()}</span>
+                <span className="text-forest-200"> / {raceChallenge.raceDistance.toLocaleString()}</span>
+                <span className="text-white/30"> mi</span>
               </p>
             </div>
             <p className="text-2xl font-bold text-white tabular-nums">
@@ -213,6 +216,7 @@ export default function Dashboard() {
                 </div>
                 <span className={`text-sm font-bold tabular-nums ${f.isYou ? 'text-gold-300' : 'text-white/70'}`}>
                   {f.stepsToday.toLocaleString()}
+                  <span className={`text-xs font-medium ml-0.5 ${f.isYou ? 'text-gold-300/50' : 'text-white/30'}`}>steps</span>
                 </span>
               </div>
             ))}
