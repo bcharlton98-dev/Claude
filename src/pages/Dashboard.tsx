@@ -58,7 +58,7 @@ export default function Dashboard() {
     <div className="flex flex-col">
 
       {/* ══ HEADER — big, extends down, holds the step count + ring ══ */}
-      <div className={`-mx-5 -mt-6 px-5 pt-6 pb-12 bg-gradient-to-b ${terrain.bg} relative`}>
+      <div className={`-mx-5 -mt-6 px-5 pt-6 pb-16 bg-gradient-to-b ${terrain.bg} relative overflow-visible`}>
         {/* Logo */}
         <div className="mb-5">
           <svg width="130" height="28" viewBox="0 0 260 56" fill="none" aria-label="WalkQuest">
@@ -112,7 +112,7 @@ export default function Dashboard() {
       </div>
 
       {/* ══ ZONE + STATS — overlapping cards that bridge header and body ══ */}
-      <div className="-mt-6 px-0 space-y-3">
+      <div className="-mt-10 px-0 space-y-3 relative z-10">
         {/* Health zone bar */}
         <div className="bg-olive-400 rounded-2xl px-4 py-3 flex items-center gap-2 shadow-forest edge-highlight mx-0">
           <StarIcon size={16} color="white" />
