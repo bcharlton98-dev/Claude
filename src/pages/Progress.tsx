@@ -13,114 +13,88 @@ export default function Progress() {
   const activeStacks = habitStacks.filter(h => h.active)
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-2xl font-extrabold text-warm-800 tracking-tight">Progress</h1>
+    <div className="space-y-6">
+      <h1 className="text-xl font-bold text-warm-800 tracking-tight">Progress</h1>
 
-      {/* ── Section: TITLE ── */}
+      {/* Streak first — highest engagement */}
       <div>
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-1 h-5 rounded-full bg-lavender-500" />
-          <span className="text-[12px] font-bold uppercase tracking-widest text-lavender-600">Title</span>
-        </div>
-        <div>
-          {/* QP Progress Path — winding trail */}
-          <div className="bg-white rounded-[22px] p-4 card-shadow grain relative overflow-hidden">
-            <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
+        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Streak</p>
+        <StreakPanel />
+      </div>
+
+      {/* This Week */}
+      <div>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Week</p>
+        <div className="bg-white rounded-2xl p-4 card-shadow">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
+              <TrendingUp size={14} className="text-forest-500" /> This Week
+            </h2>
+          </div>
+          <ResponsiveContainer width="100%" height={120}>
+            <BarChart data={weeklyStepData} barCategoryGap="20%">
+              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#a39890', fontWeight: 600 }} />
+              <ReferenceLine y={HEALTH_ZONE} stroke="#d4a843" strokeDasharray="3 3" label={{ value: '7.5k', fontSize: 9, fill: '#d4a843', position: 'right' }} />
+              <ReferenceLine y={10000} stroke="#e8e0d4" strokeDasharray="3 3" />
+              <Bar dataKey="steps" radius={[6, 6, 0, 0]}>
+                {weeklyStepData.map((entry, i) => (
+                  <Cell key={i} fill={entry.steps >= 10000 ? '#4A6741' : entry.steps >= HEALTH_ZONE ? '#aec2a0' : '#D4C5A9'} />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <div className="flex justify-center gap-4 mt-2">
+            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-forest-500 inline-block" /> Goal</span>
+            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#aec2a0' }} /> Health zone</span>
+            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#D4C5A9' }} /> Below</span>
           </div>
         </div>
-      </div>
 
-      {/* ── Section: STREAK ── */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-1 h-5 rounded-full bg-peach-500" />
-          <span className="text-[12px] font-bold uppercase tracking-widest text-peach-600">Streak</span>
-        </div>
-        <div>
-          <StreakPanel />
-        </div>
-      </div>
-
-      {/* ── Section: THIS WEEK ── */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-1 h-5 rounded-full bg-forest-500" />
-          <span className="text-[12px] font-bold uppercase tracking-widest text-forest-600">Week</span>
-        </div>
-        <div>
-          <div className="bg-gradient-to-br from-sage-50 to-cream-50 rounded-[22px] p-5 card-shadow relative overflow-hidden color-block">
-            <div className="flex items-center justify-between mb-3 relative">
-              <h2 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
-                <TrendingUp size={15} className="text-forest-500" /> This Week
-              </h2>
-            </div>
-            <ResponsiveContainer width="100%" height={120}>
-              <BarChart data={weeklyStepData} barCategoryGap="20%">
-                <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#a39890', fontWeight: 600 }} />
-                <ReferenceLine y={HEALTH_ZONE} stroke="#d4a843" strokeDasharray="3 3" label={{ value: '7.5k', fontSize: 9, fill: '#d4a843', position: 'right' }} />
-                <ReferenceLine y={10000} stroke="#e8e0d4" strokeDasharray="3 3" />
-                <Bar dataKey="steps" radius={[8, 8, 0, 0]}>
-                  {weeklyStepData.map((entry, i) => (
-                    <Cell key={i} fill={entry.steps >= 10000 ? '#4A6741' : entry.steps >= HEALTH_ZONE ? '#aec2a0' : '#D4C5A9'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-            <div className="flex justify-center gap-4 mt-2 relative">
-              <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-forest-500 inline-block" /> Goal</span>
-              <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-sage-300 inline-block" /> Health zone</span>
-              <span className="text-[9px] text-warm-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full inline-block" style={{ backgroundColor: '#D4C5A9' }} /> Below</span>
-            </div>
+        {/* Heatmap */}
+        <div className="bg-white rounded-2xl card-shadow p-4 mt-3">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-bold text-warm-700">Last 28 Days</p>
+            <p className="text-[10px] text-warm-400 font-medium">step intensity</p>
           </div>
-
-          {/* Heatmap — 28-day step intensity */}
-          <div className="bg-white rounded-[22px] card-shadow p-5 relative overflow-hidden grain mt-3">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-bold text-warm-700">Last 28 Days</p>
-              <p className="text-[10px] text-warm-400 font-medium">step intensity</p>
-            </div>
-            <StepHeatmap />
-          </div>
+          <StepHeatmap />
         </div>
       </div>
 
-      {/* ── Section: GOALS ── */}
+      {/* Goals */}
       <div>
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-1 h-5 rounded-full bg-mustard-500" />
-          <span className="text-[12px] font-bold uppercase tracking-widest text-mustard-600">Goals</span>
-        </div>
-        <div>
-          <AdaptiveGoalCard />
+        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Goals</p>
+        <AdaptiveGoalCard />
+      </div>
+
+      {/* Title */}
+      <div>
+        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Title</p>
+        <div className="bg-white rounded-2xl p-4 card-shadow">
+          <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
         </div>
       </div>
 
-      {/* Habit Stacks */}
+      {/* Habits */}
       {activeStacks.length > 0 && (
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-1 h-5 rounded-full bg-sage-500" />
-            <span className="text-[12px] font-bold uppercase tracking-widest text-sage-600">Habits</span>
-          </div>
-          <div>
-            <div className="bg-gradient-to-br from-mustard-50 to-cream-50 rounded-[22px] p-5 card-shadow relative overflow-hidden color-block">
-              <h2 className="text-sm font-bold text-warm-700 mb-3 flex items-center gap-1.5 relative">
-                <LinkIcon size={16} /> Habit Stacks
-              </h2>
-              <div className="space-y-2 relative">
-                {activeStacks.map(h => (
-                  <div key={h.id} className="flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-[18px] px-4 py-3.5 card-hover">
-                    <HabitIcon icon={h.icon} size={18} />
-                    <p className="text-xs text-warm-600 font-medium">
-                      <span className="font-bold text-warm-700">{h.anchor}</span>, {h.habit}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <p className="text-[10px] text-warm-400 mt-3 text-center font-medium relative">
-                Habit stacking increases success by 64%
-              </p>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-4">Habits</p>
+          <div className="bg-white rounded-2xl p-4 card-shadow">
+            <h2 className="text-sm font-bold text-warm-700 mb-3 flex items-center gap-1.5">
+              <LinkIcon size={14} /> Habit Stacks
+            </h2>
+            <div className="space-y-2">
+              {activeStacks.map(h => (
+                <div key={h.id} className="flex items-center gap-3 bg-cream-50 rounded-xl px-4 py-3">
+                  <HabitIcon icon={h.icon} size={16} />
+                  <p className="text-xs text-warm-600 font-medium">
+                    <span className="font-bold text-warm-700">{h.anchor}</span>, {h.habit}
+                  </p>
+                </div>
+              ))}
             </div>
+            <p className="text-[10px] text-warm-400 mt-3 text-center font-medium">
+              Habit stacking increases success by 64%
+            </p>
           </div>
         </div>
       )}

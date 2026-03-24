@@ -13,7 +13,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
       <div className="max-w-lg mx-auto px-4 pb-2">
-        <div className="bg-white/90 backdrop-blur-xl rounded-[20px] card-shadow border border-cream-200/50 flex justify-around items-center h-16 px-2">
+        <div className="bg-white/95 backdrop-blur-md rounded-2xl card-shadow border border-cream-200/50 flex justify-around items-center h-14 px-2">
           {navItems.map(({ to, icon: Icon, label, center }) => (
             <NavLink
               key={to}
@@ -21,29 +21,23 @@ export default function BottomNav() {
               end={to === '/'}
               className={({ isActive }) =>
                 `flex flex-col items-center gap-0.5 transition-all relative btn-press ${
-                  center ? '' : isActive
-                    ? 'text-forest-500'
-                    : 'text-warm-300 hover:text-warm-500'
+                  center ? '' : isActive ? 'text-forest-600' : 'text-warm-300'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   {center ? (
-                    <div className={`w-12 h-12 -mt-4 rounded-[18px] flex items-center justify-center transition-all ${
-                      isActive
-                        ? 'bg-gradient-to-br from-forest-400 to-forest-600 text-white scale-105'
-                        : 'bg-gradient-to-br from-forest-400 to-forest-600 text-white'
-                    }`} style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.1), 0 4px 12px rgba(74,103,65,0.3)' }}>
-                      <Icon size={22} strokeWidth={2.2} fill={isActive ? 'currentColor' : 'none'} />
+                    <div className={`w-10 h-10 -mt-3 rounded-xl flex items-center justify-center transition-all bg-forest-600 text-white ${
+                      isActive ? 'scale-105' : ''
+                    }`} style={{ boxShadow: '0 2px 8px rgba(74,103,65,0.25)' }}>
+                      <Icon size={20} strokeWidth={2} fill={isActive ? 'currentColor' : 'none'} />
                     </div>
                   ) : (
                     <>
-                      <Icon size={22} strokeWidth={isActive ? 2.5 : 2} fill={isActive ? 'currentColor' : 'none'} />
-                      <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
-                      {isActive && (
-                        <div className="absolute -bottom-1 w-5 h-1 rounded-full bg-forest-500 animate-pill" />
-                      )}
+                      <Icon size={20} strokeWidth={isActive ? 2.2 : 1.8} fill={isActive ? 'currentColor' : 'none'} />
+                      <span className={`text-[10px] ${isActive ? 'font-semibold' : 'font-medium'}`}>{label}</span>
+                      {isActive && <div className="absolute -bottom-0.5 w-4 h-0.5 rounded-full bg-forest-600 animate-pill" />}
                     </>
                   )}
                 </>

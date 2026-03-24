@@ -13,45 +13,42 @@ export default function AdaptiveGoalCard() {
   }))
 
   return (
-    <div className="bg-white rounded-[22px] p-5 card-shadow relative overflow-hidden grain space-y-3">
+    <div className="bg-white rounded-2xl p-4 card-shadow space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
-          <TargetIcon size={16} /> Adaptive Goal
+          <TargetIcon size={14} /> Adaptive Goal
         </h3>
-        <span className="text-[10px] font-bold text-forest-600 bg-forest-50 px-2.5 py-1 rounded-full">
+        <span className="text-[10px] font-medium text-forest-600 bg-forest-50 px-2 py-1 rounded-full">
           Week {adaptiveGoal.weekNumber}
         </span>
       </div>
 
-      {/* Dramatic number */}
       <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-extrabold text-warm-800 tabular-nums leading-none">{adaptiveGoal.currentGoal.toLocaleString()}</span>
-        <span className="text-[11px] text-warm-400 font-medium">steps/day</span>
-        <span className="text-[10px] font-bold text-forest-600 ml-auto bg-forest-50 px-2 py-0.5 rounded-full">+{improvement}%</span>
+        <span className="text-2xl font-bold text-warm-800 tabular-nums leading-none">{adaptiveGoal.currentGoal.toLocaleString()}</span>
+        <span className="text-xs text-warm-400 font-medium">steps/day</span>
+        <span className="text-[10px] font-medium text-forest-600 ml-auto bg-forest-50 px-2 py-0.5 rounded-full">+{improvement}%</span>
       </div>
 
-      {/* Stat blocks */}
-      <div className="flex gap-2.5 text-center">
-        <div className="flex-1 bg-cream-100 rounded-[16px] py-3">
-          <p className="text-base font-extrabold text-warm-600 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
-          <p className="text-[9px] text-warm-400 font-medium">Baseline</p>
+      <div className="flex gap-2 text-center">
+        <div className="flex-1 bg-cream-50 rounded-xl py-2.5">
+          <p className="text-sm font-bold text-warm-600 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
+          <p className="text-[10px] text-warm-400 font-medium">Baseline</p>
         </div>
-        <div className="flex-1 bg-forest-50 rounded-[16px] py-3">
-          <p className="text-base font-extrabold text-forest-700 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</p>
-          <p className="text-[9px] text-forest-500 font-medium">Current</p>
+        <div className="flex-1 bg-forest-50 rounded-xl py-2.5">
+          <p className="text-sm font-bold text-forest-700 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</p>
+          <p className="text-[10px] text-forest-500 font-medium">Current</p>
         </div>
-        <div className="flex-1 bg-peach-50 rounded-[16px] py-3">
-          <p className="text-base font-extrabold text-peach-600 tabular-nums">10,000</p>
-          <p className="text-[9px] text-peach-400 font-medium">Target</p>
+        <div className="flex-1 bg-cream-50 rounded-xl py-2.5">
+          <p className="text-sm font-bold text-warm-600 tabular-nums">10,000</p>
+          <p className="text-[10px] text-warm-400 font-medium">Target</p>
         </div>
       </div>
 
-      {/* Mini trend chart */}
-      <ResponsiveContainer width="100%" height={60}>
+      <ResponsiveContainer width="100%" height={56}>
         <AreaChart data={chartData}>
           <defs>
             <linearGradient id="stepGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#4A6741" stopOpacity={0.2} />
+              <stop offset="0%" stopColor="#4A6741" stopOpacity={0.15} />
               <stop offset="100%" stopColor="#4A6741" stopOpacity={0} />
             </linearGradient>
           </defs>
@@ -63,7 +60,7 @@ export default function AdaptiveGoalCard() {
       </ResponsiveContainer>
 
       <p className="text-[10px] text-warm-400 text-center font-medium flex items-center justify-center gap-1">
-        <TrendUpIcon size={12} /> Avg steps vs. goal · <span className="text-mustard-500 font-bold">7,500 = health zone</span>
+        <TrendUpIcon size={12} /> Avg steps vs. goal · <span className="text-mustard-500 font-medium">7,500 = health zone</span>
       </p>
     </div>
   )
