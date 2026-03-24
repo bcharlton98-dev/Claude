@@ -95,9 +95,14 @@ export default function Dashboard() {
             <p className="text-white/70 text-sm font-semibold">{getGreeting()},</p>
             <p className="text-white text-xl font-extrabold tracking-tight">{userProfile.name.split(' ')[0]}</p>
           </div>
-          <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white px-3.5 py-2 rounded-2xl text-xs font-extrabold">
-            <span className="animate-flame inline-block text-sm">🔥</span> {userProfile.streak} day streak
-          </span>
+          <div className="flex flex-col items-end gap-1.5">
+            <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white px-3.5 py-2 rounded-2xl text-xs font-extrabold">
+              <span className="animate-flame inline-block text-sm">🔥</span> {userProfile.streak} day streak
+            </span>
+            <span className="flex items-center gap-1 bg-white/10 backdrop-blur-sm text-white/70 px-3 py-1 rounded-xl text-[10px] font-bold">
+              🧊 2 freezes available
+            </span>
+          </div>
         </div>
         {/* Terrain label */}
         {terrain.label && (
