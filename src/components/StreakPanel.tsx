@@ -33,11 +33,11 @@ export default function StreakPanel() {
                 {m.icon}
               </span>
               <div className={`h-1.5 w-full rounded-full ${
-                m.reached ? 'bg-fire-500' : isActive ? 'bg-fire-200' : 'bg-slate-100'
+                m.reached ? 'bg-brand-500' : isActive ? 'bg-brand-200' : 'bg-slate-100'
               }`}>
                 {isActive && (
                   <div
-                    className="h-full bg-fire-400 rounded-full transition-all"
+                    className="h-full bg-brand-400 rounded-full transition-all"
                     style={{ width: `${Math.min(((userProfile.streak - (streakMilestones[i - 1]?.days || 0)) / (m.days - (streakMilestones[i - 1]?.days || 0))) * 100, 100)}%` }}
                   />
                 )}

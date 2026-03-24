@@ -133,7 +133,7 @@ export default function Dashboard() {
             <ReferenceLine y={10000} stroke="#e2e8f0" strokeDasharray="3 3" />
             <Bar dataKey="steps" radius={[4, 4, 0, 0]}>
               {weeklyStepData.map((entry, i) => (
-                <Cell key={i} fill={entry.steps >= 10000 ? '#22c55e' : entry.steps >= HEALTH_ZONE ? '#86efac' : '#e2e8f0'} />
+                <Cell key={i} fill={entry.steps >= 10000 ? '#7c3aed' : entry.steps >= HEALTH_ZONE ? '#c4b5fd' : '#e2e8f0'} />
               ))}
             </Bar>
           </BarChart>

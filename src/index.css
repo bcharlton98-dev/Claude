@@ -1,27 +1,38 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-50: #f0fdf4;
-  --color-brand-100: #dcfce7;
-  --color-brand-200: #bbf7d0;
-  --color-brand-300: #86efac;
-  --color-brand-400: #4ade80;
-  --color-brand-500: #22c55e;
-  --color-brand-600: #16a34a;
-  --color-brand-700: #15803d;
+  /* Adventure Violet — quest-themed primary */
+  --color-brand-50: #f5f3ff;
+  --color-brand-100: #ede9fe;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
+  --color-brand-500: #7c3aed;
+  --color-brand-600: #6d28d9;
+  --color-brand-700: #5b21b6;
+  /* Streak fire */
   --color-fire-400: #fb923c;
   --color-fire-500: #f97316;
   --color-fire-600: #ea580c;
+  /* Achievement gold */
   --color-gold-400: #fbbf24;
   --color-gold-500: #f59e0b;
+  /* Accent teal — for maps, progress, secondary actions */
+  --color-teal-400: #2dd4bf;
+  --color-teal-500: #14b8a6;
+  --color-teal-600: #0d9488;
+  /* Royal purple kept for gems */
   --color-royal-400: #a78bfa;
   --color-royal-500: #8b5cf6;
+  /* Sky for info/maps */
   --color-sky-400: #38bdf8;
   --color-sky-500: #0ea5e9;
+  /* Status colors */
   --color-rose-400: #fb7185;
   --color-rose-500: #f43f5e;
   --color-pink-400: #f472b6;
   --color-pink-500: #ec4899;
+  /* Neutral slate */
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
   --color-slate-200: #e2e8f0;
@@ -37,7 +48,7 @@
 body {
   margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f8fafc;
+  background: #f5f3ff;
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
 }

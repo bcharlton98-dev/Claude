@@ -97,6 +97,8 @@ export interface Waypoint {
   name: string
   mile: number
   reached: boolean
+  terrain: 'city' | 'plains' | 'mountains' | 'desert' | 'forest' | 'coast' | 'hills' | 'river'
+  landmark?: string
 }
 
 export interface Participant {
@@ -223,16 +225,16 @@ export const challenges: Challenge[] = [
     raceProgress: 1554,
     mapEmoji: '🗺️',
     waypoints: [
-      { name: 'New York, NY', mile: 0, reached: true },
-      { name: 'Philadelphia, PA', mile: 97, reached: true },
-      { name: 'Pittsburgh, PA', mile: 370, reached: true },
-      { name: 'Indianapolis, IN', mile: 713, reached: true },
-      { name: 'St. Louis, MO', mile: 953, reached: true },
-      { name: 'Oklahoma City, OK', mile: 1424, reached: true },
-      { name: 'Amarillo, TX', mile: 1700, reached: false },
-      { name: 'Albuquerque, NM', mile: 1987, reached: false },
-      { name: 'Flagstaff, AZ', mile: 2300, reached: false },
-      { name: 'Los Angeles, CA', mile: 2775, reached: false },
+      { name: 'New York, NY', mile: 0, reached: true, terrain: 'city', landmark: 'Statue of Liberty' },
+      { name: 'Philadelphia, PA', mile: 97, reached: true, terrain: 'city', landmark: 'Liberty Bell' },
+      { name: 'Pittsburgh, PA', mile: 370, reached: true, terrain: 'hills', landmark: 'Steel City Bridges' },
+      { name: 'Indianapolis, IN', mile: 713, reached: true, terrain: 'plains', landmark: 'Motor Speedway' },
+      { name: 'St. Louis, MO', mile: 953, reached: true, terrain: 'river', landmark: 'Gateway Arch' },
+      { name: 'Oklahoma City, OK', mile: 1424, reached: true, terrain: 'plains', landmark: 'Bricktown' },
+      { name: 'Amarillo, TX', mile: 1700, reached: false, terrain: 'desert', landmark: 'Cadillac Ranch' },
+      { name: 'Albuquerque, NM', mile: 1987, reached: false, terrain: 'desert', landmark: 'Hot Air Balloons' },
+      { name: 'Flagstaff, AZ', mile: 2300, reached: false, terrain: 'mountains', landmark: 'Grand Canyon' },
+      { name: 'Los Angeles, CA', mile: 2775, reached: false, terrain: 'coast', landmark: 'Hollywood Sign' },
     ],
     participants: [
       { name: 'Alex Chen', avatar: 'AC', steps: 568_500, streak: 12, isYou: true, kudos: 12 },

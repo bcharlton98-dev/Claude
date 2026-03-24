@@ -27,7 +27,7 @@ export default function StepRing({ current, goal, size = 160, strokeWidth = 10 }
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={progress >= 1 ? '#22c55e' : '#4ade80'}
+          stroke={progress >= 1 ? '#7c3aed' : '#a78bfa'}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}

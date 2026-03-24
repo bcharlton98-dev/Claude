@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Plus, ChevronRight, Crown, Heart } from 'lucide-react'
+import QuestMap from '../components/QuestMap'
 import { challenges, type Challenge, type Participant } from '../data/mockData'
 
 const typeConfig: Record<string, { icon: string; color: string }> = {
@@ -61,41 +62,7 @@ function ProgressBar({ current, total, color = 'bg-sky-500' }: { current: number
   )
 }
 
-function VirtualRaceMap({ challenge }: { challenge: Challenge }) {
-  const waypoints = challenge.waypoints || []
-  const pct = ((challenge.raceProgress || 0) / (challenge.raceDistance || 1)) * 100
-
-  return (
-    <div className="mt-3 bg-slate-50 rounded-xl p-3">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-semibold text-slate-600">🗺️ {challenge.raceName}</span>
-        <span className="text-xs text-sky-600 font-bold">{(challenge.raceProgress || 0).toLocaleString()} / {(challenge.raceDistance || 0).toLocaleString()} mi</span>
-      </div>
-      {/* Route visualization */}
-      <div className="relative h-8 mb-2">
-        <div className="absolute top-1/2 left-0 right-0 h-1 bg-slate-200 rounded-full -translate-y-1/2" />
-        <div className="absolute top-1/2 left-0 h-1 bg-sky-400 rounded-full -translate-y-1/2 transition-all" style={{ width: `${pct}%` }} />
-        {/* Runner marker */}
-        <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 text-lg transition-all" style={{ left: `${pct}%` }}>
-          🏃
-        </div>
-        {/* Start & End */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 text-sm">📍</div>
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 text-sm">🏁</div>
-      </div>
-      {/* Waypoints */}
-      <div className="space-y-1 mt-3">
-        {waypoints.map((wp, i) => (
-          <div key={i} className={`flex items-center gap-2 text-xs ${wp.reached ? 'text-slate-600' : 'text-slate-300'}`}>
-            <span>{wp.reached ? '✅' : '⬜'}</span>
-            <span className={wp.reached ? 'font-medium' : ''}>{wp.name}</span>
-            <span className="ml-auto text-[10px]">{wp.mile} mi</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+// VirtualRaceMap replaced by QuestMap component
 
 function TeamLeaderboard({ participants }: { participants: Participant[] }) {
   const teams = new Map<string, { steps: number; members: Participant[] }>()
@@ -201,7 +168,7 @@ function ChallengeCard({ challenge }: { challenge: Challenge }) {
         <div className="px-3.5 pb-3.5 border-t border-slate-50 pt-3">
           {challenge.type === 'virtual_race' && (
             <>
-              <VirtualRaceMap challenge={challenge} />
+              <QuestMap challenge={challenge} />
               <p className="text-xs font-semibold text-slate-500 mt-3 mb-1">Individual Contributions</p>
               <Leaderboard participants={challenge.participants} />
             </>
