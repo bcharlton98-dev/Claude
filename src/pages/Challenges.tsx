@@ -5,11 +5,11 @@ import { RankCircle, AvatarCircle, FlameIcon, CheckIcon, ShoeIcon, ClockIcon, Wa
 import { challenges, dailyQuests, type Challenge, type Participant } from '../data/mockData'
 
 const thumbnailConfig: Record<string, { bg: string; Icon: React.FC<{ size?: number; className?: string }> }> = {
-  leaderboard: { bg: 'bg-mustard-400', Icon: Trophy },
-  team_leaderboard: { bg: 'bg-peach-500', Icon: Swords },
+  leaderboard: { bg: 'bg-gold-400', Icon: Trophy },
+  team_leaderboard: { bg: 'bg-ember-500', Icon: Swords },
   virtual_race: { bg: 'bg-forest-600', Icon: Map },
-  group_target: { bg: 'bg-lavender-400', Icon: Target },
-  streak: { bg: 'bg-peach-500', Icon: Flame },
+  group_target: { bg: 'bg-olive-500', Icon: Target },
+  streak: { bg: 'bg-ember-400', Icon: Flame },
 }
 
 const typeLabels: Record<string, string> = {
