@@ -2,7 +2,7 @@ import { BarChart, Bar, XAxis, ResponsiveContainer, Cell, ReferenceLine } from '
 import StreakPanel from '../components/StreakPanel'
 import AdaptiveGoalCard from '../components/AdaptiveGoalCard'
 import ProgressPath from '../components/ProgressPath'
-import StepHeatmap from '../components/StepHeatmap'
+
 import { LinkIcon, HabitIcon } from '../components/Icons'
 import { userProfile, weeklyStepData, habitStacks } from '../data/mockData'
 
@@ -41,14 +41,6 @@ export default function Progress() {
           </div>
         </div>
 
-        {/* Heatmap — compact, same cream band */}
-        <div className="bg-white rounded-2xl card-shadow p-4 mt-3">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-bold text-warm-700">Last 28 Days</p>
-            <p className="text-xs text-warm-400 font-medium leading-tight">step intensity</p>
-          </div>
-          <StepHeatmap />
-        </div>
       </div>
 
       {/* Goals — back to page bg */}

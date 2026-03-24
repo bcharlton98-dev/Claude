@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { ChevronRight } from 'lucide-react'
 import QPBar from '../components/XPBar'
+import { Footprints } from 'lucide-react'
 import { FlameIcon, GemIcon, TrophyIcon, BadgeIcon, TargetIcon, CheckIcon } from '../components/Icons'
-import { userProfile, weeklyLeagues, streakMilestones } from '../data/mockData'
+import { userProfile, weeklyLeagues, streakMilestones, weeklyStepData } from '../data/mockData'
 
 export default function Profile() {
   const [syncing, setSyncing] = useState(false)
@@ -49,6 +50,61 @@ export default function Profile() {
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
           <TrophyIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">#{userProfile.leagueRank}</span>
           <span className="text-xs text-warm-500 font-medium leading-tight">{userProfile.league}</span>
+        </div>
+      </div>
+
+      {/* Steps & Distance Averages */}
+      <div className="mt-6">
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Averages</p>
+        <div className="bg-white rounded-2xl p-4 card-shadow">
+          <div className="flex items-center gap-1.5 mb-4">
+            <Footprints size={14} className="text-forest-500" />
+            <h3 className="text-sm font-bold text-warm-700">Steps & Distance</h3>
+          </div>
+          {(() => {
+            const weekAvgSteps = Math.round(weeklyStepData.reduce((s, d) => s + d.steps, 0) / weeklyStepData.length)
+            const history = userProfile.adaptiveGoal.history
+            const monthAvgSteps = Math.round(history.slice(-4).reduce((s, w) => s + w.avgSteps, 0) / Math.min(history.length, 4))
+            const yearAvgSteps = Math.round(history.reduce((s, w) => s + w.avgSteps, 0) / history.length)
+            const stepsToMiles = (steps: number) => (steps * 0.000473).toFixed(1)
+            return (
+              <div className="space-y-3">
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="text-center">
+                    <p className="text-xs text-warm-400 font-medium mb-1 leading-tight">Week</p>
+                    <p className="text-lg font-bold text-warm-800 tabular-nums">{weekAvgSteps.toLocaleString()}</p>
+                    <p className="text-xs text-warm-400 font-medium leading-tight">steps/day</p>
+                  </div>
+                  <div className="text-center border-x border-cream-200">
+                    <p className="text-xs text-warm-400 font-medium mb-1 leading-tight">Month</p>
+                    <p className="text-lg font-bold text-warm-800 tabular-nums">{monthAvgSteps.toLocaleString()}</p>
+                    <p className="text-xs text-warm-400 font-medium leading-tight">steps/day</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-warm-400 font-medium mb-1 leading-tight">Year</p>
+                    <p className="text-lg font-bold text-warm-800 tabular-nums">{yearAvgSteps.toLocaleString()}</p>
+                    <p className="text-xs text-warm-400 font-medium leading-tight">steps/day</p>
+                  </div>
+                </div>
+                <div className="border-t border-cream-200 pt-3">
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-forest-600 tabular-nums">{stepsToMiles(weekAvgSteps)}</p>
+                      <p className="text-xs text-warm-400 font-medium leading-tight">mi/day</p>
+                    </div>
+                    <div className="text-center border-x border-cream-200">
+                      <p className="text-lg font-bold text-forest-600 tabular-nums">{stepsToMiles(monthAvgSteps)}</p>
+                      <p className="text-xs text-warm-400 font-medium leading-tight">mi/day</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-forest-600 tabular-nums">{stepsToMiles(yearAvgSteps)}</p>
+                      <p className="text-xs text-warm-400 font-medium leading-tight">mi/day</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          })()}
         </div>
       </div>
 
