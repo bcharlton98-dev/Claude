@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import BottomNav from './components/BottomNav'
-import Dashboard from './pages/Dashboard'
+import HomeScreen from './pages/HomeScreen'
 import Progress from './pages/Progress'
 import Challenges from './pages/Challenges'
 import ChallengeDetail from './pages/ChallengeDetail'
@@ -12,7 +12,7 @@ export default function App() {
     <div className="max-w-lg mx-auto min-h-screen bg-sand-50 pb-24">
       <main className="px-5 pt-6">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<HomeScreen />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/challenges/:id" element={<ChallengeDetail />} />
