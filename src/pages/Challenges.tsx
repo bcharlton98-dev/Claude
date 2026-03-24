@@ -102,10 +102,10 @@ export default function Challenges() {
           <h2 className="text-sm font-bold text-warm-700">Daily Quests</h2>
         </div>
         <div className="space-y-2">
-          {dailyQuests.map(q => {
+          {dailyQuests.map((q, i) => {
             const questPct = Math.min(Math.round((q.current / q.target) * 100), 100)
             return (
-              <div key={q.id} className={`bg-white rounded-2xl p-4 flex items-start gap-3 card-shadow ${q.completed ? 'opacity-50' : ''}`}>
+              <div key={q.id} className={`bg-white rounded-2xl p-4 flex items-start gap-3 card-shadow card-stagger ${q.completed ? 'opacity-50' : ''}`} style={{ '--i': i } as React.CSSProperties}>
                 <span className="bg-forest-50 rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
                   {q.completed ? <CheckIcon size={20} /> : q.type === 'steps' ? <ShoeIcon size={20} /> : q.type === 'distance' ? <RouteIcon size={20} /> : q.type === 'active_minutes' ? <ClockIcon size={20} /> : <WaveIcon size={20} />}
                 </span>
@@ -123,7 +123,7 @@ export default function Challenges() {
                   {!q.completed && (
                     <>
                       <div className="mt-2 h-2 bg-forest-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-forest-500 rounded-full transition-all duration-500"
+                        <div className={`h-full bg-forest-500 rounded-full transition-all duration-500 ${questPct >= 60 ? 'progress-shimmer' : ''}`}
                           style={{ width: `${questPct}%` }} />
                       </div>
                       <div className="flex justify-between mt-1">
@@ -162,12 +162,13 @@ export default function Challenges() {
 
         {/* Challenge cards — full width, stacked */}
         <div className="space-y-3">
-          {activeChallenges.map(c => (
-            <ChallengeCard
-              key={c.id}
-              challenge={c}
-              onClick={() => navigate(`/challenges/${c.id}`)}
-            />
+          {activeChallenges.map((c, i) => (
+            <div key={c.id} className="card-stagger" style={{ '--i': i } as React.CSSProperties}>
+              <ChallengeCard
+                challenge={c}
+                onClick={() => navigate(`/challenges/${c.id}`)}
+              />
+            </div>
           ))}
         </div>
 

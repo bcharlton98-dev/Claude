@@ -11,7 +11,7 @@ export default function StreakPanel() {
       <div className="bg-peach-500 px-5 py-5 edge-highlight">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <FlameIcon size={32} />
+            <span className={userProfile.streak >= 7 ? 'flame-hot' : 'flame-idle'}><FlameIcon size={32} /></span>
             <div>
               <p className="text-3xl font-bold text-white tracking-tight tabular-nums leading-none">{userProfile.streak}</p>
               <p className="text-xs text-white/60 font-medium mt-0.5">day streak</p>

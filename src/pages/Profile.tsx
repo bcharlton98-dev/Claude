@@ -125,8 +125,8 @@ export default function Profile() {
             <h3 className="text-sm font-bold text-white">Streak Milestones</h3>
           </div>
           <div className="space-y-1.5">
-            {streakMilestones.map(m => (
-              <div key={m.days} className={`flex items-center gap-3 p-3 rounded-xl ${m.reached ? 'bg-white/10' : 'bg-white/5'}`}>
+            {streakMilestones.map((m, i) => (
+              <div key={m.days} className={`flex items-center gap-3 p-3 rounded-xl card-stagger ${m.reached ? 'bg-white/10' : 'bg-white/5'}`} style={{ '--i': i } as React.CSSProperties}>
                 <BadgeIcon icon={m.icon} size={20} color={m.reached ? '#a4b47a' : '#ffffff40'} />
                 <div className="flex-1">
                   <p className={`text-xs font-semibold ${m.reached ? 'text-white' : 'text-white/30'}`}>{m.label}</p>
@@ -210,7 +210,7 @@ export default function Profile() {
           <div className="grid grid-cols-3 gap-2">
             {userProfile.badges.map(badge => (
               <div key={badge.id} className={`text-center p-3 rounded-xl flex flex-col items-center ${
-                badge.earned ? 'bg-white/10' : 'bg-white/5 opacity-40'
+                badge.earned ? 'bg-white/10 badge-shine' : 'bg-white/5 opacity-40'
               }`}>
                 <BadgeIcon icon={badge.icon} size={24} color={badge.earned ? '#D4A050' : '#ffffff30'} />
                 <p className={`text-xs font-semibold mt-1 leading-tight ${badge.earned ? 'text-white/80' : 'text-white/20'}`}>{badge.name}</p>

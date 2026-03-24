@@ -77,7 +77,7 @@ export default function Dashboard() {
             <p className="text-white text-xl font-bold tracking-tight">{userProfile.name.split(' ')[0]}</p>
           </div>
           <span className="flex items-center gap-1.5 bg-white/15 text-white px-3 py-1.5 rounded-full text-xs font-bold">
-            <FlameIconWhite size={14} /> {userProfile.streak} days
+            <span className={userProfile.streak >= 7 ? 'flame-hot' : 'flame-idle'}><FlameIconWhite size={14} /></span> {userProfile.streak} days
           </span>
         </div>
 
@@ -95,7 +95,7 @@ export default function Dashboard() {
           </div>
 
           {/* Ring — large, glowing */}
-          <div className="relative -mb-2">
+          <div className={`relative -mb-2 ${goalPct >= 100 ? 'animate-ring-complete' : ''}`}>
             <svg width={100} height={100} viewBox="0 0 100 100" className="-rotate-90" style={{ filter: 'drop-shadow(0 0 12px rgba(164,180,122,0.5))' }}>
               <circle cx={50} cy={50} r={42} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={8} />
               <circle cx={50} cy={50} r={42} fill="none" stroke="white" strokeWidth={8} strokeLinecap="round"
@@ -115,7 +115,7 @@ export default function Dashboard() {
       {/* ══ ZONE + STATS — overlapping cards that bridge header and body ══ */}
       <div className="-mt-10 px-0 space-y-3 relative z-10">
         {/* Health zone bar */}
-        <div className="bg-olive-400 rounded-2xl px-4 py-3 flex items-center gap-2 shadow-forest edge-highlight mx-0">
+        <div className="bg-olive-400 rounded-2xl px-4 py-3 flex items-center gap-2 shadow-forest edge-highlight mx-0 zone-bar card-stagger" style={{ '--i': 0 } as React.CSSProperties}>
           <StarIcon size={16} color="white" />
           <span className="text-sm font-bold text-white">{zoneLabel}</span>
           <span className="text-xs text-white/60 font-medium ml-auto">
@@ -126,7 +126,7 @@ export default function Dashboard() {
         </div>
 
         {/* ══ TITLE CARD — the big visual break, dark block ══ */}
-        <div className="bg-forest-600 rounded-2xl p-5 shadow-forest edge-highlight">
+        <div className="bg-forest-600 rounded-2xl p-5 shadow-forest edge-highlight card-stagger" style={{ '--i': 1 } as React.CSSProperties}>
           <div className="flex items-center justify-between">
             <div>
               <p className="text-3xl font-bold text-white leading-none tracking-tight">{titleInfo.current.title}</p>
@@ -154,7 +154,7 @@ export default function Dashboard() {
         </div>
 
         {/* ══ NUDGE — warm ember block, visual contrast ══ */}
-        <div className="bg-ember-400 rounded-2xl p-4 flex items-center gap-4 shadow-ember edge-highlight">
+        <div className="bg-ember-400 rounded-2xl p-4 flex items-center gap-4 nudge-card edge-highlight card-stagger" style={{ '--i': 2 } as React.CSSProperties}>
           <span className="shrink-0">
             {nudge.nudgeType === 'challenge' ? <ChallengeIcon size={24} /> : nudge.nudgeType === 'streak' ? <FlameIconWhite size={24} /> : <StarIcon size={24} color="white" />}
           </span>
@@ -203,7 +203,7 @@ export default function Dashboard() {
           </div>
           <div>
             {[...friends].sort((a, b) => b.stepsToday - a.stepsToday).map((f, i) => (
-              <div key={f.id} className={`flex items-center gap-3 px-4 py-3 ${f.isYou ? 'bg-white/10' : ''} ${i > 0 ? 'border-t border-white/5' : ''}`}>
+              <div key={f.id} className={`flex items-center gap-3 px-4 py-3 card-stagger ${f.isYou ? 'bg-white/10' : ''} ${i > 0 ? 'border-t border-white/5' : ''}`} style={{ '--i': i } as React.CSSProperties}>
                 <RankCircle rank={i + 1} size={24} />
                 <AvatarCircle name={f.name} size={28} />
                 <div className="flex-1 min-w-0">

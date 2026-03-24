@@ -158,13 +158,111 @@ body {
 .shadow-forest { box-shadow: 0 2px 8px rgba(45,94,59,0.15), 0 8px 24px rgba(45,94,59,0.1); }
 .shadow-ember { box-shadow: 0 2px 8px rgba(190,115,57,0.2), 0 8px 20px rgba(190,115,57,0.12); }
 
+/* ── Staggered card entrance ── */
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-stagger {
+  animation: card-enter 0.3s ease-out both;
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+/* ── Progress bar shimmer (active quests near completion) ── */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+.progress-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.progress-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* ── Streak flame tiers ── */
+@keyframes flame-idle {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  50% { transform: scaleY(1.08) scaleX(0.95); }
+}
+@keyframes flame-hot {
+  0%, 100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
+  25% { transform: scaleY(1.12) scaleX(0.92); filter: brightness(1.15); }
+  75% { transform: scaleY(1.05) scaleX(1.02); filter: brightness(1.05); }
+}
+.flame-idle { animation: flame-idle 2s ease-in-out infinite; transform-origin: bottom center; display: inline-flex; }
+.flame-hot  { animation: flame-hot 1.2s ease-in-out infinite; transform-origin: bottom center; display: inline-flex; }
+
+/* ── Goal ring completion pulse ── */
+@keyframes ring-complete {
+  0% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(164,180,122,0)); }
+  50% { transform: scale(1.06); filter: drop-shadow(0 0 18px rgba(164,180,122,0.5)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(164,180,122,0.25)); }
+}
+.animate-ring-complete { animation: ring-complete 0.6s ease-out; }
+
+/* ── Nudge card entrance + attention pulse ── */
+@keyframes nudge-enter {
+  0% { opacity: 0; transform: translateY(8px) scale(0.98); }
+  60% { transform: translateY(-2px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes nudge-pulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(190,115,57,0.2), 0 8px 20px rgba(190,115,57,0.12); }
+  50% { box-shadow: 0 2px 16px rgba(190,115,57,0.35), 0 8px 24px rgba(190,115,57,0.2); }
+}
+.nudge-card {
+  animation: nudge-enter 0.4s ease-out, nudge-pulse 3s ease-in-out 1s infinite;
+}
+
+/* ── Badge / trophy shine sweep ── */
+@keyframes badge-shine {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+.badge-shine {
+  background-image: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+  background-size: 200% 100%;
+  animation: badge-shine 3s ease-in-out infinite;
+}
+
+/* ── Progress bar fill animation ── */
+@keyframes bar-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.animate-bar-fill {
+  transform-origin: left;
+  animation: bar-fill 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── Zone bar color transition ── */
+.zone-bar {
+  transition: background-color 0.8s ease-out, box-shadow 0.8s ease-out;
+}
+
 /* ── Accessibility: respect reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .btn-press,
   .card-hover,
   .animate-rank,
-  .animate-pill {
-    animation: none;
-    transition: none;
+  .animate-pill,
+  .card-stagger,
+  .progress-shimmer::after,
+  .flame-idle,
+  .flame-hot,
+  .animate-ring-complete,
+  .nudge-card,
+  .badge-shine,
+  .animate-bar-fill,
+  .zone-bar {
+    animation: none !important;
+    transition: none !important;
   }
 }
