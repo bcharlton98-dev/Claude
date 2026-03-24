@@ -33,19 +33,19 @@ export default function Progress() {
           </div>
           <ResponsiveContainer width="100%" height={120}>
             <BarChart data={weeklyStepData} barCategoryGap="20%">
-              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#a39890', fontWeight: 600 }} />
-              <ReferenceLine y={HEALTH_ZONE} stroke="#d4a843" strokeDasharray="3 3" label={{ value: '7.5k', fontSize: 9, fill: '#d4a843', position: 'right' }} />
-              <ReferenceLine y={10000} stroke="#e8e0d4" strokeDasharray="3 3" />
+              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#9E9284', fontWeight: 600 }} />
+              <ReferenceLine y={HEALTH_ZONE} stroke="#D4A050" strokeDasharray="3 3" label={{ value: '7.5k', fontSize: 9, fill: '#D4A050', position: 'right' }} />
+              <ReferenceLine y={10000} stroke="#E5D9C8" strokeDasharray="3 3" />
               <Bar dataKey="steps" radius={[6, 6, 0, 0]}>
                 {weeklyStepData.map((entry, i) => (
-                  <Cell key={i} fill={entry.steps >= 10000 ? '#4A6741' : entry.steps >= HEALTH_ZONE ? '#aec2a0' : '#D4C5A9'} />
+                  <Cell key={i} fill={entry.steps >= 10000 ? '#2D5E3B' : entry.steps >= HEALTH_ZONE ? '#a4b47a' : '#D4C5A9'} />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
           <div className="flex justify-center gap-4 mt-2">
             <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-forest-500 inline-block" /> Goal</span>
-            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#aec2a0' }} /> Health zone</span>
+            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#a4b47a' }} /> Health zone</span>
             <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: '#D4C5A9' }} /> Below</span>
           </div>
         </div>

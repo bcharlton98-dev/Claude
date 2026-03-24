@@ -72,7 +72,7 @@ export default function Dashboard() {
           <svg width="130" height="28" viewBox="0 0 260 56" fill="none" aria-label="WalkQuest">
             <text x="0" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">Walk</text>
             <text x="120" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">Quest</text>
-            <g transform="translate(172, 4)" stroke="#d4a843" strokeWidth="2" strokeLinecap="round">
+            <g transform="translate(172, 4)" stroke="#D4A050" strokeWidth="2" strokeLinecap="round">
               <line x1="4" y1="0" x2="4" y2="7" /><line x1="0" y1="3.5" x2="8" y2="3.5" />
               <line x1="1" y1="0.5" x2="7" y2="6.5" /><line x1="7" y1="0.5" x2="1" y2="6.5" />
             </g>
@@ -161,7 +161,7 @@ export default function Dashboard() {
               <div className="h-2 bg-forest-700 rounded-full overflow-hidden">
                 <div className="h-full rounded-full transition-all duration-700" style={{
                   width: `${Math.round(titleInfo.progress * 100)}%`,
-                  background: 'linear-gradient(90deg, #aec2a0, #d4a843)',
+                  background: 'linear-gradient(90deg, #a4b47a, #D4A050)',
                 }} />
               </div>
               <p className="text-[11px] text-forest-200 font-medium mt-1.5">{titleInfo.milesToNext.toLocaleString()} mi remaining</p>

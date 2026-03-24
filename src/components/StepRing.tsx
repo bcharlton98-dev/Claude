@@ -35,9 +35,9 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
         <defs>
           {/* Forest green gradient — bold brand stroke */}
           <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6b8f5e" />
-            <stop offset="40%" stopColor="#4A6741" />
-            <stop offset="100%" stopColor="#3d5636" />
+            <stop offset="0%" stopColor="#4f7d58" />
+            <stop offset="40%" stopColor="#2D5E3B" />
+            <stop offset="100%" stopColor="#244D30" />
           </linearGradient>
           <linearGradient id="ringGradComplete" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#ee9460" />
@@ -58,7 +58,7 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#e8e0d4"
+          stroke="#E5D9C8"
           strokeWidth={strokeWidth}
         />
         {/* Progress arc — forest green brand color */}

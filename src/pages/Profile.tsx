@@ -65,7 +65,7 @@ export default function Profile() {
         <div className="space-y-1.5">
           {streakMilestones.map(m => (
             <div key={m.days} className={`flex items-center gap-3 p-3 rounded-xl ${m.reached ? 'bg-forest-50' : 'bg-cream-50'}`}>
-              <BadgeIcon icon={m.icon} size={20} color={m.reached ? '#4A6741' : '#c4bbb0'} />
+              <BadgeIcon icon={m.icon} size={20} color={m.reached ? '#2D5E3B' : '#c4bbb0'} />
               <div className="flex-1">
                 <p className={`text-xs font-semibold ${m.reached ? 'text-forest-700' : 'text-warm-400'}`}>{m.label}</p>
                 <p className="text-[10px] text-warm-400 font-medium">{m.days}d · {m.reward}</p>
@@ -141,7 +141,7 @@ export default function Profile() {
       <div className="bg-white rounded-2xl p-4 card-shadow">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A6741" strokeWidth="1.8" strokeLinecap="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D5E3B" strokeWidth="1.8" strokeLinecap="round">
               <rect x="6" y="2" width="12" height="20" rx="6" />
               <rect x="9" y="6" width="6" height="8" rx="1" fill="#e4ebe0" stroke="none" />
             </svg>
@@ -172,7 +172,7 @@ export default function Profile() {
             <div key={badge.id} className={`text-center p-3 rounded-xl flex flex-col items-center ${
               badge.earned ? 'bg-cream-50' : 'bg-cream-50 opacity-30'
             }`}>
-              <BadgeIcon icon={badge.icon} size={24} color={badge.earned ? '#4A6741' : '#c4bbb0'} />
+              <BadgeIcon icon={badge.icon} size={24} color={badge.earned ? '#2D5E3B' : '#c4bbb0'} />
               <p className="text-[10px] font-semibold text-warm-600 mt-1 leading-tight">{badge.name}</p>
             </div>
           ))}

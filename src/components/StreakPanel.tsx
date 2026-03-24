@@ -35,7 +35,7 @@ export default function StreakPanel() {
             const isActive = !m.reached && streakMilestones[i - 1]?.reached !== false
             return (
               <div key={m.days} className="flex-1 flex flex-col items-center gap-1">
-                <BadgeIcon icon={m.icon} size={16} color={m.reached ? '#4A6741' : isActive ? '#a39890' : '#ddd6cb'} />
+                <BadgeIcon icon={m.icon} size={16} color={m.reached ? '#2D5E3B' : isActive ? '#9E9284' : '#ddd6cb'} />
                 <div className={`h-2 w-full rounded-full ${m.reached ? 'bg-forest-500' : 'bg-cream-200'}`}>
                   {isActive && (
                     <div className="h-full bg-forest-500 rounded-full transition-all"
@@ -51,7 +51,7 @@ export default function StreakPanel() {
         {nextMilestone && (
           <div className="flex items-center justify-between bg-cream-50 rounded-xl px-4 py-3">
             <div className="flex items-center gap-2">
-              <BadgeIcon icon={nextMilestone.icon} size={20} color="#a39890" />
+              <BadgeIcon icon={nextMilestone.icon} size={20} color="#9E9284" />
               <div>
                 <p className="text-xs font-bold text-warm-700">{nextMilestone.label}</p>
                 <p className="text-[10px] text-warm-400 font-medium">{daysToNext} days to go · {nextMilestone.reward}</p>

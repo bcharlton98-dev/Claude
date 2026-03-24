@@ -1,69 +1,106 @@
 @import "tailwindcss";
 
 @theme {
-  --color-forest-50: #f2f5f0;
-  --color-forest-100: #e1e8dd;
-  --color-forest-200: #c3d1bb;
-  --color-forest-300: #97b08a;
-  --color-forest-400: #6b8f5e;
-  --color-forest-500: #4A6741;
-  --color-forest-600: #3d5636;
-  --color-forest-700: #2f432a;
+  /*
+   * Brand colors derived from WalkQuest logo:
+   * - Forest green (dark mountain + text): #2D5E3B base
+   * - Olive green (light mountain): #7E8E4E base
+   * - Ember orange (flame accent): #D4884D base
+   * - Gold (sparkle): #D4A050 base
+   * - Cream (background): #F0E6D6 base
+   */
 
-  --color-sage-300: #aec2a0;
-  --color-sage-400: #8ba67a;
-  --color-sage-500: #6f8d5e;
+  /* ── Forest — primary brand, from logo text + dark mountain ── */
+  --color-forest-50: #eef3ef;
+  --color-forest-100: #d5e2d8;
+  --color-forest-200: #b0c7b5;
+  --color-forest-300: #7fa389;
+  --color-forest-400: #4f7d58;
+  --color-forest-500: #2D5E3B;
+  --color-forest-600: #244D30;
+  --color-forest-700: #1B3B24;
 
-  --color-peach-50: #fff5ee;
-  --color-peach-100: #ffe8d6;
-  --color-peach-400: #ee9460;
-  --color-peach-500: #e07840;
-  --color-peach-600: #c45e2c;
+  /* ── Olive — secondary green, from logo light mountain ── */
+  --color-olive-50: #f4f5ed;
+  --color-olive-100: #e4e8d5;
+  --color-olive-200: #c9d1ab;
+  --color-olive-300: #a4b47a;
+  --color-olive-400: #7E8E4E;
+  --color-olive-500: #677640;
+  --color-olive-600: #4F5B31;
 
-  --color-mustard-50: #fdf8eb;
-  --color-mustard-100: #f9edd0;
-  --color-mustard-300: #e8c36a;
-  --color-mustard-400: #d4a843;
-  --color-mustard-500: #c49230;
+  /* ── Ember — warm accent, from logo flame/droplet ── */
+  --color-ember-50: #fef5ee;
+  --color-ember-100: #fce6d2;
+  --color-ember-200: #f5c9a0;
+  --color-ember-300: #e5a66d;
+  --color-ember-400: #D4884D;
+  --color-ember-500: #BE7339;
+  --color-ember-600: #9C5A2B;
 
-  --color-cream-50: #faf6f1;
-  --color-cream-100: #f3ede4;
-  --color-cream-200: #e8e0d4;
+  /* ── Gold — highlight accent, from logo sparkle ── */
+  --color-gold-50: #fdf8ed;
+  --color-gold-100: #f8edd0;
+  --color-gold-200: #EDDA9E;
+  --color-gold-300: #D4A050;
+  --color-gold-400: #C08E3A;
+  --color-gold-500: #A07628;
 
-  --color-warm-100: #eee9e1;
-  --color-warm-200: #ddd6cb;
-  --color-warm-300: #c4bbb0;
-  --color-warm-400: #a39890;
-  --color-warm-500: #8a8078;
-  --color-warm-600: #6e655e;
-  --color-warm-700: #534c46;
-  --color-warm-800: #3d3832;
+  /* ── Cream — surfaces, from logo background ── */
+  --color-cream-50: #F7F2EB;
+  --color-cream-100: #F0E6D6;
+  --color-cream-200: #E5D9C8;
+  --color-cream-300: #D6C9B5;
 
+  /* ── Warm — neutrals for text and borders ── */
+  --color-warm-100: #EDE7DD;
+  --color-warm-200: #DDD5C8;
+  --color-warm-300: #C4BAA9;
+  --color-warm-400: #9E9284;
+  --color-warm-500: #827568;
+  --color-warm-600: #665A4E;
+  --color-warm-700: #4D4237;
+  --color-warm-800: #352D24;
+
+  /* ── Semantic: minimal, one stop each ── */
   --color-rose-50: #fef2f2;
-  --color-rose-500: #f43f5e;
-
-  --color-sky-50: #f0f7ff;
+  --color-rose-500: #e05252;
+  --color-sky-50: #eef6ff;
   --color-sky-500: #3b82f6;
 
+  /* Compat aliases */
+  --color-brand-400: #D4A050;
+  --color-brand-500: #C08E3A;
+  --color-brand-600: #A07628;
+  --color-slate-300: #C4BAA9;
+  --color-slate-500: #827568;
+  --color-slate-700: #4D4237;
+  --color-slate-800: #352D24;
+
+  /* Legacy mappings — keep until full migration */
+  --color-sage-300: #a4b47a;
+  --color-sage-400: #7E8E4E;
+  --color-sage-500: #677640;
+  --color-peach-50: #fef5ee;
+  --color-peach-100: #fce6d2;
+  --color-peach-400: #D4884D;
+  --color-peach-500: #BE7339;
+  --color-peach-600: #9C5A2B;
+  --color-mustard-50: #fdf8ed;
+  --color-mustard-100: #f8edd0;
+  --color-mustard-300: #EDDA9E;
+  --color-mustard-400: #D4A050;
+  --color-mustard-500: #C08E3A;
   --color-lavender-50: #f5f0ff;
   --color-lavender-400: #a78bfa;
   --color-lavender-600: #7c3aed;
-
-  /* Compat aliases for Notifications page */
-  --color-brand-400: #d4a843;
-  --color-brand-500: #c49230;
-  --color-brand-600: #a67524;
-  --color-slate-300: #c4bbb0;
-  --color-slate-500: #8a8078;
-  --color-slate-700: #534c46;
-  --color-slate-800: #3d3832;
 }
 
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #faf6f1;
-  color: #3d3832;
+  background: #F7F2EB;
+  color: #352D24;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -72,25 +109,32 @@ body {
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Button press — only interactive micro-animation we keep */
 .btn-press { transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .btn-press:active { transform: scale(0.96); }
 
-/* Tight, Apple-like card shadow */
-.card-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03); }
+/* Layered shadow — Josh Comeau style, hue-matched to warm cream */
+.card-shadow {
+  box-shadow:
+    0 1px 1px rgba(77, 66, 55, 0.04),
+    0 2px 4px rgba(77, 66, 55, 0.04),
+    0 4px 8px rgba(77, 66, 55, 0.03);
+}
 
-/* Subtle hover lift */
 .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.card-hover:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.card-hover:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 4px rgba(77, 66, 55, 0.06),
+    0 4px 8px rgba(77, 66, 55, 0.05),
+    0 8px 16px rgba(77, 66, 55, 0.04);
+}
 
-/* Leaderboard row entrance */
 @keyframes rank-slide {
   from { opacity: 0; transform: translateX(-6px); }
   to { opacity: 1; transform: translateX(0); }
 }
 .animate-rank { animation: rank-slide 0.25s ease-out backwards; }
 
-/* Active tab pill */
 @keyframes pill-slide {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }

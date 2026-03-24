@@ -48,14 +48,14 @@ export default function AdaptiveGoalCard() {
         <AreaChart data={chartData}>
           <defs>
             <linearGradient id="stepGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#4A6741" stopOpacity={0.15} />
-              <stop offset="100%" stopColor="#4A6741" stopOpacity={0} />
+              <stop offset="0%" stopColor="#2D5E3B" stopOpacity={0.15} />
+              <stop offset="100%" stopColor="#2D5E3B" stopOpacity={0} />
             </linearGradient>
           </defs>
           <XAxis dataKey="week" hide />
-          <ReferenceLine y={7500} stroke="#d4a843" strokeDasharray="3 3" strokeWidth={1} />
-          <Area type="monotone" dataKey="steps" stroke="#4A6741" fill="url(#stepGradient)" strokeWidth={2} dot={false} />
-          <Area type="monotone" dataKey="goal" stroke="#a39890" fill="none" strokeWidth={1} strokeDasharray="3 3" dot={false} />
+          <ReferenceLine y={7500} stroke="#D4A050" strokeDasharray="3 3" strokeWidth={1} />
+          <Area type="monotone" dataKey="steps" stroke="#2D5E3B" fill="url(#stepGradient)" strokeWidth={2} dot={false} />
+          <Area type="monotone" dataKey="goal" stroke="#9E9284" fill="none" strokeWidth={1} strokeDasharray="3 3" dot={false} />
         </AreaChart>
       </ResponsiveContainer>
 

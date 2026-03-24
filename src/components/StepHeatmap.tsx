@@ -1,11 +1,11 @@
 import { heatmapData } from '../data/mockData'
 
 const INTENSITY_COLORS = [
-  '#e8e0d4', // 0 — no steps / rest day
-  '#e4ebe0', // 1 — < 5000
-  '#cddac4', // 2 — 5000-7499
-  '#8ba67a', // 3 — 7500-9999
-  '#4A6741', // 4 — 10000+
+  '#E5D9C8', // 0 — no steps / rest day
+  '#e4e8d5', // 1 — < 5000
+  '#c9d1ab', // 2 — 5000-7499
+  '#7E8E4E', // 3 — 7500-9999
+  '#2D5E3B', // 4 — 10000+
 ]
 
 function getIntensity(steps: number): number {

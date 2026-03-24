@@ -32,8 +32,8 @@ export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
       <svg width="100%" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="pathTrailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#4A6741" />
-            <stop offset="100%" stopColor="#6b8f5e" />
+            <stop offset="0%" stopColor="#2D5E3B" />
+            <stop offset="100%" stopColor="#4f7d58" />
           </linearGradient>
           <filter id="pathGlow">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -45,10 +45,10 @@ export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
         </defs>
 
         {/* Trail background */}
-        <path d={pathD} fill="none" stroke="#e8e0d4" strokeWidth={6} strokeLinecap="round" />
+        <path d={pathD} fill="none" stroke="#E5D9C8" strokeWidth={6} strokeLinecap="round" />
 
         {/* Trail dashes */}
-        <path d={pathD} fill="none" stroke="#d9cfc0" strokeWidth={1} strokeLinecap="round" strokeDasharray="4 6" />
+        <path d={pathD} fill="none" stroke="#D6C9B5" strokeWidth={1} strokeLinecap="round" strokeDasharray="4 6" />
 
         {/* Walked portion */}
         <path
@@ -70,14 +70,14 @@ export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
                 cx={m.x}
                 cy={m.y}
                 r={i === 0 || i === milestones.length - 1 ? 6 : 4.5}
-                fill={reached ? '#4A6741' : '#e8e0d4'}
-                stroke={reached ? '#3d5636' : '#d9cfc0'}
+                fill={reached ? '#2D5E3B' : '#E5D9C8'}
+                stroke={reached ? '#244D30' : '#D6C9B5'}
                 strokeWidth={1.5}
               />
               {(i === 1 || i === 2) && reached && (
                 <polygon
                   points={`${m.x},${m.y - 4} ${m.x + 1.5},${m.y - 1} ${m.x + 4},${m.y - 1} ${m.x + 2},${m.y + 1} ${m.x + 3},${m.y + 4} ${m.x},${m.y + 2} ${m.x - 3},${m.y + 4} ${m.x - 2},${m.y + 1} ${m.x - 4},${m.y - 1} ${m.x - 1.5},${m.y - 1}`}
-                  fill="#D4A847"
+                  fill="#D4A050"
                 />
               )}
             </g>
@@ -85,13 +85,13 @@ export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
         })}
 
         {/* Current position — walker */}
-        <circle cx={currentX} cy={currentY} r={10} fill="#4A6741" opacity={0.12} filter="url(#pathGlow)">
+        <circle cx={currentX} cy={currentY} r={10} fill="#2D5E3B" opacity={0.12} filter="url(#pathGlow)">
           <animate attributeName="r" values="9;13;9" dur="2s" repeatCount="indefinite" />
         </circle>
-        <circle cx={currentX} cy={currentY} r={7} fill="white" stroke="#4A6741" strokeWidth={2} />
+        <circle cx={currentX} cy={currentY} r={7} fill="white" stroke="#2D5E3B" strokeWidth={2} />
         {/* Walker figure */}
-        <circle cx={currentX} cy={currentY - 2.5} r={1.8} fill="#4A6741" />
-        <path d={`M${currentX - 1.5} ${currentY} L${currentX} ${currentY + 3} L${currentX + 1.5} ${currentY}`} fill="#4A6741" />
+        <circle cx={currentX} cy={currentY - 2.5} r={1.8} fill="#2D5E3B" />
+        <path d={`M${currentX - 1.5} ${currentY} L${currentX} ${currentY + 3} L${currentX + 1.5} ${currentY}`} fill="#2D5E3B" />
       </svg>
 
       {/* Title text below */}

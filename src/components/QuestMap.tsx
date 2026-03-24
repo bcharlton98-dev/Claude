@@ -27,12 +27,12 @@ function CityScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number }
 function MountainScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number }) {
   return (
     <g transform={`translate(${x},${y}) scale(${scale})`}>
-      <polygon points="-30,0 0,-55 30,0" fill="#6b8f5e" />
+      <polygon points="-30,0 0,-55 30,0" fill="#4f7d58" />
       <polygon points="-8,-30 0,-55 8,-30" fill="white" opacity={0.7} />
-      <polygon points="15,0 35,-30 55,0" fill="#8ba67a" />
+      <polygon points="15,0 35,-30 55,0" fill="#7E8E4E" />
       <polygon points="29,-18 35,-30 41,-18" fill="white" opacity={0.6} />
-      <polygon points="-20,0 -16,-12 -12,0" fill="#4A6741" />
-      <polygon points="45,0 49,-10 53,0" fill="#4A6741" />
+      <polygon points="-20,0 -16,-12 -12,0" fill="#2D5E3B" />
+      <polygon points="45,0 49,-10 53,0" fill="#2D5E3B" />
     </g>
   )
 }
@@ -42,11 +42,11 @@ function DesertScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number
     <g transform={`translate(${x},${y}) scale(${scale})`}>
       <ellipse cx={0} cy={0} rx={40} ry={8} fill="#fcd34d" opacity={0.4} />
       <ellipse cx={30} cy={-3} rx={25} ry={6} fill="#fbbf24" opacity={0.3} />
-      <rect x={-10} y={-30} width={5} height={30} rx={2.5} fill="#4A6741" />
-      <rect x={-15} y={-22} width={5} height={12} rx={2.5} fill="#4A6741" />
-      <rect x={-5} y={-18} width={5} height={10} rx={2.5} fill="#6b8f5e" />
-      <rect x={20} y={-20} width={4} height={20} rx={2} fill="#3d5636" />
-      <rect x={16} y={-14} width={4} height={8} rx={2} fill="#4A6741" />
+      <rect x={-10} y={-30} width={5} height={30} rx={2.5} fill="#2D5E3B" />
+      <rect x={-15} y={-22} width={5} height={12} rx={2.5} fill="#2D5E3B" />
+      <rect x={-5} y={-18} width={5} height={10} rx={2.5} fill="#4f7d58" />
+      <rect x={20} y={-20} width={4} height={20} rx={2} fill="#244D30" />
+      <rect x={16} y={-14} width={4} height={8} rx={2} fill="#2D5E3B" />
       <circle cx={35} cy={-40} r={8} fill="#fbbf24" opacity={0.6} />
     </g>
   )
@@ -57,8 +57,8 @@ function PlainsScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number
     <g transform={`translate(${x},${y}) scale(${scale})`}>
       {[-20, -10, 0, 10, 20, 30].map((dx, i) => (
         <g key={i}>
-          <line x1={dx} y1={0} x2={dx - 2} y2={-14 - (i % 3) * 3} stroke="#8ba67a" strokeWidth={2} />
-          <circle cx={dx - 2} cy={-14 - (i % 3) * 3} r={2} fill="#d4a843" />
+          <line x1={dx} y1={0} x2={dx - 2} y2={-14 - (i % 3) * 3} stroke="#7E8E4E" strokeWidth={2} />
+          <circle cx={dx - 2} cy={-14 - (i % 3) * 3} r={2} fill="#D4A050" />
         </g>
       ))}
       <rect x={-30} y={-20} width={16} height={18} rx={1} fill="#c45e2c" />
@@ -74,9 +74,9 @@ function CoastScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number 
       <path d="M-30,0 Q-20,-5 -10,0 Q0,5 10,0 Q20,-5 30,0 Q40,5 50,0" fill="none" stroke="#38bdf8" strokeWidth={3} opacity={0.5} />
       <path d="M-25,6 Q-15,1 -5,6 Q5,11 15,6 Q25,1 35,6" fill="none" stroke="#38bdf8" strokeWidth={2} opacity={0.3} />
       <rect x={-5} y={-40} width={4} height={35} rx={2} fill="#92400e" />
-      <ellipse cx={-12} cy={-42} rx={12} ry={5} fill="#4A6741" transform="rotate(-20 -12 -42)" />
-      <ellipse cx={8} cy={-44} rx={10} ry={4} fill="#3d5636" transform="rotate(15 8 -44)" />
-      <ellipse cx={-2} cy={-46} rx={11} ry={4} fill="#6b8f5e" transform="rotate(-5 -2 -46)" />
+      <ellipse cx={-12} cy={-42} rx={12} ry={5} fill="#2D5E3B" transform="rotate(-20 -12 -42)" />
+      <ellipse cx={8} cy={-44} rx={10} ry={4} fill="#244D30" transform="rotate(15 8 -44)" />
+      <ellipse cx={-2} cy={-46} rx={11} ry={4} fill="#4f7d58" transform="rotate(-5 -2 -46)" />
       <rect x={20} y={-18} width={2} height={18} fill="#ee9460" />
       <path d="M12,-18 Q21,-28 30,-18" fill="#e07840" />
     </g>
@@ -100,13 +100,13 @@ function RiverScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number 
 function HillsScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number }) {
   return (
     <g transform={`translate(${x},${y}) scale(${scale})`}>
-      <ellipse cx={-15} cy={0} rx={30} ry={15} fill="#aec2a0" opacity={0.5} />
-      <ellipse cx={25} cy={2} rx={25} ry={12} fill="#8ba67a" opacity={0.4} />
-      <polygon points="-20,-15 -16,-28 -12,-15" fill="#3d5636" />
-      <polygon points="0,-12 4,-25 8,-12" fill="#4A6741" />
-      <polygon points="30,-10 34,-22 38,-10" fill="#3d5636" />
+      <ellipse cx={-15} cy={0} rx={30} ry={15} fill="#a4b47a" opacity={0.5} />
+      <ellipse cx={25} cy={2} rx={25} ry={12} fill="#7E8E4E" opacity={0.4} />
+      <polygon points="-20,-15 -16,-28 -12,-15" fill="#244D30" />
+      <polygon points="0,-12 4,-25 8,-12" fill="#2D5E3B" />
+      <polygon points="30,-10 34,-22 38,-10" fill="#244D30" />
       <circle cx={15} cy={-5} r={2.5} fill="#f472b6" />
-      <circle cx={-5} cy={-3} r={2} fill="#d4a843" />
+      <circle cx={-5} cy={-3} r={2} fill="#D4A050" />
     </g>
   )
 }
@@ -117,8 +117,8 @@ function ForestScene({ x, y, scale = 1 }: { x: number; y: number; scale?: number
       {[-20, -5, 12, 28].map((dx, i) => (
         <g key={i}>
           <rect x={dx + 2} y={-8} width={3} height={10} fill="#92400e" />
-          <polygon points={`${dx - 4},-8 ${dx + 3.5},-30 ${dx + 11},-8`} fill={i % 2 ? '#3d5636' : '#2f432a'} />
-          <polygon points={`${dx - 2},-18 ${dx + 3.5},-35 ${dx + 9},-18`} fill={i % 2 ? '#4A6741' : '#3d5636'} />
+          <polygon points={`${dx - 4},-8 ${dx + 3.5},-30 ${dx + 11},-8`} fill={i % 2 ? '#244D30' : '#1B3B24'} />
+          <polygon points={`${dx - 2},-18 ${dx + 3.5},-35 ${dx + 9},-18`} fill={i % 2 ? '#2D5E3B' : '#244D30'} />
         </g>
       ))}
       <rect x={35} y={-4} width={2} height={5} fill="#fef3c7" />
@@ -268,8 +268,8 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
         >
           <defs>
             <linearGradient id="qmTrailGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#4A6741" />
-              <stop offset="100%" stopColor="#6b8f5e" />
+              <stop offset="0%" stopColor="#2D5E3B" />
+              <stop offset="100%" stopColor="#4f7d58" />
             </linearGradient>
             <filter id="qmGlow">
               <feGaussianBlur stdDeviation="6" result="coloredBlur" />
@@ -327,7 +327,7 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
 
           {/* Decorative flags */}
           {roadPoints.filter((_, i) => i % 2 === 0).map((rp, i) => {
-            const colors = ['#e07840', '#4A6741', '#d4a843', '#ee9460', '#6b8f5e']
+            const colors = ['#e07840', '#2D5E3B', '#D4A050', '#ee9460', '#4f7d58']
             return (
               <g key={`flag-${i}`}>
                 <line x1={rp.x + 18} y1={rp.y - 8} x2={rp.x + 18} y2={rp.y - 22} stroke="#c4bbb0" strokeWidth={1} />
@@ -342,12 +342,12 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
           {/* Road shadow */}
           <path d={pathD} fill="none" stroke="#3d3832" strokeWidth={22} strokeLinecap="round" strokeLinejoin="round" opacity={0.06} />
           {/* Road base */}
-          <path d={pathD} fill="none" stroke="#e8e0d4" strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
-          <path d={pathD} fill="none" stroke="#d9cfc0" strokeWidth={20} strokeLinecap="round" strokeLinejoin="round" opacity={0.4} />
+          <path d={pathD} fill="none" stroke="#E5D9C8" strokeWidth={18} strokeLinecap="round" strokeLinejoin="round" />
+          <path d={pathD} fill="none" stroke="#D6C9B5" strokeWidth={20} strokeLinecap="round" strokeLinejoin="round" opacity={0.4} />
           <path d={pathD} fill="none" stroke="white" strokeWidth={16} strokeLinecap="round" strokeLinejoin="round" />
-          <path d={pathD} fill="none" stroke="#e8e0d4" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+          <path d={pathD} fill="none" stroke="#E5D9C8" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
           {/* Road center line */}
-          <path d={pathD} fill="none" stroke="#d9cfc0" strokeWidth={1.5} strokeLinecap="round" strokeDasharray="6 6" />
+          <path d={pathD} fill="none" stroke="#D6C9B5" strokeWidth={1.5} strokeLinecap="round" strokeDasharray="6 6" />
 
           {/* Walked portion — forest green overlay */}
           <path
@@ -373,15 +373,15 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
               <g key={`wp-${i}`}>
                 {/* Achievement glow for reached waypoints */}
                 {wp.reached && (
-                  <circle cx={rp.x} cy={rp.y} r={16} fill="#4A6741" opacity={0.1} />
+                  <circle cx={rp.x} cy={rp.y} r={16} fill="#2D5E3B" opacity={0.1} />
                 )}
                 {/* Waypoint circle */}
                 <circle
                   cx={rp.x}
                   cy={rp.y}
                   r={isStart || isEnd ? 14 : 11}
-                  fill={wp.reached ? '#4A6741' : isNext ? '#e4ebe0' : '#f4f7f1'}
-                  stroke={wp.reached ? '#3d5636' : isNext ? '#8ba67a' : '#d9cfc0'}
+                  fill={wp.reached ? '#2D5E3B' : isNext ? '#e4ebe0' : '#f4f7f1'}
+                  stroke={wp.reached ? '#244D30' : isNext ? '#7E8E4E' : '#D6C9B5'}
                   strokeWidth={2.5}
                   filter="url(#qmShadow)"
                 />
@@ -401,8 +401,8 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
                   width={60}
                   height={14}
                   rx={7}
-                  fill={wp.reached ? '#4A6741' : isNext ? '#e4ebe0' : 'white'}
-                  stroke={wp.reached ? '#3d5636' : '#e8e0d4'}
+                  fill={wp.reached ? '#2D5E3B' : isNext ? '#e4ebe0' : 'white'}
+                  stroke={wp.reached ? '#244D30' : '#E5D9C8'}
                   strokeWidth={0.5}
                   opacity={0.9}
                 />
@@ -412,7 +412,7 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
                   textAnchor="middle"
                   fontSize={7}
                   fontWeight={700}
-                  fill={wp.reached ? 'white' : isNext ? '#4A6741' : '#6e655e'}
+                  fill={wp.reached ? 'white' : isNext ? '#2D5E3B' : '#6e655e'}
                 >
                   {wp.name.split(',')[0]}
                 </text>
@@ -423,7 +423,7 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
                     y={rp.y + (isStart || isEnd ? 40 : 37)}
                     textAnchor="middle"
                     fontSize={6}
-                    fill="#a39890"
+                    fill="#9E9284"
                     fontStyle="italic"
                   >
                     {wp.landmark}
@@ -436,14 +436,14 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
                   textAnchor="middle"
                   fontSize={6}
                   fontWeight={600}
-                  fill={wp.reached ? '#4A6741' : '#a39890'}
+                  fill={wp.reached ? '#2D5E3B' : '#9E9284'}
                 >
                   {wp.mile.toLocaleString()} mi
                 </text>
                 {/* NEXT badge — forest green */}
                 {isNext && (
                   <>
-                    <rect x={rp.x - 14} y={rp.y - 30} width={28} height={11} rx={5.5} fill="#4A6741" />
+                    <rect x={rp.x - 14} y={rp.y - 30} width={28} height={11} rx={5.5} fill="#2D5E3B" />
                     <text x={rp.x} y={rp.y - 22} textAnchor="middle" fontSize={6} fontWeight={800} fill="white">
                       NEXT
                     </text>
@@ -455,19 +455,19 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
 
           {/* ── Current position — "You Are Here" with GLOW ── */}
           {/* Outer glow pulse */}
-          <circle cx={currentPos.x} cy={currentPos.y} r={20} fill="#4A6741" opacity={0.12} filter="url(#heroGlow)">
+          <circle cx={currentPos.x} cy={currentPos.y} r={20} fill="#2D5E3B" opacity={0.12} filter="url(#heroGlow)">
             <animate attributeName="r" values="18;26;18" dur="2s" repeatCount="indefinite" />
             <animate attributeName="opacity" values="0.12;0.06;0.12" dur="2s" repeatCount="indefinite" />
           </circle>
           {/* Inner glow ring */}
-          <circle cx={currentPos.x} cy={currentPos.y} r={14} fill="#4A6741" opacity={0.15}>
+          <circle cx={currentPos.x} cy={currentPos.y} r={14} fill="#2D5E3B" opacity={0.15}>
             <animate attributeName="r" values="14;18;14" dur="2s" repeatCount="indefinite" />
           </circle>
           {/* Avatar circle */}
-          <circle cx={currentPos.x} cy={currentPos.y} r={13} fill="white" stroke="#4A6741" strokeWidth={3} filter="url(#qmShadow)" />
+          <circle cx={currentPos.x} cy={currentPos.y} r={13} fill="white" stroke="#2D5E3B" strokeWidth={3} filter="url(#qmShadow)" />
           {/* Walker figure */}
-          <circle cx={currentPos.x} cy={currentPos.y - 2} r={3} fill="#4A6741" />
-          <path d={`M${currentPos.x - 2.5} ${currentPos.y + 2} L${currentPos.x} ${currentPos.y + 7} L${currentPos.x + 2.5} ${currentPos.y + 2}`} fill="#4A6741" />
+          <circle cx={currentPos.x} cy={currentPos.y - 2} r={3} fill="#2D5E3B" />
+          <path d={`M${currentPos.x - 2.5} ${currentPos.y + 2} L${currentPos.x} ${currentPos.y + 7} L${currentPos.x + 2.5} ${currentPos.y + 2}`} fill="#2D5E3B" />
         </svg>
       </div>
 
