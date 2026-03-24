@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Plus, ChevronRight, Crown, Heart } from 'lucide-react'
+import { Plus, ChevronRight, Crown, Heart, Sparkles } from 'lucide-react'
 import QuestMap from '../components/QuestMap'
-import { challenges, type Challenge, type Participant } from '../data/mockData'
+import { challenges, dailyQuests, type Challenge, type Participant } from '../data/mockData'
 
 const typeConfig: Record<string, { icon: string; color: string }> = {
   leaderboard: { icon: '🏆', color: 'bg-mustard-400' },
@@ -246,6 +246,53 @@ export default function Challenges() {
           <p className="text-xs text-warm-300 mt-1">Tap + to create one</p>
         </div>
       )}
+
+      {/* Daily Quests */}
+      <div>
+        <h2 className="text-base font-bold text-warm-700 mb-3 flex items-center gap-1.5">
+          <Sparkles size={16} className="text-mustard-400" /> Daily Quests
+        </h2>
+        <div className="space-y-2">
+          {dailyQuests.map(q => (
+            <div
+              key={q.id}
+              className={`bg-white rounded-2xl p-4 flex items-center gap-3.5 card-shadow card-hover ${
+                q.completed ? 'opacity-60' : ''
+              }`}
+            >
+              <span className="text-2xl w-10 text-center">
+                {q.completed ? '✅' : q.type === 'steps' ? '👟' : q.type === 'distance' ? '🗺️' : q.type === 'active_minutes' ? '⏱️' : '👋'}
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-center">
+                  <p className={`font-bold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>
+                    {q.title}
+                  </p>
+                  <span className="text-[11px] text-sage-600 font-extrabold bg-sage-50 px-2 py-0.5 rounded-full">+{q.qpReward} QP</span>
+                </div>
+                {!q.completed && (
+                  <div className="mt-2 h-2 bg-cream-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-sage-400 to-sage-500 rounded-full transition-all duration-500"
+                      style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Commit to Quest CTA */}
+      <div className="bg-gradient-to-br from-sage-500 to-sage-700 rounded-3xl p-6 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,#d4a843,transparent_50%)]" />
+        <p className="text-white text-lg font-extrabold relative">Commit to My Quest</p>
+        <p className="text-sage-200 text-xs mt-1 relative font-medium">Walk 7,500+ steps every day this week</p>
+        <button className="mt-4 bg-white text-sage-700 font-extrabold text-sm px-8 py-3 rounded-2xl shadow-lg btn-press relative hover:shadow-xl transition-shadow">
+          I'm In
+        </button>
+      </div>
     </div>
   )
 }

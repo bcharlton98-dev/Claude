@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom'
 import BottomNav from './components/BottomNav'
 import Dashboard from './pages/Dashboard'
+import Progress from './pages/Progress'
 import Challenges from './pages/Challenges'
 import Calculator from './pages/Calculator'
-import Notifications from './pages/Notifications'
 import Profile from './pages/Profile'
 
 export default function App() {
@@ -12,9 +12,9 @@ export default function App() {
       <main className="px-5 pt-6">
         <Routes>
           <Route path="/" element={<Dashboard />} />
+          <Route path="/progress" element={<Progress />} />
           <Route path="/challenges" element={<Challenges />} />
           <Route path="/calculator" element={<Calculator />} />
-          <Route path="/notifications" element={<Notifications />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
