@@ -206,15 +206,15 @@ export const userProfile: UserProfile = {
     ],
   },
   badges: [
-    { id: '1', name: 'First Steps', description: 'Complete your first day', icon: '👟', earned: true, earnedDate: '2026-01-15' },
-    { id: '2', name: 'Week Warrior', description: '7-day streak', icon: '🔥', earned: true, earnedDate: '2026-01-22' },
-    { id: '3', name: 'Marathon Month', description: '30-day streak', icon: '🏃', earned: false },
-    { id: '4', name: '100K Club', description: 'Walk 100,000 steps total', icon: '💯', earned: true, earnedDate: '2026-02-01' },
-    { id: '5', name: 'Social Butterfly', description: 'Join 5 challenges', icon: '🦋', earned: true, earnedDate: '2026-02-10' },
-    { id: '6', name: 'Team Player', description: 'Complete a collective goal', icon: '🤝', earned: true, earnedDate: '2026-02-20' },
-    { id: '7', name: 'Million Steps', description: 'Walk 1,000,000 steps total', icon: '⭐', earned: true, earnedDate: '2026-03-10' },
-    { id: '8', name: 'Champion', description: 'Reach Champion league', icon: '👑', earned: false },
-    { id: '9', name: 'Weight Crusher', description: 'Hit weight loss goal for 30 days', icon: '💪', earned: false },
+    { id: '1', name: 'First Steps', description: 'Complete your first day', icon: 'shoe', earned: true, earnedDate: '2026-01-15' },
+    { id: '2', name: 'Week Warrior', description: '7-day streak', icon: 'flame', earned: true, earnedDate: '2026-01-22' },
+    { id: '3', name: 'Marathon Month', description: '30-day streak', icon: 'runner', earned: false },
+    { id: '4', name: '100K Club', description: 'Walk 100,000 steps total', icon: 'target', earned: true, earnedDate: '2026-02-01' },
+    { id: '5', name: 'Social Butterfly', description: 'Join 5 challenges', icon: 'wave', earned: true, earnedDate: '2026-02-10' },
+    { id: '6', name: 'Team Player', description: 'Complete a collective goal', icon: 'link', earned: true, earnedDate: '2026-02-20' },
+    { id: '7', name: 'Million Steps', description: 'Walk 1,000,000 steps total', icon: 'star', earned: true, earnedDate: '2026-03-10' },
+    { id: '8', name: 'Champion', description: 'Reach Champion league', icon: 'trophy', earned: false },
+    { id: '9', name: 'Weight Crusher', description: 'Hit weight loss goal for 30 days', icon: 'mountain', earned: false },
   ],
 }
 
@@ -265,7 +265,7 @@ export const challenges: Challenge[] = [
     raceName: 'Cross-Country USA',
     raceDistance: 2775,
     raceProgress: 1554,
-    mapEmoji: '🗺️',
+    mapEmoji: 'route',
     waypoints: [
       { name: 'New York, NY', mile: 0, reached: true, terrain: 'city', landmark: 'Statue of Liberty' },
       { name: 'Philadelphia, PA', mile: 97, reached: true, terrain: 'city', landmark: 'Liberty Bell' },
@@ -349,12 +349,12 @@ export const challenges: Challenge[] = [
 ]
 
 export const weeklyLeagues: WeeklyLeague[] = [
-  { name: 'Bronze', icon: '🥉', color: '#CD7F32', minQP: 0 },
-  { name: 'Silver', icon: '🥈', color: '#C0C0C0', minQP: 500 },
-  { name: 'Gold', icon: '🥇', color: '#FFD700', minQP: 1500 },
-  { name: 'Platinum', icon: '💎', color: '#E5E4E2', minQP: 3000 },
-  { name: 'Diamond', icon: '🔷', color: '#B9F2FF', minQP: 5000 },
-  { name: 'Champion', icon: '👑', color: '#FF6B35', minQP: 10000 },
+  { name: 'Bronze', icon: 'B', color: '#CD7F32', minQP: 0 },
+  { name: 'Silver', icon: 'S', color: '#C0C0C0', minQP: 500 },
+  { name: 'Gold', icon: 'G', color: '#FFD700', minQP: 1500 },
+  { name: 'Platinum', icon: 'P', color: '#E5E4E2', minQP: 3000 },
+  { name: 'Diamond', icon: 'D', color: '#B9F2FF', minQP: 5000 },
+  { name: 'Champion', icon: 'C', color: '#FF6B35', minQP: 10000 },
 ]
 
 export const notifications: Notification[] = [
@@ -376,12 +376,12 @@ export const weeklyStepData = [
 ]
 
 export const streakMilestones: StreakMilestone[] = [
-  { days: 3, label: 'Getting Started', icon: '🌱', reward: '+10 gems', reached: true },
-  { days: 7, label: 'Week Warrior', icon: '🔥', reward: '+25 gems', reached: true },
-  { days: 14, label: 'Committed', icon: '💪', reward: '+50 gems', reached: false },
-  { days: 30, label: 'Habit Formed', icon: '⭐', reward: '+100 gems', reached: false },
-  { days: 60, label: 'Dedicated Walker', icon: '🏔️', reward: '+200 gems', reached: false },
-  { days: 100, label: 'Unstoppable', icon: '👑', reward: '+500 gems', reached: false },
+  { days: 3, label: 'Getting Started', icon: 'leaf', reward: '+10 gems', reached: true },
+  { days: 7, label: 'Week Warrior', icon: 'flame', reward: '+25 gems', reached: true },
+  { days: 14, label: 'Committed', icon: 'mountain', reward: '+50 gems', reached: false },
+  { days: 30, label: 'Habit Formed', icon: 'star', reward: '+100 gems', reached: false },
+  { days: 60, label: 'Dedicated Walker', icon: 'summit', reward: '+200 gems', reached: false },
+  { days: 100, label: 'Unstoppable', icon: 'trophy', reward: '+500 gems', reached: false },
 ]
 
 // Heatmap data — last 28 days of step counts
@@ -415,17 +415,17 @@ export interface Friend {
 }
 
 export const friends: Friend[] = [
-  { id: 'f1', name: 'Sarah M.', avatar: '👩‍🦰', stepsToday: 12_480, streak: 31 },
-  { id: 'f2', name: 'Jake R.', avatar: '🧔', stepsToday: 10_200, streak: 8 },
-  { id: 'you', name: 'You', avatar: '🙂', stepsToday: 7_842, streak: 12, isYou: true },
-  { id: 'f3', name: 'Mia K.', avatar: '👩', stepsToday: 7_100, streak: 5 },
-  { id: 'f4', name: 'Carlos D.', avatar: '👨‍🦱', stepsToday: 6_320, streak: 19 },
-  { id: 'f5', name: 'Priya S.', avatar: '👩‍🦳', stepsToday: 4_800, streak: 3 },
+  { id: 'f1', name: 'Sarah M.', avatar: 'SM', stepsToday: 12_480, streak: 31 },
+  { id: 'f2', name: 'Jake R.', avatar: 'JR', stepsToday: 10_200, streak: 8 },
+  { id: 'you', name: 'You', avatar: 'YO', stepsToday: 7_842, streak: 12, isYou: true },
+  { id: 'f3', name: 'Mia K.', avatar: 'MK', stepsToday: 7_100, streak: 5 },
+  { id: 'f4', name: 'Carlos D.', avatar: 'CD', stepsToday: 6_320, streak: 19 },
+  { id: 'f5', name: 'Priya S.', avatar: 'PS', stepsToday: 4_800, streak: 3 },
 ]
 
 export const habitStacks: HabitStack[] = [
-  { id: '1', anchor: 'After my morning coffee', habit: 'take a 10-minute walk', icon: '☕', active: true },
-  { id: '2', anchor: 'After parking at work', habit: 'walk one extra lap around the lot', icon: '🚗', active: true },
-  { id: '3', anchor: 'After lunch', habit: 'do a 15-minute walk break', icon: '🥗', active: false },
-  { id: '4', anchor: 'Before watching TV', habit: 'walk around the block', icon: '📺', active: false },
+  { id: '1', anchor: 'After my morning coffee', habit: 'take a 10-minute walk', icon: 'coffee', active: true },
+  { id: '2', anchor: 'After parking at work', habit: 'walk one extra lap around the lot', icon: 'car', active: true },
+  { id: '3', anchor: 'After lunch', habit: 'do a 15-minute walk break', icon: 'lunch', active: false },
+  { id: '4', anchor: 'Before watching TV', habit: 'walk around the block', icon: 'tv', active: false },
 ]

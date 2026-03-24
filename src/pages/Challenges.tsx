@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
-import { Plus, ChevronDown, Crown, Heart, Sparkles, Mountain, Swords, Map, Target, Flame, Trophy, Users } from 'lucide-react'
+import { Plus, ChevronDown, Heart, Sparkles, Mountain, Swords, Map, Target, Flame, Trophy, Users } from 'lucide-react'
 import QuestMap from '../components/QuestMap'
+import { RankCircle, AvatarCircle, FlameIcon, CheckIcon, ShoeIcon, ClockIcon, WaveIcon, RouteIcon } from '../components/Icons'
 import { challenges, dailyQuests, type Challenge, type Participant } from '../data/mockData'
 
 /* ── Thumbnail config per challenge type ── */
@@ -21,8 +22,8 @@ const typeLabels: Record<string, string> = {
 }
 
 /* ── Filter pill colors — each a different soft color ── */
-const filterPillColors: Record<string, { active: string; icon: React.FC<{ size?: number; className?: string }> | null; emoji?: string }> = {
-  all: { active: 'bg-forest-500 text-white shadow-md', icon: null, emoji: '✨' },
+const filterPillColors: Record<string, { active: string; icon: React.FC<{ size?: number; className?: string }> | null }> = {
+  all: { active: 'bg-forest-500 text-white shadow-md', icon: Sparkles },
   leaderboard: { active: 'bg-mustard-400 text-white shadow-md', icon: Trophy },
   team_leaderboard: { active: 'bg-peach-400 text-white shadow-md', icon: Swords },
   virtual_race: { active: 'bg-forest-400 text-white shadow-md', icon: Map },
@@ -98,7 +99,7 @@ function TeamLeaderboard({ participants }: { participants: Participant[] }) {
         <div key={name} className={`rounded-[20px] p-4 ${i === 0 ? 'bg-gradient-to-br from-mustard-50 to-cream-50' : 'bg-cream-50'}`}>
           <div className="flex items-center justify-between mb-2.5">
             <span className="font-bold text-sm text-warm-700">
-              {i === 0 ? '👑 ' : ''}{name}
+              {name}
             </span>
             <span className="text-sm font-extrabold text-forest-600 tabular-nums">{data.steps.toLocaleString()}</span>
           </div>
@@ -129,21 +130,6 @@ function TeamLeaderboard({ participants }: { participants: Participant[] }) {
 function Leaderboard({ participants, sortBy = 'steps' }: { participants: Participant[]; sortBy?: 'steps' | 'streak' }) {
   const sorted = [...participants].sort((a, b) => sortBy === 'streak' ? b.streak - a.streak : b.steps - a.steps)
 
-  const rankColors = [
-    'bg-gradient-to-br from-mustard-300 to-mustard-500 text-white shadow-md', // Gold
-    'bg-gradient-to-br from-warm-300 to-warm-400 text-white shadow-sm', // Silver
-    'bg-gradient-to-br from-peach-300 to-peach-500 text-white shadow-sm', // Bronze
-  ]
-
-  const avatarColors = [
-    'bg-mustard-400 text-white',
-    'bg-warm-400 text-white',
-    'bg-peach-400 text-white',
-    'bg-sage-400 text-white',
-    'bg-lavender-400 text-white',
-    'bg-forest-400 text-white',
-  ]
-
   return (
     <div className="mt-4 space-y-1">
       {sorted.map((p, i) => (
@@ -156,35 +142,25 @@ function Leaderboard({ participants, sortBy = 'steps' }: { participants: Partici
           }`}
           style={{ animationDelay: `${i * 50}ms` }}
         >
-          {/* Rank circle — gold/silver/bronze/grey */}
-          <span className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-extrabold shrink-0 ${
-            i < 3 ? rankColors[i] : 'bg-cream-200 text-warm-500'
-          }`}>
-            {i === 0 ? <Crown size={13} /> : i + 1}
-          </span>
+          <RankCircle rank={i + 1} size={28} />
 
-          {/* Avatar circle with colored initials */}
-          <span className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-            p.isYou ? 'bg-forest-500 text-white ring-2 ring-forest-300' : avatarColors[i % avatarColors.length]
-          }`}>
-            {p.avatar}
-          </span>
+          <AvatarCircle name={p.name} size={32} className={p.isYou ? 'ring-2 ring-forest-300' : ''} />
 
-          {/* Name */}
           <div className="flex-1 min-w-0">
             <span className={`text-xs font-semibold block ${p.isYou ? 'text-forest-700' : 'text-warm-700'}`}>
               {p.name} {p.isYou && <span className="text-forest-400 font-bold">(You)</span>}
             </span>
             {p.streak > 0 && (
-              <span className="text-[10px] text-warm-400 font-medium">🔥 {p.streak}d streak</span>
+              <span className="text-[10px] text-warm-400 font-medium flex items-center gap-0.5">
+                <FlameIcon size={10} /> {p.streak}d streak
+              </span>
             )}
           </div>
 
           <KudosButton participant={p} onKudos={() => {}} />
 
-          {/* Step count in bold brand color */}
-          <span className="text-sm font-extrabold text-forest-600 tabular-nums min-w-[70px] text-right">
-            {sortBy === 'streak' ? `🔥 ${p.streak}d` : p.steps.toLocaleString()}
+          <span className="text-sm font-extrabold text-forest-600 tabular-nums min-w-[70px] text-right flex items-center justify-end gap-1">
+            {sortBy === 'streak' ? <><FlameIcon size={12} /> {p.streak}d</> : p.steps.toLocaleString()}
           </span>
         </div>
       ))}
@@ -312,9 +288,12 @@ export default function Challenges() {
       </div>
 
       {/* ── Section: CHALLENGES — Swipeable Carousel ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[36px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">CHALLENGES</span>
-        <div className="relative pt-6">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-forest-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-forest-600">Challenges</span>
+        </div>
+        <div>
           {/* Colored Filter Pills */}
           <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
             {[
@@ -337,7 +316,7 @@ export default function Challenges() {
                       : filterPillInactiveColors[t.key]
                   }`}
                 >
-                  {PillIcon ? <PillIcon size={12} /> : pillCfg.emoji}{' '}{t.label}
+                  {PillIcon && <PillIcon size={12} />}{' '}{t.label}
                 </button>
               )
             })}
@@ -373,7 +352,7 @@ export default function Challenges() {
 
           {filtered.length === 0 && (
             <div className="text-center py-12 text-warm-300">
-              <p className="text-4xl mb-3">🏜️</p>
+              <div className="mb-3 flex justify-center"><Mountain size={36} className="text-warm-300" /></div>
               <p className="text-sm font-semibold">No challenges here yet</p>
               <p className="text-xs text-warm-300 mt-1">Tap + to create one</p>
             </div>
@@ -393,9 +372,12 @@ export default function Challenges() {
       )}
 
       {/* ── Section: DAILY QUESTS ── */}
-      <div className="relative">
-        <span className="absolute -top-1 left-0 text-[36px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">DAILY</span>
-        <div className="relative pt-6">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-1 h-5 rounded-full bg-mustard-500" />
+          <span className="text-[12px] font-bold uppercase tracking-widest text-mustard-600">Daily</span>
+        </div>
+        <div>
           <h2 className="text-base font-bold text-warm-700 mb-3 flex items-center gap-1.5">
             <Sparkles size={16} className="text-mustard-400" /> Daily Quests
           </h2>
@@ -407,8 +389,8 @@ export default function Challenges() {
                   q.completed ? 'opacity-60' : ''
                 }`}
               >
-                <span className="text-2xl w-10 text-center">
-                  {q.completed ? '✅' : q.type === 'steps' ? '👟' : q.type === 'distance' ? '🗺️' : q.type === 'active_minutes' ? '⏱️' : '👋'}
+                <span className="w-10 flex items-center justify-center">
+                  {q.completed ? <CheckIcon size={24} /> : q.type === 'steps' ? <ShoeIcon size={24} /> : q.type === 'distance' ? <RouteIcon size={24} /> : q.type === 'active_minutes' ? <ClockIcon size={24} /> : <WaveIcon size={24} />}
                 </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-center">

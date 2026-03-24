@@ -1,4 +1,5 @@
 import { userProfile, streakMilestones } from '../data/mockData'
+import { FlameIcon } from './Icons'
 
 export default function StreakPanel() {
   const nextMilestone = streakMilestones.find(m => !m.reached)
@@ -11,7 +12,7 @@ export default function StreakPanel() {
         <div className="absolute top-[-30px] right-[-20px] w-[100px] h-[100px] rounded-full bg-white/10" />
         <div className="flex items-center justify-between relative">
           <div className="flex items-center gap-3">
-            <span className="text-4xl animate-flame inline-block">🔥</span>
+            <FlameIcon size={36} />
             <div>
               <p className="text-4xl font-extrabold text-white tracking-tight tabular-nums leading-none">{userProfile.streak}</p>
               <p className="text-[11px] text-white/70 font-medium mt-0.5">day streak</p>
@@ -62,7 +63,7 @@ export default function StreakPanel() {
         })}
       </div>
 
-      {/* Next Milestone — color block */}
+      {/* Next Milestone */}
       {nextMilestone && (
         <div className="flex items-center justify-between bg-white/60 backdrop-blur-sm rounded-[18px] px-4 py-3.5 relative">
           <div className="flex items-center gap-2.5">

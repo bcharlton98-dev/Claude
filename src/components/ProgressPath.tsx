@@ -75,7 +75,10 @@ export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
                 strokeWidth={1.5}
               />
               {(i === 1 || i === 2) && reached && (
-                <text x={m.x} y={m.y + 3.5} textAnchor="middle" fontSize={7}>⭐</text>
+                <polygon
+                  points={`${m.x},${m.y - 4} ${m.x + 1.5},${m.y - 1} ${m.x + 4},${m.y - 1} ${m.x + 2},${m.y + 1} ${m.x + 3},${m.y + 4} ${m.x},${m.y + 2} ${m.x - 3},${m.y + 4} ${m.x - 2},${m.y + 1} ${m.x - 4},${m.y - 1} ${m.x - 1.5},${m.y - 1}`}
+                  fill="#D4A847"
+                />
               )}
             </g>
           )
@@ -86,7 +89,9 @@ export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
           <animate attributeName="r" values="9;13;9" dur="2s" repeatCount="indefinite" />
         </circle>
         <circle cx={currentX} cy={currentY} r={7} fill="white" stroke="#4A6741" strokeWidth={2} />
-        <text x={currentX} y={currentY + 3.5} textAnchor="middle" fontSize={8}>🚶</text>
+        {/* Walker figure */}
+        <circle cx={currentX} cy={currentY - 2.5} r={1.8} fill="#4A6741" />
+        <path d={`M${currentX - 1.5} ${currentY} L${currentX} ${currentY + 3} L${currentX + 1.5} ${currentY}`} fill="#4A6741" />
       </svg>
 
       {/* Title text below */}

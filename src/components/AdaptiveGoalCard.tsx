@@ -1,5 +1,6 @@
 import { AreaChart, Area, XAxis, ResponsiveContainer, ReferenceLine } from 'recharts'
 import { userProfile } from '../data/mockData'
+import { TargetIcon, TrendUpIcon } from './Icons'
 
 export default function AdaptiveGoalCard() {
   const { adaptiveGoal } = userProfile
@@ -15,7 +16,7 @@ export default function AdaptiveGoalCard() {
     <div className="bg-white rounded-[22px] p-5 card-shadow relative overflow-hidden grain space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
-          🎯 Adaptive Goal
+          <TargetIcon size={16} /> Adaptive Goal
         </h3>
         <span className="text-[10px] font-bold text-forest-600 bg-forest-50 px-2.5 py-1 rounded-full">
           Week {adaptiveGoal.weekNumber}
@@ -29,7 +30,7 @@ export default function AdaptiveGoalCard() {
         <span className="text-[10px] font-bold text-forest-600 ml-auto bg-forest-50 px-2 py-0.5 rounded-full">+{improvement}%</span>
       </div>
 
-      {/* Stat blocks — mixed colors */}
+      {/* Stat blocks */}
       <div className="flex gap-2.5 text-center">
         <div className="flex-1 bg-cream-100 rounded-[16px] py-3">
           <p className="text-base font-extrabold text-warm-600 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
@@ -61,8 +62,8 @@ export default function AdaptiveGoalCard() {
         </AreaChart>
       </ResponsiveContainer>
 
-      <p className="text-[10px] text-warm-400 text-center font-medium">
-        📈 Avg steps vs. goal · <span className="text-mustard-500 font-bold">7,500 = health zone</span>
+      <p className="text-[10px] text-warm-400 text-center font-medium flex items-center justify-center gap-1">
+        <TrendUpIcon size={12} /> Avg steps vs. goal · <span className="text-mustard-500 font-bold">7,500 = health zone</span>
       </p>
     </div>
   )

@@ -4,6 +4,7 @@ import StreakPanel from '../components/StreakPanel'
 import AdaptiveGoalCard from '../components/AdaptiveGoalCard'
 import ProgressPath from '../components/ProgressPath'
 import StepHeatmap from '../components/StepHeatmap'
+import { LinkIcon, HabitIcon } from '../components/Icons'
 import { userProfile, weeklyStepData, habitStacks } from '../data/mockData'
 
 const HEALTH_ZONE = 7_500
@@ -104,12 +105,12 @@ export default function Progress() {
           <div>
             <div className="bg-gradient-to-br from-mustard-50 to-cream-50 rounded-[22px] p-5 card-shadow relative overflow-hidden color-block">
               <h2 className="text-sm font-bold text-warm-700 mb-3 flex items-center gap-1.5 relative">
-                🔗 Habit Stacks
+                <LinkIcon size={16} /> Habit Stacks
               </h2>
               <div className="space-y-2 relative">
                 {activeStacks.map(h => (
                   <div key={h.id} className="flex items-center gap-3 bg-white/60 backdrop-blur-sm rounded-[18px] px-4 py-3.5 card-hover">
-                    <span className="text-lg">{h.icon}</span>
+                    <HabitIcon icon={h.icon} size={18} />
                     <p className="text-xs text-warm-600 font-medium">
                       <span className="font-bold text-warm-700">{h.anchor}</span>, {h.habit}
                     </p>

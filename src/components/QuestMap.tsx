@@ -246,7 +246,13 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
     <div className="mt-3 rounded-[20px] overflow-hidden shadow-sm border border-cream-200">
       {/* Header — forest green branded */}
       <div className="bg-gradient-to-r from-forest-600 to-forest-500 px-4 py-3 flex items-center justify-between">
-        <span className="text-sm font-bold text-white">🗺️ {challenge.raceName}</span>
+        <span className="text-sm font-bold text-white flex items-center gap-1.5">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="6" cy="19" r="3" fill="white" stroke="none" /><circle cx="18" cy="5" r="3" fill="white" stroke="none" />
+            <path d="M6 16V8a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4v8a4 4 0 0 0 4 4" stroke="white" />
+          </svg>
+          {challenge.raceName}
+        </span>
         <span className="text-xs text-forest-100 font-semibold">
           {progress.toLocaleString()} / {dist.toLocaleString()} mi
         </span>
@@ -386,7 +392,7 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
                   textAnchor="middle"
                   fontSize={isStart || isEnd ? 14 : 12}
                 >
-                  {isStart ? '📍' : isEnd ? '🏁' : wp.reached ? '⭐' : isNext ? '👟' : '○'}
+                  {isStart ? '●' : isEnd ? '★' : wp.reached ? '★' : isNext ? '►' : '○'}
                 </text>
                 {/* City name label */}
                 <rect
@@ -459,9 +465,9 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
           </circle>
           {/* Avatar circle */}
           <circle cx={currentPos.x} cy={currentPos.y} r={13} fill="white" stroke="#4A6741" strokeWidth={3} filter="url(#qmShadow)" />
-          <text x={currentPos.x} y={currentPos.y + 5} textAnchor="middle" fontSize={14}>
-            🚶
-          </text>
+          {/* Walker figure */}
+          <circle cx={currentPos.x} cy={currentPos.y - 2} r={3} fill="#4A6741" />
+          <path d={`M${currentPos.x - 2.5} ${currentPos.y + 2} L${currentPos.x} ${currentPos.y + 7} L${currentPos.x + 2.5} ${currentPos.y + 2}`} fill="#4A6741" />
         </svg>
       </div>
 

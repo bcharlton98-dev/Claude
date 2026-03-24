@@ -1,4 +1,5 @@
 import ProgressPath from '../components/ProgressPath'
+import { FlameIconWhite, StarIcon, RouteIcon, ChallengeIcon, RankCircle, AvatarCircle, FlameIcon } from '../components/Icons'
 import { todayStats, userProfile, dailyQuests, challenges, notifications, friends, getCurrentTitle } from '../data/mockData'
 
 const HEALTH_ZONE = 7_500
@@ -10,11 +11,13 @@ function getGreeting(): string {
   return 'Good evening'
 }
 
-function getHealthZoneLabel(steps: number): { label: string; color: string; bg: string; icon: string } {
-  if (steps >= 10_000) return { label: 'Peak Zone', color: 'text-peach-600', bg: 'bg-gradient-to-r from-peach-100 to-mustard-100', icon: '🏔️' }
-  if (steps >= HEALTH_ZONE) return { label: 'Health Zone', color: 'text-forest-600', bg: 'bg-gradient-to-r from-forest-100 to-sage-100', icon: '✨' }
-  if (steps >= 5_000) return { label: 'Active Zone', color: 'text-mustard-600', bg: 'bg-gradient-to-r from-mustard-100 to-mustard-50', icon: '🌿' }
-  return { label: 'Warming Up', color: 'text-warm-500', bg: 'bg-gradient-to-r from-cream-200 to-cream-100', icon: '🌅' }
+type ZoneInfo = { label: string; iconType: 'star' | 'mountain' | 'leaf' | 'sunrise' }
+
+function getHealthZoneLabel(steps: number): ZoneInfo {
+  if (steps >= 10_000) return { label: 'Peak Zone', iconType: 'mountain' }
+  if (steps >= HEALTH_ZONE) return { label: 'Health Zone', iconType: 'star' }
+  if (steps >= 5_000) return { label: 'Active Zone', iconType: 'leaf' }
+  return { label: 'Warming Up', iconType: 'sunrise' }
 }
 
 /** Get terrain-themed background based on current virtual race position */
@@ -23,31 +26,31 @@ function getTerrainTheme(): { bg: string; accent: string; label: string } {
   if (!race?.waypoints || !race.raceProgress) {
     return { bg: 'from-forest-500 via-forest-500 to-forest-400', accent: 'forest', label: '' }
   }
-  // Find current terrain zone
   const reached = race.waypoints.filter(w => w.reached)
   const currentTerrain = reached.length > 0 ? reached[reached.length - 1].terrain : 'city'
 
   const terrainThemes: Record<string, { bg: string; accent: string; label: string }> = {
-    city: { bg: 'from-forest-600 via-forest-500 to-forest-400', accent: 'forest', label: '🏙️ Near Oklahoma City' },
-    plains: { bg: 'from-forest-500 via-sage-500 to-mustard-500', accent: 'sage', label: '🌾 Crossing the Plains' },
-    mountains: { bg: 'from-forest-700 via-forest-600 to-sage-500', accent: 'forest', label: '🏔️ Mountain Territory' },
-    desert: { bg: 'from-mustard-600 via-peach-500 to-mustard-500', accent: 'mustard', label: '🌵 Desert Stretch' },
-    forest: { bg: 'from-forest-700 via-forest-600 to-forest-500', accent: 'forest', label: '🌲 Deep Forest' },
-    coast: { bg: 'from-sky-500 via-forest-400 to-forest-500', accent: 'sky', label: '🏖️ Coastal Road' },
-    hills: { bg: 'from-sage-600 via-forest-500 to-sage-500', accent: 'sage', label: '⛰️ Rolling Hills' },
-    river: { bg: 'from-forest-500 via-sky-500 to-forest-500', accent: 'sky', label: '🌊 River Crossing' },
+    city: { bg: 'from-forest-600 via-forest-500 to-forest-400', accent: 'forest', label: 'Near Oklahoma City' },
+    plains: { bg: 'from-forest-500 via-sage-500 to-mustard-500', accent: 'sage', label: 'Crossing the Plains' },
+    mountains: { bg: 'from-forest-700 via-forest-600 to-sage-500', accent: 'forest', label: 'Mountain Territory' },
+    desert: { bg: 'from-mustard-600 via-peach-500 to-mustard-500', accent: 'mustard', label: 'Desert Stretch' },
+    forest: { bg: 'from-forest-700 via-forest-600 to-forest-500', accent: 'forest', label: 'Deep Forest' },
+    coast: { bg: 'from-sky-500 via-forest-400 to-forest-500', accent: 'sky', label: 'Coastal Road' },
+    hills: { bg: 'from-sage-600 via-forest-500 to-sage-500', accent: 'sage', label: 'Rolling Hills' },
+    river: { bg: 'from-forest-500 via-sky-500 to-forest-500', accent: 'sky', label: 'River Crossing' },
   }
   return terrainThemes[currentTerrain] || terrainThemes.city
 }
 
-function getNudge(): { icon: string; title: string; subtitle: string; accent: string } {
+type NudgeType = 'challenge' | 'quest' | 'streak'
+
+function getNudge(): { nudgeType: NudgeType; title: string; subtitle: string } {
   const competitiveNotif = notifications.find(n => !n.read && n.type === 'competitive')
   if (competitiveNotif) {
     return {
-      icon: '⚔️',
+      nudgeType: 'challenge',
       title: competitiveNotif.message.split('!')[0] + '!',
       subtitle: 'Time to take back your spot',
-      accent: 'from-peach-100 to-peach-50 border-peach-200',
     }
   }
 
@@ -57,18 +60,16 @@ function getNudge(): { icon: string; title: string; subtitle: string; accent: st
   if (activeQuest) {
     const pct = Math.round((activeQuest.current / activeQuest.target) * 100)
     return {
-      icon: activeQuest.type === 'steps' ? '👟' : activeQuest.type === 'distance' ? '🗺️' : '⏱️',
+      nudgeType: 'quest',
       title: `${activeQuest.title} — ${pct}%`,
       subtitle: `${activeQuest.current} of ${activeQuest.target.toLocaleString()} · +${activeQuest.qpReward} QP`,
-      accent: 'from-forest-100 to-sage-50 border-forest-200',
     }
   }
 
   return {
-    icon: '🔥',
+    nudgeType: 'streak',
     title: `${userProfile.streak}-day streak!`,
     subtitle: userProfile.streak >= 7 ? 'Incredible consistency. Keep it alive!' : 'Build your streak one day at a time',
-    accent: 'from-mustard-100 to-mustard-50 border-mustard-200',
   }
 }
 
@@ -99,7 +100,6 @@ export default function Dashboard() {
             <text x="120" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">
               Quest
             </text>
-            {/* Sparkle accent on the u */}
             <g transform="translate(172, 4)" stroke="#d4a843" strokeWidth="2" strokeLinecap="round">
               <line x1="4" y1="0" x2="4" y2="7" />
               <line x1="0" y1="3.5" x2="8" y2="3.5" />
@@ -116,7 +116,7 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col items-end gap-1.5">
             <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white px-3.5 py-2 rounded-2xl text-xs font-extrabold">
-              <span className="animate-flame inline-block text-sm">🔥</span> {userProfile.streak} day streak
+              <FlameIconWhite size={16} /> {userProfile.streak} day streak
             </span>
             <div className="flex items-center gap-1">
               {Array.from({ length: userProfile.streakFreezesMax }).map((_, i) => {
@@ -145,8 +145,6 @@ export default function Dashboard() {
           <p className="text-white/50 text-[10px] font-medium mt-2 relative">{terrain.label}</p>
         )}
       </div>
-
-      {/* ═══ BENTO GRID ═══ */}
 
       {/* ── Section: TODAY ── */}
       <div>
@@ -201,9 +199,11 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Row 2: Health Zone — celebration style */}
+          {/* Health Zone — celebration style */}
           <div className="rounded-[20px] px-5 py-4 flex items-center gap-3 mt-3 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #8ba67a 0%, #aec2a0 40%, #d4a843 100%)' }}>
-            <span className="text-2xl relative z-10">{zone.icon}</span>
+            <span className="relative z-10">
+              <StarIcon size={24} color="white" />
+            </span>
             <div className="flex-1 relative z-10">
               <p className="text-[15px] font-extrabold text-white">{zone.label}</p>
               <p className="text-[11px] text-white/80 font-semibold">
@@ -212,11 +212,10 @@ export default function Dashboard() {
                   : `${(HEALTH_ZONE - todayStats.steps).toLocaleString()} to Health Zone`}
               </p>
             </div>
-            {/* Shimmer decoration */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent" style={{ animation: 'shimmer 3s ease-in-out infinite' }} />
           </div>
 
-          {/* Row 3: QP + Level tiles */}
+          {/* QP + Title tiles */}
           <div className="grid grid-cols-2 gap-3 mt-3">
             <div className="bg-forest-600 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
               <p className="text-2xl font-extrabold text-white tabular-nums leading-none">+{todayStats.qpEarned}</p>
@@ -238,7 +237,6 @@ export default function Dashboard() {
           <span className="text-[12px] font-bold uppercase tracking-widest text-mustard-600">Journey</span>
         </div>
         <div>
-          {/* Progress Path — winding trail for QP */}
           <div className="bg-white rounded-[22px] card-shadow p-4 relative overflow-hidden grain">
             <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
           </div>
@@ -247,7 +245,7 @@ export default function Dashboard() {
           {raceChallenge && raceChallenge.raceProgress && raceChallenge.raceDistance && (
             <div className="bg-gradient-to-r from-forest-500 to-sage-500 rounded-[20px] px-5 py-4 flex items-center gap-3 mt-3 color-block relative overflow-hidden">
               <div className="absolute top-[-20px] right-[-10px] w-[60px] h-[60px] rounded-full bg-white/5" />
-              <span className="text-2xl">🗺️</span>
+              <RouteIcon size={24} />
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-white">{raceChallenge.raceName}</p>
                 <p className="text-[11px] text-forest-100 font-medium tabular-nums">
@@ -279,28 +277,21 @@ export default function Dashboard() {
             <div className="divide-y divide-cream-100">
               {[...friends].sort((a, b) => b.stepsToday - a.stepsToday).map((f, i) => {
                 const rank = i + 1
-                const isTop3 = rank <= 3
-                const medalColors = ['text-mustard-500', 'text-warm-400', 'text-peach-400']
-                const medals = ['🥇', '🥈', '🥉']
                 return (
                   <div
                     key={f.id}
                     className={`flex items-center gap-3 px-5 py-3 ${f.isYou ? 'bg-forest-50/50' : ''}`}
                   >
-                    {/* Rank */}
-                    <span className={`text-sm font-extrabold w-6 text-center tabular-nums ${isTop3 ? medalColors[i] : 'text-warm-300'}`}>
-                      {isTop3 ? medals[i] : rank}
-                    </span>
-                    {/* Avatar */}
-                    <span className="text-xl w-8 text-center">{f.avatar}</span>
-                    {/* Name + streak */}
+                    <RankCircle rank={rank} size={24} />
+                    <AvatarCircle name={f.name} size={32} />
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm font-bold leading-tight ${f.isYou ? 'text-forest-600' : 'text-warm-700'}`}>
                         {f.name} {f.isYou && <span className="text-[10px] text-forest-400 font-medium">(you)</span>}
                       </p>
-                      <p className="text-[10px] text-warm-400 font-medium">🔥 {f.streak} day streak</p>
+                      <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1">
+                        <FlameIcon size={10} /> {f.streak} day streak
+                      </span>
                     </div>
-                    {/* Steps */}
                     <span className={`text-sm font-extrabold tabular-nums ${f.isYou ? 'text-forest-600' : 'text-warm-600'}`}>
                       {f.stepsToday.toLocaleString()}
                     </span>
@@ -310,14 +301,16 @@ export default function Dashboard() {
             </div>
             <div className="px-5 py-3 border-t border-cream-100">
               <button className="w-full text-center text-xs font-bold text-forest-500 btn-press">
-                See full leaderboard →
+                See full leaderboard
               </button>
             </div>
           </div>
 
           {/* Nudge card — bold color block */}
           <div className="rounded-[22px] p-5 flex items-center gap-4 color-block mt-3 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #C67B5C, #D4886A)' }}>
-            <span className="text-3xl shrink-0 relative z-10">{nudge.icon}</span>
+            <span className="shrink-0 relative z-10">
+              {nudge.nudgeType === 'challenge' ? <ChallengeIcon size={28} /> : nudge.nudgeType === 'streak' ? <FlameIconWhite size={28} /> : <StarIcon size={28} color="white" />}
+            </span>
             <div className="flex-1 min-w-0 relative z-10">
               <p className="text-sm font-bold text-white leading-snug">{nudge.title}</p>
               <p className="text-xs text-white/70 mt-0.5 font-medium">{nudge.subtitle}</p>
