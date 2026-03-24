@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Plus, ChevronRight, Crown, Heart, Sparkles, Mountain, Swords, Map, Target, Flame, Trophy, Users } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Plus, ChevronDown, Crown, Heart, Sparkles, Mountain, Swords, Map, Target, Flame, Trophy, Users } from 'lucide-react'
 import QuestMap from '../components/QuestMap'
 import { challenges, dailyQuests, type Challenge, type Participant } from '../data/mockData'
 
@@ -192,172 +192,247 @@ function Leaderboard({ participants, sortBy = 'steps' }: { participants: Partici
   )
 }
 
-/* ── Challenge Card with Illustrated Thumbnail ── */
-function ChallengeCard({ challenge }: { challenge: Challenge }) {
-  const [expanded, setExpanded] = useState(false)
+/* ── Swipeable Carousel Card — compact hero card for horizontal scroll ── */
+function CarouselCard({ challenge, isActive, onClick }: { challenge: Challenge; isActive: boolean; onClick: () => void }) {
+  const thumb = thumbnailConfig[challenge.type]
+  const yourEntry = challenge.participants.find(p => p.isYou)
+  const yourRank = [...challenge.participants].sort((a, b) => b.steps - a.steps).findIndex(p => p.isYou) + 1
+
+  return (
+    <button
+      onClick={onClick}
+      className={`flex-shrink-0 w-[260px] rounded-[22px] overflow-hidden transition-all btn-press ${
+        isActive ? 'scale-100 shadow-lg' : 'scale-[0.97] opacity-80 shadow-md'
+      }`}
+    >
+      {/* Gradient header with icon */}
+      <div className={`bg-gradient-to-br ${thumb.gradient} px-5 py-4 relative overflow-hidden`}>
+        <div className="absolute top-[-15px] right-[-15px] w-[60px] h-[60px] rounded-full bg-white/10" />
+        <thumb.Icon size={20} className="text-white/40 absolute top-3 right-3" />
+        <p className="text-white text-sm font-extrabold leading-tight relative">{challenge.name}</p>
+        <p className="text-white/70 text-[10px] font-medium mt-0.5 relative">{typeLabels[challenge.type]}</p>
+      </div>
+      {/* Stats body */}
+      <div className="bg-white px-5 py-3.5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <Users size={11} className="text-warm-400" />
+            <span className="text-[11px] text-warm-500 font-semibold">{challenge.participants.length}</span>
+          </div>
+          {yourEntry && yourRank > 0 && (
+            <span className="text-[11px] font-extrabold text-forest-600 bg-forest-50 px-2 py-0.5 rounded-full">
+              #{yourRank}
+            </span>
+          )}
+          {challenge.type === 'group_target' && challenge.collectiveGoal && (
+            <span className="text-[11px] font-bold text-forest-600 tabular-nums">
+              {Math.round(((challenge.collectiveProgress || 0) / challenge.collectiveGoal) * 100)}%
+            </span>
+          )}
+        </div>
+        {/* Mini progress bar for group targets */}
+        {challenge.type === 'group_target' && challenge.collectiveGoal && (
+          <div className="h-1.5 bg-cream-100 rounded-full overflow-hidden mt-2">
+            <div
+              className="h-full bg-forest-400 rounded-full"
+              style={{ width: `${Math.round(((challenge.collectiveProgress || 0) / challenge.collectiveGoal) * 100)}%` }}
+            />
+          </div>
+        )}
+      </div>
+    </button>
+  )
+}
+
+/* ── Challenge Detail Card — full-width expandable card ── */
+function ChallengeDetail({ challenge }: { challenge: Challenge }) {
   const thumb = thumbnailConfig[challenge.type]
 
   return (
-    <div className="bg-white rounded-[22px] card-shadow overflow-hidden card-hover">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full p-4 flex items-start gap-3.5 text-left btn-press"
-      >
-        {/* Illustrated Thumbnail — gradient block with icon */}
-        <div className={`w-14 h-14 rounded-[16px] bg-gradient-to-br ${thumb.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
-          <thumb.Icon size={26} className={thumb.iconColor} />
-        </div>
-
+    <div className="bg-white rounded-[22px] card-shadow overflow-hidden">
+      {/* Header bar with gradient */}
+      <div className={`bg-gradient-to-r ${thumb.gradient} px-5 py-3.5 flex items-center gap-3`}>
+        <thumb.Icon size={20} className="text-white" />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-sm text-warm-800 leading-tight">{challenge.name}</h3>
-            <ChevronRight size={16} className={`text-warm-300 transition-transform duration-200 shrink-0 ml-1 ${expanded ? 'rotate-90' : ''}`} />
-          </div>
-          <p className="text-xs text-warm-400 mt-0.5 font-medium line-clamp-1">{challenge.description}</p>
-          <div className="flex gap-2 mt-2">
-            <span className="text-[10px] text-warm-400 font-semibold flex items-center gap-0.5">
-              <Users size={10} /> {challenge.participants.length}
-            </span>
-            <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
-              challenge.mode === 'private' ? 'bg-cream-100 text-warm-400' : 'bg-forest-50 text-forest-600'
-            }`}>
-              {challenge.mode}
-            </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-cream-100 text-warm-400 font-semibold">
-              {typeLabels[challenge.type]}
-            </span>
-          </div>
+          <h3 className="font-bold text-sm text-white">{challenge.name}</h3>
+          <p className="text-white/70 text-[10px] font-medium">{challenge.description}</p>
         </div>
-      </button>
+        <div className="flex items-center gap-1.5 bg-white/20 px-2 py-1 rounded-full">
+          <Users size={10} className="text-white" />
+          <span className="text-[10px] text-white font-bold">{challenge.participants.length}</span>
+        </div>
+      </div>
 
-      {expanded && (
-        <div className="px-4 pb-5 border-t border-cream-100 pt-4">
-          {challenge.type === 'virtual_race' && (
-            <>
-              <QuestMap challenge={challenge} />
-              <p className="text-xs font-bold text-warm-500 mt-4 mb-1">Individual Contributions</p>
-              <Leaderboard participants={challenge.participants} />
-            </>
-          )}
-          {challenge.type === 'group_target' && challenge.collectiveGoal && (
-            <>
-              <ProgressBar current={challenge.collectiveProgress || 0} total={challenge.collectiveGoal} color="bg-forest-500" />
-              <Leaderboard participants={challenge.participants} />
-            </>
-          )}
-          {challenge.type === 'team_leaderboard' && (
-            <TeamLeaderboard participants={challenge.participants} />
-          )}
-          {challenge.type === 'leaderboard' && (
+      {/* Content */}
+      <div className="px-4 pb-5 pt-4">
+        {challenge.type === 'virtual_race' && (
+          <>
+            <QuestMap challenge={challenge} />
+            <p className="text-xs font-bold text-warm-500 mt-4 mb-1">Individual Contributions</p>
             <Leaderboard participants={challenge.participants} />
-          )}
-          {challenge.type === 'streak' && (
-            <Leaderboard participants={challenge.participants} sortBy="streak" />
-          )}
-          <p className="text-[10px] text-warm-300 mt-4 font-medium">
-            {new Date(challenge.startDate).toLocaleDateString()} — {new Date(challenge.endDate).toLocaleDateString()}
-          </p>
-        </div>
-      )}
+          </>
+        )}
+        {challenge.type === 'group_target' && challenge.collectiveGoal && (
+          <>
+            <ProgressBar current={challenge.collectiveProgress || 0} total={challenge.collectiveGoal} color="bg-forest-500" />
+            <Leaderboard participants={challenge.participants} />
+          </>
+        )}
+        {challenge.type === 'team_leaderboard' && (
+          <TeamLeaderboard participants={challenge.participants} />
+        )}
+        {challenge.type === 'leaderboard' && (
+          <Leaderboard participants={challenge.participants} />
+        )}
+        {challenge.type === 'streak' && (
+          <Leaderboard participants={challenge.participants} sortBy="streak" />
+        )}
+        <p className="text-[10px] text-warm-300 mt-4 font-medium">
+          {new Date(challenge.startDate).toLocaleDateString()} — {new Date(challenge.endDate).toLocaleDateString()}
+        </p>
+      </div>
     </div>
   )
 }
 
 export default function Challenges() {
   const [filter, setFilter] = useState<string>('all')
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
   const filtered = filter === 'all' ? challenges : challenges.filter(c => c.type === filter)
+  const selectedChallenge = challenges.find(c => c.id === selectedId)
 
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-extrabold text-warm-800 tracking-tight">Quests</h1>
-        {/* Quest center floating button — forest green */}
         <button className="w-11 h-11 rounded-[16px] bg-gradient-to-br from-forest-400 to-forest-600 text-white flex items-center justify-center shadow-lg btn-press hover:shadow-xl transition-shadow">
           <Plus size={20} />
         </button>
       </div>
 
-      {/* ── Colored Filter Pills — each a different soft color ── */}
-      <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-        {[
-          { key: 'all', label: 'All' },
-          { key: 'leaderboard', label: 'Board' },
-          { key: 'team_leaderboard', label: 'Teams' },
-          { key: 'virtual_race', label: 'Race' },
-          { key: 'group_target', label: 'Target' },
-          { key: 'streak', label: 'Streak' },
-        ].map(t => {
-          const pillCfg = filterPillColors[t.key]
-          const PillIcon = pillCfg.icon
-          return (
-            <button
-              key={t.key}
-              onClick={() => setFilter(t.key)}
-              className={`px-3.5 py-2 rounded-[14px] text-xs font-bold whitespace-nowrap transition-all btn-press flex items-center gap-1.5 ${
-                filter === t.key
-                  ? `${pillCfg.active} animate-pill`
-                  : filterPillInactiveColors[t.key]
-              }`}
-            >
-              {PillIcon ? <PillIcon size={12} /> : pillCfg.emoji}{' '}{t.label}
-            </button>
-          )
-        })}
+      {/* ── Section: CHALLENGES — Swipeable Carousel ── */}
+      <div className="relative">
+        <span className="absolute -top-1 left-0 text-[36px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">CHALLENGES</span>
+        <div className="relative pt-6">
+          {/* Colored Filter Pills */}
+          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+            {[
+              { key: 'all', label: 'All' },
+              { key: 'leaderboard', label: 'Board' },
+              { key: 'team_leaderboard', label: 'Teams' },
+              { key: 'virtual_race', label: 'Race' },
+              { key: 'group_target', label: 'Target' },
+              { key: 'streak', label: 'Streak' },
+            ].map(t => {
+              const pillCfg = filterPillColors[t.key]
+              const PillIcon = pillCfg.icon
+              return (
+                <button
+                  key={t.key}
+                  onClick={() => { setFilter(t.key); setSelectedId(null) }}
+                  className={`px-3.5 py-2 rounded-[14px] text-xs font-bold whitespace-nowrap transition-all btn-press flex items-center gap-1.5 ${
+                    filter === t.key
+                      ? `${pillCfg.active} animate-pill`
+                      : filterPillInactiveColors[t.key]
+                  }`}
+                >
+                  {PillIcon ? <PillIcon size={12} /> : pillCfg.emoji}{' '}{t.label}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* ── Horizontal Swipeable Carousel ── */}
+          <div
+            ref={carouselRef}
+            className="flex gap-3 overflow-x-auto pb-2 no-scrollbar -mx-5 px-5 snap-x snap-mandatory"
+          >
+            {filtered.map(c => (
+              <div key={c.id} className="snap-start">
+                <CarouselCard
+                  challenge={c}
+                  isActive={selectedId === c.id}
+                  onClick={() => setSelectedId(selectedId === c.id ? null : c.id)}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Scroll indicator dots */}
+          <div className="flex justify-center gap-1.5 mt-1">
+            {filtered.map(c => (
+              <div
+                key={c.id}
+                className={`h-1.5 rounded-full transition-all ${
+                  selectedId === c.id ? 'w-4 bg-forest-500' : 'w-1.5 bg-warm-200'
+                }`}
+              />
+            ))}
+          </div>
+
+          {filtered.length === 0 && (
+            <div className="text-center py-12 text-warm-300">
+              <p className="text-4xl mb-3">🏜️</p>
+              <p className="text-sm font-semibold">No challenges here yet</p>
+              <p className="text-xs text-warm-300 mt-1">Tap + to create one</p>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* ── Challenge List ── */}
-      <div className="space-y-3">
-        {filtered.map(c => (
-          <ChallengeCard key={c.id} challenge={c} />
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div className="text-center py-16 text-warm-300">
-          <p className="text-4xl mb-3">🏜️</p>
-          <p className="text-sm font-semibold">No challenges here yet</p>
-          <p className="text-xs text-warm-300 mt-1">Tap + to create one</p>
+      {/* ── Expanded Challenge Detail ── */}
+      {selectedChallenge && (
+        <div className="animate-rank">
+          <div className="flex items-center gap-2 mb-2">
+            <ChevronDown size={14} className="text-warm-400" />
+            <p className="text-xs font-bold text-warm-500">Challenge Details</p>
+          </div>
+          <ChallengeDetail challenge={selectedChallenge} />
         </div>
       )}
 
-      {/* ── Daily Quests ── */}
-      <div>
-        <h2 className="text-base font-bold text-warm-700 mb-3 flex items-center gap-1.5">
-          <Sparkles size={16} className="text-mustard-400" /> Daily Quests
-        </h2>
-        <div className="space-y-2">
-          {dailyQuests.map(q => (
-            <div
-              key={q.id}
-              className={`bg-white rounded-[20px] p-4 flex items-center gap-3.5 card-shadow card-hover ${
-                q.completed ? 'opacity-60' : ''
-              }`}
-            >
-              <span className="text-2xl w-10 text-center">
-                {q.completed ? '✅' : q.type === 'steps' ? '👟' : q.type === 'distance' ? '🗺️' : q.type === 'active_minutes' ? '⏱️' : '👋'}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-center">
-                  <p className={`font-bold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>
-                    {q.title}
-                  </p>
-                  <span className="text-[11px] text-forest-600 font-extrabold bg-forest-50 px-2 py-0.5 rounded-full">+{q.qpReward} QP</span>
-                </div>
-                {!q.completed && (
-                  <div className="mt-2 h-2.5 bg-cream-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-forest-400 to-forest-500 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }}
-                    />
+      {/* ── Section: DAILY QUESTS ── */}
+      <div className="relative">
+        <span className="absolute -top-1 left-0 text-[36px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">DAILY</span>
+        <div className="relative pt-6">
+          <h2 className="text-base font-bold text-warm-700 mb-3 flex items-center gap-1.5">
+            <Sparkles size={16} className="text-mustard-400" /> Daily Quests
+          </h2>
+          <div className="space-y-2">
+            {dailyQuests.map(q => (
+              <div
+                key={q.id}
+                className={`bg-white rounded-[20px] p-4 flex items-center gap-3.5 card-shadow card-hover ${
+                  q.completed ? 'opacity-60' : ''
+                }`}
+              >
+                <span className="text-2xl w-10 text-center">
+                  {q.completed ? '✅' : q.type === 'steps' ? '👟' : q.type === 'distance' ? '🗺️' : q.type === 'active_minutes' ? '⏱️' : '👋'}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-center">
+                    <p className={`font-bold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>
+                      {q.title}
+                    </p>
+                    <span className="text-[11px] text-forest-600 font-extrabold bg-forest-50 px-2 py-0.5 rounded-full">+{q.qpReward} QP</span>
                   </div>
-                )}
+                  {!q.completed && (
+                    <div className="mt-2 h-2.5 bg-cream-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-forest-400 to-forest-500 rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── Commit to Quest CTA — deep forest green with cream text ── */}
+      {/* ── Commit to Quest CTA ── */}
       <div className="bg-gradient-to-br from-forest-600 via-forest-500 to-forest-700 rounded-[24px] p-7 text-center relative overflow-hidden color-block">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,#d4a843,transparent_50%)]" />
         <div className="absolute top-[-30px] right-[-20px] w-[100px] h-[100px] rounded-full bg-forest-400/20" />

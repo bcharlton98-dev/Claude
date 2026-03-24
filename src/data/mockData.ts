@@ -342,6 +342,27 @@ export const streakMilestones: StreakMilestone[] = [
   { days: 100, label: 'Unstoppable', icon: '👑', reward: '+500 gems', reached: false },
 ]
 
+// Heatmap data — last 28 days of step counts
+export const heatmapData: { date: string; steps: number }[] = (() => {
+  const data: { date: string; steps: number }[] = []
+  const today = new Date()
+  const stepPatterns = [
+    11200, 8900, 12400, 9800, 10500, 14200, 7842,
+    6300, 10100, 11800, 4200, 9500, 13200, 8100,
+    7500, 11400, 10200, 0, 8800, 12600, 9200,
+    10800, 7200, 11500, 13800, 6900, 9400, 7842,
+  ]
+  for (let i = 27; i >= 0; i--) {
+    const d = new Date(today)
+    d.setDate(d.getDate() - i)
+    data.push({
+      date: d.toISOString().split('T')[0],
+      steps: stepPatterns[27 - i],
+    })
+  }
+  return data
+})()
+
 export const habitStacks: HabitStack[] = [
   { id: '1', anchor: 'After my morning coffee', habit: 'take a 10-minute walk', icon: '☕', active: true },
   { id: '2', anchor: 'After parking at work', habit: 'walk one extra lap around the lot', icon: '🚗', active: true },
