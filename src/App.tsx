@@ -3,6 +3,7 @@ import BottomNav from './components/BottomNav'
 import Dashboard from './pages/Dashboard'
 import Progress from './pages/Progress'
 import Challenges from './pages/Challenges'
+import ChallengeDetail from './pages/ChallengeDetail'
 import Calculator from './pages/Calculator'
 import Profile from './pages/Profile'
 
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/challenges" element={<Challenges />} />
+          <Route path="/challenges/:id" element={<ChallengeDetail />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
