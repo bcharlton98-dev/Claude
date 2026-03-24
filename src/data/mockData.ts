@@ -363,6 +363,24 @@ export const heatmapData: { date: string; steps: number }[] = (() => {
   return data
 })()
 
+export interface Friend {
+  id: string
+  name: string
+  avatar: string
+  stepsToday: number
+  streak: number
+  isYou?: boolean
+}
+
+export const friends: Friend[] = [
+  { id: 'f1', name: 'Sarah M.', avatar: '👩‍🦰', stepsToday: 12_480, streak: 31 },
+  { id: 'f2', name: 'Jake R.', avatar: '🧔', stepsToday: 10_200, streak: 8 },
+  { id: 'you', name: 'You', avatar: '🙂', stepsToday: 7_842, streak: 12, isYou: true },
+  { id: 'f3', name: 'Mia K.', avatar: '👩', stepsToday: 7_100, streak: 5 },
+  { id: 'f4', name: 'Carlos D.', avatar: '👨‍🦱', stepsToday: 6_320, streak: 19 },
+  { id: 'f5', name: 'Priya S.', avatar: '👩‍🦳', stepsToday: 4_800, streak: 3 },
+]
+
 export const habitStacks: HabitStack[] = [
   { id: '1', anchor: 'After my morning coffee', habit: 'take a 10-minute walk', icon: '☕', active: true },
   { id: '2', anchor: 'After parking at work', habit: 'walk one extra lap around the lot', icon: '🚗', active: true },

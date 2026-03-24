@@ -1,6 +1,5 @@
-import StepHeatmap from '../components/StepHeatmap'
 import ProgressPath from '../components/ProgressPath'
-import { todayStats, userProfile, dailyQuests, challenges, notifications } from '../data/mockData'
+import { todayStats, userProfile, dailyQuests, challenges, notifications, friends } from '../data/mockData'
 
 const HEALTH_ZONE = 7_500
 
@@ -236,17 +235,52 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* ── Section: ACTIVITY ── */}
+      {/* ── Section: FRIENDS ── */}
       <div className="relative mt-2">
-        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">ACTIVITY</span>
+        <span className="absolute -top-1 left-0 text-[40px] font-extrabold text-warm-100 leading-none tracking-tight pointer-events-none select-none">FRIENDS</span>
         <div className="relative pt-7">
-          {/* Heatmap */}
-          <div className="bg-white rounded-[22px] card-shadow p-5 relative overflow-hidden grain">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-sm font-bold text-warm-700">Last 28 Days</p>
-              <p className="text-[10px] text-warm-400 font-medium">step intensity</p>
+          <div className="bg-white rounded-[22px] card-shadow relative overflow-hidden grain">
+            <div className="flex items-center justify-between px-5 pt-4 pb-2">
+              <p className="text-sm font-bold text-warm-700">Today's Steps</p>
+              <p className="text-[10px] text-warm-400 font-medium">{friends.length} friends</p>
             </div>
-            <StepHeatmap />
+            <div className="divide-y divide-cream-100">
+              {[...friends].sort((a, b) => b.stepsToday - a.stepsToday).map((f, i) => {
+                const rank = i + 1
+                const isTop3 = rank <= 3
+                const medalColors = ['text-mustard-500', 'text-warm-400', 'text-peach-400']
+                const medals = ['🥇', '🥈', '🥉']
+                return (
+                  <div
+                    key={f.id}
+                    className={`flex items-center gap-3 px-5 py-3 ${f.isYou ? 'bg-forest-50/50' : ''}`}
+                  >
+                    {/* Rank */}
+                    <span className={`text-sm font-extrabold w-6 text-center tabular-nums ${isTop3 ? medalColors[i] : 'text-warm-300'}`}>
+                      {isTop3 ? medals[i] : rank}
+                    </span>
+                    {/* Avatar */}
+                    <span className="text-xl w-8 text-center">{f.avatar}</span>
+                    {/* Name + streak */}
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-bold leading-tight ${f.isYou ? 'text-forest-600' : 'text-warm-700'}`}>
+                        {f.name} {f.isYou && <span className="text-[10px] text-forest-400 font-medium">(you)</span>}
+                      </p>
+                      <p className="text-[10px] text-warm-400 font-medium">🔥 {f.streak} day streak</p>
+                    </div>
+                    {/* Steps */}
+                    <span className={`text-sm font-extrabold tabular-nums ${f.isYou ? 'text-forest-600' : 'text-warm-600'}`}>
+                      {f.stepsToday.toLocaleString()}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+            <div className="px-5 py-3 border-t border-cream-100">
+              <button className="w-full text-center text-xs font-bold text-forest-500 btn-press">
+                See full leaderboard →
+              </button>
+            </div>
           </div>
 
           {/* Nudge card */}
