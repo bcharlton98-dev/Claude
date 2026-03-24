@@ -102,16 +102,19 @@ export default function Dashboard() {
               {Array.from({ length: userProfile.streakFreezesMax }).map((_, i) => {
                 const available = i < userProfile.streakFreezes
                 return (
-                  <div
-                    key={i}
-                    className={`w-7 h-7 rounded-full flex items-center justify-center text-xs ${
-                      available
-                        ? 'bg-white/20 backdrop-blur-sm'
-                        : 'bg-white/5 backdrop-blur-sm'
-                    }`}
-                  >
-                    <span className={available ? 'opacity-100' : 'opacity-30'}>🧊</span>
-                  </div>
+                  <svg key={i} width="28" height="28" viewBox="0 0 64 64" fill="none" className={available ? 'opacity-100' : 'opacity-25'} aria-label="Streak freeze">
+                    <circle cx="32" cy="32" r="26" fill={available ? '#DCEFF5' : '#ffffff'} fillOpacity={available ? 0.3 : 0.1} />
+                    <circle cx="32" cy="32" r="25" stroke={available ? '#A9CBD6' : '#ffffff'} strokeWidth="2" strokeOpacity={available ? 0.6 : 0.2} />
+                    <g stroke={available ? '#ffffff' : '#ffffff'} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" opacity={available ? 1 : 0.4}>
+                      <path d="M32 19V45" /><path d="M20.7 25.5L43.3 38.5" /><path d="M20.7 38.5L43.3 25.5" />
+                      <path d="M32 19L28.8 22.2" /><path d="M32 19L35.2 22.2" />
+                      <path d="M32 45L28.8 41.8" /><path d="M32 45L35.2 41.8" />
+                      <path d="M20.7 25.5L25 25.9" /><path d="M20.7 25.5L22.5 29.3" />
+                      <path d="M43.3 38.5L39 38.1" /><path d="M43.3 38.5L41.5 34.7" />
+                      <path d="M20.7 38.5L22.5 34.7" /><path d="M20.7 38.5L25 38.1" />
+                      <path d="M43.3 25.5L41.5 29.3" /><path d="M43.3 25.5L39 25.9" />
+                    </g>
+                  </svg>
                 )
               })}
             </div>
