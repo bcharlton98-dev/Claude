@@ -45,79 +45,17 @@ function getNudge(): { nudgeType: NudgeType; title: string; subtitle: string } {
   return { nudgeType: 'streak', title: `${userProfile.streak}-day streak!`, subtitle: userProfile.streak >= 7 ? 'Incredible consistency. Keep it alive!' : 'Build your streak one day at a time' }
 }
 
-/* Scout corgi SVG — walking pose (simplified) */
-function ScoutWalking({ size = 40 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 40 40" fill="none">
-      {/* Body */}
-      <ellipse cx="20" cy="22" rx="10" ry="7" fill="#D4884D" />
-      {/* Belly */}
-      <ellipse cx="20" cy="24" rx="7" ry="4" fill="#F5C9A0" />
-      {/* Head */}
-      <circle cx="28" cy="15" r="6" fill="#D4884D" />
-      {/* Snout */}
-      <ellipse cx="32" cy="16" rx="3" ry="2.5" fill="#F5C9A0" />
-      <circle cx="33" cy="15.5" r="1" fill="#352D24" />
-      {/* Eye */}
-      <circle cx="29" cy="13.5" r="1.2" fill="#352D24" />
-      <circle cx="29.4" cy="13.2" r="0.4" fill="white" />
-      {/* Ears */}
-      <ellipse cx="25" cy="10" rx="2.5" ry="3.5" fill="#BE7339" transform="rotate(-15 25 10)" />
-      <ellipse cx="30" cy="10.5" rx="2" ry="3" fill="#BE7339" transform="rotate(10 30 10.5)" />
-      {/* Legs (walking pose) */}
-      <rect x="13" y="27" width="3" height="8" rx="1.5" fill="#BE7339" transform="rotate(-10 14 27)" />
-      <rect x="18" y="27" width="3" height="7" rx="1.5" fill="#D4884D" transform="rotate(5 19 27)" />
-      <rect x="23" y="27" width="3" height="8" rx="1.5" fill="#BE7339" transform="rotate(-5 24 27)" />
-      <rect x="27" y="27" width="3" height="7" rx="1.5" fill="#D4884D" transform="rotate(10 28 27)" />
-      {/* Tail */}
-      <path d="M10 20 Q6 14 8 11" stroke="#D4884D" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    </svg>
-  )
-}
+/*
+ * Brand assets — drop your PNGs into public/brand/:
+ *   - logo-icon.png  (mountains + flame, transparent bg, ~60x60)
+ *   - scout-walk.png (walking corgi, transparent bg, ~80x80)
+ *   - scout-run.png  (running corgi, transparent bg, ~96x96)
+ */
 
-/* Scout running pose — for nudge card */
-function ScoutRunning({ size = 48 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-      {/* Body — stretched for running */}
-      <ellipse cx="24" cy="24" rx="12" ry="7" fill="#D4884D" />
-      <ellipse cx="24" cy="26" rx="8" ry="4" fill="#F5C9A0" />
-      {/* Head — forward lean */}
-      <circle cx="34" cy="17" r="6" fill="#D4884D" />
-      <ellipse cx="38" cy="18" rx="3" ry="2.5" fill="#F5C9A0" />
-      <circle cx="39" cy="17.5" r="1" fill="#352D24" />
-      <circle cx="35" cy="15.5" r="1.2" fill="#352D24" />
-      <circle cx="35.4" cy="15.2" r="0.4" fill="white" />
-      {/* Ears — wind-blown */}
-      <ellipse cx="31" cy="12" rx="2.5" ry="3.5" fill="#BE7339" transform="rotate(-25 31 12)" />
-      <ellipse cx="35" cy="12" rx="2" ry="3" fill="#BE7339" transform="rotate(-10 35 12)" />
-      {/* Legs — full stride */}
-      <rect x="14" y="28" width="3" height="9" rx="1.5" fill="#BE7339" transform="rotate(-20 15 28)" />
-      <rect x="20" y="29" width="3" height="8" rx="1.5" fill="#D4884D" transform="rotate(15 21 29)" />
-      <rect x="27" y="28" width="3" height="9" rx="1.5" fill="#BE7339" transform="rotate(-15 28 28)" />
-      <rect x="32" y="29" width="3" height="8" rx="1.5" fill="#D4884D" transform="rotate(20 33 29)" />
-      {/* Tail — bouncing up */}
-      <path d="M12 22 Q7 15 10 10" stroke="#D4884D" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-      {/* Motion lines */}
-      <line x1="8" y1="22" x2="4" y2="22" stroke="#D4884D" strokeWidth="1" strokeLinecap="round" opacity="0.3" />
-      <line x1="9" y1="25" x2="5" y2="25" stroke="#D4884D" strokeWidth="1" strokeLinecap="round" opacity="0.2" />
-    </svg>
-  )
-}
-
-/* WalkQuest logo — mountains + flame droplet, matching brand lockup */
 function WalkQuestLogo() {
   return (
     <div className="flex items-center gap-2">
-      <svg width="30" height="28" viewBox="0 0 30 28" fill="none">
-        {/* Back mountain — lighter olive */}
-        <path d="M2 26L12 6L22 26H2Z" fill="#a4b47a" />
-        {/* Front mountain — darker forest */}
-        <path d="M10 26L19 10L28 26H10Z" fill="#7fa389" />
-        {/* Flame/droplet on peak */}
-        <ellipse cx="19" cy="6" rx="2.5" ry="3.5" fill="#D4A050" />
-        <path d="M19 2.5C19 2.5 17 5 17 6.5C17 7.6 17.9 8.5 19 8.5C20.1 8.5 21 7.6 21 6.5C21 5 19 2.5 19 2.5Z" fill="#e5a66d" />
-      </svg>
+      <img src="/brand/logo-icon.png" alt="" width={28} height={28} className="object-contain" />
       <span className="text-xl font-bold text-white tracking-tight">WalkQuest</span>
     </div>
   )
@@ -146,7 +84,7 @@ export default function Dashboard() {
 
         {/* Greeting with Scout */}
         <div className="flex items-center gap-2 mb-5">
-          <ScoutWalking size={36} />
+          <img src="/brand/scout-walk.png" alt="Scout" width={36} height={36} className="object-contain" />
           <div>
             <p className="text-white/50 text-xs font-medium">{getGreeting()},</p>
             <p className="text-white text-xl font-bold tracking-tight">{userProfile.name.split(' ')[0]}</p>
@@ -213,9 +151,7 @@ export default function Dashboard() {
       {/* ══ NUDGE — warm ember block with Scout ══ */}
       <div className="mt-3 card-stagger" style={{ '--i': 2 } as React.CSSProperties}>
         <div className="bg-ember-400 rounded-2xl p-4 flex items-center gap-3 nudge-card edge-highlight">
-          <span className="shrink-0">
-            <ScoutRunning size={48} />
-          </span>
+          <img src="/brand/scout-run.png" alt="Scout" width={48} height={48} className="object-contain shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-white leading-snug">{nudge.title}</p>
             <p className="text-xs text-white/60 mt-0.5 font-medium">{nudge.subtitle}</p>
