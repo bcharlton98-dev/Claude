@@ -28,8 +28,8 @@ export default function HomeScreen() {
   const topQuest = [...dailyQuests].filter(q => !q.completed).sort((a, b) => (b.current / b.target) - (a.current / a.target))[0]
 
   // Ring geometry
-  const ringSize = 200
-  const strokeWidth = 12
+  const ringSize = 240
+  const strokeWidth = 14
   const radius = (ringSize - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
   const filled = (goalPct / 100) * circumference
@@ -79,10 +79,10 @@ export default function HomeScreen() {
 
           {/* Number inside the ring */}
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-[80px] font-bold text-white tabular-nums leading-none tracking-tighter">
+            <span className="text-6xl font-bold text-white tabular-nums leading-none tracking-tighter">
               {todayStats.steps.toLocaleString()}
             </span>
-            <span className="text-sm text-white/60 font-medium mt-1">steps today</span>
+            <span className="text-xs text-white/50 font-medium mt-1.5">steps today</span>
           </div>
         </div>
 
@@ -96,45 +96,40 @@ export default function HomeScreen() {
 
       {/* ═══════ ZONE 2 — The Action Strip ═══════ */}
       <div className="px-1 -mt-4 relative z-10">
-        <div className="flex gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {/* Title progress pill */}
           <button
             onClick={() => navigate('/progress')}
-            className="flex-1 flex items-center gap-1.5 bg-white rounded-full px-3 py-2 card-shadow btn-press"
+            className="flex items-center gap-1.5 bg-white rounded-full px-3 py-2.5 card-shadow btn-press justify-center"
           >
-            <span className="text-sm">🏔</span>
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-xs font-bold text-warm-700 truncate">{titleInfo.current.title}</p>
-              <p className="text-xs text-warm-400 font-medium truncate tabular-nums">{titleInfo.milesToNext.toLocaleString()} mi to go</p>
-            </div>
+            <span className="text-xs">🏔</span>
+            <span className="text-xs font-bold text-warm-700 truncate">{titleInfo.current.title}</span>
           </button>
 
           {/* Health Zone pill */}
           <button
             onClick={() => navigate('/progress')}
-            className="flex items-center gap-1.5 bg-white rounded-full px-3 py-2 card-shadow btn-press"
+            className="flex items-center gap-1.5 bg-white rounded-full px-3 py-2.5 card-shadow btn-press justify-center"
           >
-            <Star className={`w-4 h-4 ${atHealthZone ? 'text-olive-400' : 'text-warm-300'}`} />
+            <Star size={14} className={atHealthZone ? 'text-olive-400' : 'text-warm-300'} />
             <span className={`text-xs font-bold ${atHealthZone ? 'text-olive-500' : 'text-warm-400'}`}>
-              {atHealthZone ? 'In Zone' : 'Zone'}
+              {atHealthZone ? 'In Zone ✓' : 'Zone'}
             </span>
           </button>
 
           {/* Race progress pill */}
-          {racePct !== null && (
-            <button
-              onClick={() => navigate('/challenges')}
-              className="flex items-center gap-1.5 bg-white rounded-full px-3 py-2 card-shadow btn-press"
-            >
-              <Map size={16} className="text-forest-500" />
-              <span className="text-xs font-bold text-warm-700 tabular-nums">{racePct}%</span>
-            </button>
-          )}
+          <button
+            onClick={() => navigate('/challenges')}
+            className="flex items-center gap-1.5 bg-white rounded-full px-3 py-2.5 card-shadow btn-press justify-center"
+          >
+            <Map size={14} className="text-forest-500" />
+            <span className="text-xs font-bold text-warm-700 tabular-nums">{racePct !== null ? `${racePct}%` : '—'}</span>
+          </button>
         </div>
       </div>
 
       {/* ═══════ ZONE 3 — The One Nudge ═══════ */}
-      <div className="mt-5 flex-1">
+      <div className="mt-5">
         {competitiveNotif ? (
           /* Competitive nudge — terracotta */
           <div className="bg-ember-400 rounded-2xl p-4 flex items-center gap-3 shadow-ember edge-highlight">
@@ -176,7 +171,7 @@ export default function HomeScreen() {
       </div>
 
       {/* ═══════ ZONE 4 — Scout's Message ═══════ */}
-      <div className="flex items-center gap-3 mt-4 mb-2 px-1">
+      <div className="flex items-center gap-3 mt-6 mb-2 px-1">
         <img src="/brand/scout-walk.png" alt="Scout" width={40} height={40} className="object-contain shrink-0" />
         <div className="bg-cream-200 rounded-2xl rounded-bl-sm px-3 py-2 flex-1">
           <p className="text-xs text-warm-600 font-medium leading-normal">{scoutMsg}</p>
