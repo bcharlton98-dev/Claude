@@ -8,7 +8,7 @@ export default function QPBar({ current, max, level }: QPBarProps) {
   const pct = Math.round((current / max) * 100)
   return (
     <div className="flex items-center gap-3.5">
-      <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-sage-400 to-sage-600 text-white flex items-center justify-center text-sm font-extrabold shrink-0 shadow-md">
+      <div className="w-10 h-10 rounded-[14px] bg-gradient-to-br from-forest-400 to-forest-600 text-white flex items-center justify-center text-sm font-extrabold shrink-0 shadow-md">
         {level}
       </div>
       <div className="flex-1">
@@ -18,7 +18,7 @@ export default function QPBar({ current, max, level }: QPBarProps) {
         </div>
         <div className="h-2.5 bg-cream-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-sage-400 to-sage-500 rounded-full transition-all duration-700"
+            className="h-full bg-gradient-to-r from-forest-400 to-forest-500 rounded-full transition-all duration-700"
             style={{ width: `${pct}%` }}
           />
         </div>

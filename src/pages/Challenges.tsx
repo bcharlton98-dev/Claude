@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import { Plus, ChevronRight, Crown, Heart, Sparkles } from 'lucide-react'
+import { Plus, ChevronRight, Crown, Heart, Sparkles, Mountain, Swords, Map, Target, Flame, Trophy, Users } from 'lucide-react'
 import QuestMap from '../components/QuestMap'
 import { challenges, dailyQuests, type Challenge, type Participant } from '../data/mockData'
 
-const typeConfig: Record<string, { icon: string; color: string }> = {
-  leaderboard: { icon: '🏆', color: 'bg-mustard-400' },
-  team_leaderboard: { icon: '⚔️', color: 'bg-peach-400' },
-  virtual_race: { icon: '🗺️', color: 'bg-sage-400' },
-  group_target: { icon: '🎯', color: 'bg-lavender-400' },
-  streak: { icon: '🔥', color: 'bg-peach-500' },
+/* ── Thumbnail config per challenge type ── */
+const thumbnailConfig: Record<string, { gradient: string; Icon: React.FC<{ size?: number; className?: string }>; iconColor: string }> = {
+  leaderboard: { gradient: 'from-mustard-400 to-mustard-500', Icon: Trophy, iconColor: 'text-white' },
+  team_leaderboard: { gradient: 'from-peach-400 to-peach-600', Icon: Swords, iconColor: 'text-white' },
+  virtual_race: { gradient: 'from-forest-400 to-forest-600', Icon: Map, iconColor: 'text-white' },
+  group_target: { gradient: 'from-lavender-400 to-lavender-600', Icon: Target, iconColor: 'text-white' },
+  streak: { gradient: 'from-peach-500 to-rose-500', Icon: Flame, iconColor: 'text-white' },
 }
 
 const typeLabels: Record<string, string> = {
@@ -17,6 +18,25 @@ const typeLabels: Record<string, string> = {
   virtual_race: 'Virtual Race',
   group_target: 'Group Target',
   streak: 'Streak',
+}
+
+/* ── Filter pill colors — each a different soft color ── */
+const filterPillColors: Record<string, { active: string; icon: React.FC<{ size?: number; className?: string }> | null; emoji?: string }> = {
+  all: { active: 'bg-forest-500 text-white shadow-md', icon: null, emoji: '✨' },
+  leaderboard: { active: 'bg-mustard-400 text-white shadow-md', icon: Trophy },
+  team_leaderboard: { active: 'bg-peach-400 text-white shadow-md', icon: Swords },
+  virtual_race: { active: 'bg-forest-400 text-white shadow-md', icon: Map },
+  group_target: { active: 'bg-lavender-400 text-white shadow-md', icon: Target },
+  streak: { active: 'bg-peach-500 text-white shadow-md', icon: Flame },
+}
+
+const filterPillInactiveColors: Record<string, string> = {
+  all: 'bg-cream-100 text-warm-500',
+  leaderboard: 'bg-mustard-50 text-mustard-600',
+  team_leaderboard: 'bg-peach-50 text-peach-600',
+  virtual_race: 'bg-forest-50 text-forest-600',
+  group_target: 'bg-lavender-50 text-lavender-600',
+  streak: 'bg-peach-50 text-peach-600',
 }
 
 function KudosButton({ participant, onKudos }: { participant: Participant; onKudos: () => void }) {
@@ -47,7 +67,7 @@ function KudosButton({ participant, onKudos }: { participant: Participant; onKud
   )
 }
 
-function ProgressBar({ current, total, color = 'bg-sage-500' }: { current: number; total: number; color?: string }) {
+function ProgressBar({ current, total, color = 'bg-forest-500' }: { current: number; total: number; color?: string }) {
   const pct = Math.round((current / total) * 100)
   return (
     <div>
@@ -63,33 +83,39 @@ function ProgressBar({ current, total, color = 'bg-sage-500' }: { current: numbe
 }
 
 function TeamLeaderboard({ participants }: { participants: Participant[] }) {
-  const teams = new Map<string, { steps: number; members: Participant[] }>()
+  const teams: Record<string, { steps: number; members: Participant[] }> = {}
   participants.forEach(p => {
     const team = p.team || 'Unknown'
-    if (!teams.has(team)) teams.set(team, { steps: 0, members: [] })
-    const t = teams.get(team)!
-    t.steps += p.steps
-    t.members.push(p)
+    if (!teams[team]) teams[team] = { steps: 0, members: [] }
+    teams[team].steps += p.steps
+    teams[team].members.push(p)
   })
-  const sorted = [...teams.entries()].sort((a, b) => b[1].steps - a[1].steps)
+  const sorted = Object.entries(teams).sort((a, b) => b[1].steps - a[1].steps)
 
   return (
     <div className="mt-4 space-y-3">
       {sorted.map(([name, data], i) => (
-        <div key={name} className="bg-cream-50 rounded-2xl p-4">
+        <div key={name} className={`rounded-[20px] p-4 ${i === 0 ? 'bg-gradient-to-br from-mustard-50 to-cream-50' : 'bg-cream-50'}`}>
           <div className="flex items-center justify-between mb-2.5">
             <span className="font-bold text-sm text-warm-700">
               {i === 0 ? '👑 ' : ''}{name}
             </span>
-            <span className="text-sm font-extrabold text-warm-600 tabular-nums">{data.steps.toLocaleString()}</span>
+            <span className="text-sm font-extrabold text-forest-600 tabular-nums">{data.steps.toLocaleString()}</span>
           </div>
           <div className="space-y-1.5">
             {data.members.sort((a, b) => b.steps - a.steps).map(p => (
-              <div key={p.name} className={`flex items-center gap-2.5 text-xs ${p.isYou ? 'text-sage-700 font-bold' : 'text-warm-500'}`}>
-                <span className="w-6 h-6 rounded-full bg-cream-200 flex items-center justify-center text-[10px] font-bold text-warm-500">{p.avatar}</span>
-                <span className="flex-1">{p.name} {p.isYou && '(You)'}</span>
+              <div key={p.name} className={`flex items-center gap-2.5 text-xs rounded-[14px] px-2.5 py-2 ${
+                p.isYou ? 'bg-forest-50/60' : ''
+              }`}>
+                {/* Avatar circle with initials */}
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white shrink-0 ${
+                  p.isYou ? 'bg-forest-500' : 'bg-warm-400'
+                }`}>{p.avatar}</span>
+                <span className={`flex-1 font-semibold ${p.isYou ? 'text-forest-700' : 'text-warm-600'}`}>
+                  {p.name} {p.isYou && <span className="text-forest-400 font-bold">(You)</span>}
+                </span>
                 <KudosButton participant={p} onKudos={() => {}} />
-                <span className="tabular-nums font-semibold">{p.steps.toLocaleString()}</span>
+                <span className="tabular-nums font-extrabold text-forest-600">{p.steps.toLocaleString()}</span>
               </div>
             ))}
           </div>
@@ -99,30 +125,65 @@ function TeamLeaderboard({ participants }: { participants: Participant[] }) {
   )
 }
 
+/* ── Competitive Leaderboard — the big upgrade ── */
 function Leaderboard({ participants, sortBy = 'steps' }: { participants: Participant[]; sortBy?: 'steps' | 'streak' }) {
   const sorted = [...participants].sort((a, b) => sortBy === 'streak' ? b.streak - a.streak : b.steps - a.steps)
+
+  const rankColors = [
+    'bg-gradient-to-br from-mustard-300 to-mustard-500 text-white shadow-md', // Gold
+    'bg-gradient-to-br from-warm-300 to-warm-400 text-white shadow-sm', // Silver
+    'bg-gradient-to-br from-peach-300 to-peach-500 text-white shadow-sm', // Bronze
+  ]
+
+  const avatarColors = [
+    'bg-mustard-400 text-white',
+    'bg-warm-400 text-white',
+    'bg-peach-400 text-white',
+    'bg-sage-400 text-white',
+    'bg-lavender-400 text-white',
+    'bg-forest-400 text-white',
+  ]
+
   return (
-    <div className="mt-4 space-y-1.5">
+    <div className="mt-4 space-y-1">
       {sorted.map((p, i) => (
         <div
           key={p.name}
-          className={`flex items-center gap-2.5 p-3 rounded-2xl text-sm transition-all ${
-            p.isYou ? 'bg-sage-50 ring-1 ring-sage-200' : i < 3 ? 'bg-cream-50' : ''
+          className={`flex items-center gap-3 px-3 py-3 rounded-[18px] text-sm transition-all animate-rank ${
+            p.isYou
+              ? 'bg-gradient-to-r from-forest-50 to-sage-50 ring-1 ring-forest-200'
+              : i < 3 ? 'bg-cream-50/70' : ''
           }`}
+          style={{ animationDelay: `${i * 50}ms` }}
         >
-          <span className={`w-6 h-6 rounded-xl flex items-center justify-center text-[10px] font-extrabold ${
-            i === 0 ? 'bg-mustard-400 text-white' : i === 1 ? 'bg-warm-300 text-white' : i === 2 ? 'bg-peach-400 text-white' : 'bg-cream-100 text-warm-500'
+          {/* Rank circle — gold/silver/bronze/grey */}
+          <span className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-extrabold shrink-0 ${
+            i < 3 ? rankColors[i] : 'bg-cream-200 text-warm-500'
           }`}>
-            {i === 0 ? <Crown size={11} /> : i + 1}
+            {i === 0 ? <Crown size={13} /> : i + 1}
           </span>
-          <span className="w-7 h-7 rounded-full bg-cream-200 flex items-center justify-center text-xs font-bold text-warm-500">
+
+          {/* Avatar circle with colored initials */}
+          <span className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+            p.isYou ? 'bg-forest-500 text-white ring-2 ring-forest-300' : avatarColors[i % avatarColors.length]
+          }`}>
             {p.avatar}
           </span>
-          <span className={`flex-1 text-xs font-semibold ${p.isYou ? 'text-sage-700' : 'text-warm-600'}`}>
-            {p.name} {p.isYou && <span className="text-sage-400 font-bold">(You)</span>}
-          </span>
+
+          {/* Name */}
+          <div className="flex-1 min-w-0">
+            <span className={`text-xs font-semibold block ${p.isYou ? 'text-forest-700' : 'text-warm-700'}`}>
+              {p.name} {p.isYou && <span className="text-forest-400 font-bold">(You)</span>}
+            </span>
+            {p.streak > 0 && (
+              <span className="text-[10px] text-warm-400 font-medium">🔥 {p.streak}d streak</span>
+            )}
+          </div>
+
           <KudosButton participant={p} onKudos={() => {}} />
-          <span className="text-xs font-extrabold text-warm-600 tabular-nums">
+
+          {/* Step count in bold brand color */}
+          <span className="text-sm font-extrabold text-forest-600 tabular-nums min-w-[70px] text-right">
             {sortBy === 'streak' ? `🔥 ${p.streak}d` : p.steps.toLocaleString()}
           </span>
         </div>
@@ -131,27 +192,34 @@ function Leaderboard({ participants, sortBy = 'steps' }: { participants: Partici
   )
 }
 
+/* ── Challenge Card with Illustrated Thumbnail ── */
 function ChallengeCard({ challenge }: { challenge: Challenge }) {
   const [expanded, setExpanded] = useState(false)
-  const cfg = typeConfig[challenge.type]
+  const thumb = thumbnailConfig[challenge.type]
 
   return (
-    <div className="bg-white rounded-3xl card-shadow overflow-hidden card-hover">
+    <div className="bg-white rounded-[22px] card-shadow overflow-hidden card-hover">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full p-5 flex items-start gap-3.5 text-left btn-press"
+        className="w-full p-4 flex items-start gap-3.5 text-left btn-press"
       >
-        <span className="text-2xl w-9 text-center shrink-0">{cfg.icon}</span>
+        {/* Illustrated Thumbnail — gradient block with icon */}
+        <div className={`w-14 h-14 rounded-[16px] bg-gradient-to-br ${thumb.gradient} flex items-center justify-center shrink-0 shadow-sm`}>
+          <thumb.Icon size={26} className={thumb.iconColor} />
+        </div>
+
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-sm text-warm-800">{challenge.name}</h3>
-            <ChevronRight size={16} className={`text-warm-300 transition-transform duration-200 ${expanded ? 'rotate-90' : ''}`} />
+            <h3 className="font-bold text-sm text-warm-800 leading-tight">{challenge.name}</h3>
+            <ChevronRight size={16} className={`text-warm-300 transition-transform duration-200 shrink-0 ml-1 ${expanded ? 'rotate-90' : ''}`} />
           </div>
-          <p className="text-xs text-warm-400 mt-0.5 font-medium">{challenge.description}</p>
+          <p className="text-xs text-warm-400 mt-0.5 font-medium line-clamp-1">{challenge.description}</p>
           <div className="flex gap-2 mt-2">
-            <span className="text-[10px] text-warm-400 font-semibold">👥 {challenge.participants.length}</span>
+            <span className="text-[10px] text-warm-400 font-semibold flex items-center gap-0.5">
+              <Users size={10} /> {challenge.participants.length}
+            </span>
             <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
-              challenge.mode === 'private' ? 'bg-cream-100 text-warm-400' : 'bg-sage-50 text-sage-600'
+              challenge.mode === 'private' ? 'bg-cream-100 text-warm-400' : 'bg-forest-50 text-forest-600'
             }`}>
               {challenge.mode}
             </span>
@@ -163,7 +231,7 @@ function ChallengeCard({ challenge }: { challenge: Challenge }) {
       </button>
 
       {expanded && (
-        <div className="px-5 pb-5 border-t border-cream-100 pt-4">
+        <div className="px-4 pb-5 border-t border-cream-100 pt-4">
           {challenge.type === 'virtual_race' && (
             <>
               <QuestMap challenge={challenge} />
@@ -173,7 +241,7 @@ function ChallengeCard({ challenge }: { challenge: Challenge }) {
           )}
           {challenge.type === 'group_target' && challenge.collectiveGoal && (
             <>
-              <ProgressBar current={challenge.collectiveProgress || 0} total={challenge.collectiveGoal} color="bg-sage-500" />
+              <ProgressBar current={challenge.collectiveProgress || 0} total={challenge.collectiveGoal} color="bg-forest-500" />
               <Leaderboard participants={challenge.participants} />
             </>
           )}
@@ -203,36 +271,41 @@ export default function Challenges() {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-extrabold text-warm-800 tracking-tight">Quests</h1>
-        <button className="w-10 h-10 rounded-2xl bg-gradient-to-br from-peach-400 to-peach-600 text-white flex items-center justify-center shadow-lg btn-press hover:shadow-xl transition-shadow">
+        {/* Quest center floating button — forest green */}
+        <button className="w-11 h-11 rounded-[16px] bg-gradient-to-br from-forest-400 to-forest-600 text-white flex items-center justify-center shadow-lg btn-press hover:shadow-xl transition-shadow">
           <Plus size={20} />
         </button>
       </div>
 
-      {/* Pill Filters */}
+      {/* ── Colored Filter Pills — each a different soft color ── */}
       <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
         {[
-          { key: 'all', label: 'All', icon: '✨' },
-          { key: 'leaderboard', label: 'Board', icon: '🏆' },
-          { key: 'team_leaderboard', label: 'Teams', icon: '⚔️' },
-          { key: 'virtual_race', label: 'Race', icon: '🗺️' },
-          { key: 'group_target', label: 'Target', icon: '🎯' },
-          { key: 'streak', label: 'Streak', icon: '🔥' },
-        ].map(t => (
-          <button
-            key={t.key}
-            onClick={() => setFilter(t.key)}
-            className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all btn-press ${
-              filter === t.key
-                ? 'bg-gradient-to-r from-peach-400 to-peach-500 text-white shadow-md animate-pill'
-                : 'bg-white text-warm-400 hover:text-warm-600 card-shadow'
-            }`}
-          >
-            {t.icon} {t.label}
-          </button>
-        ))}
+          { key: 'all', label: 'All' },
+          { key: 'leaderboard', label: 'Board' },
+          { key: 'team_leaderboard', label: 'Teams' },
+          { key: 'virtual_race', label: 'Race' },
+          { key: 'group_target', label: 'Target' },
+          { key: 'streak', label: 'Streak' },
+        ].map(t => {
+          const pillCfg = filterPillColors[t.key]
+          const PillIcon = pillCfg.icon
+          return (
+            <button
+              key={t.key}
+              onClick={() => setFilter(t.key)}
+              className={`px-3.5 py-2 rounded-[14px] text-xs font-bold whitespace-nowrap transition-all btn-press flex items-center gap-1.5 ${
+                filter === t.key
+                  ? `${pillCfg.active} animate-pill`
+                  : filterPillInactiveColors[t.key]
+              }`}
+            >
+              {PillIcon ? <PillIcon size={12} /> : pillCfg.emoji}{' '}{t.label}
+            </button>
+          )
+        })}
       </div>
 
-      {/* Challenge List */}
+      {/* ── Challenge List ── */}
       <div className="space-y-3">
         {filtered.map(c => (
           <ChallengeCard key={c.id} challenge={c} />
@@ -247,7 +320,7 @@ export default function Challenges() {
         </div>
       )}
 
-      {/* Daily Quests */}
+      {/* ── Daily Quests ── */}
       <div>
         <h2 className="text-base font-bold text-warm-700 mb-3 flex items-center gap-1.5">
           <Sparkles size={16} className="text-mustard-400" /> Daily Quests
@@ -256,7 +329,7 @@ export default function Challenges() {
           {dailyQuests.map(q => (
             <div
               key={q.id}
-              className={`bg-white rounded-2xl p-4 flex items-center gap-3.5 card-shadow card-hover ${
+              className={`bg-white rounded-[20px] p-4 flex items-center gap-3.5 card-shadow card-hover ${
                 q.completed ? 'opacity-60' : ''
               }`}
             >
@@ -268,12 +341,12 @@ export default function Challenges() {
                   <p className={`font-bold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>
                     {q.title}
                   </p>
-                  <span className="text-[11px] text-sage-600 font-extrabold bg-sage-50 px-2 py-0.5 rounded-full">+{q.qpReward} QP</span>
+                  <span className="text-[11px] text-forest-600 font-extrabold bg-forest-50 px-2 py-0.5 rounded-full">+{q.qpReward} QP</span>
                 </div>
                 {!q.completed && (
-                  <div className="mt-2 h-2 bg-cream-100 rounded-full overflow-hidden">
+                  <div className="mt-2 h-2.5 bg-cream-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-sage-400 to-sage-500 rounded-full transition-all duration-500"
+                      className="h-full bg-gradient-to-r from-forest-400 to-forest-500 rounded-full transition-all duration-500"
                       style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }}
                     />
                   </div>
@@ -284,12 +357,14 @@ export default function Challenges() {
         </div>
       </div>
 
-      {/* Commit to Quest CTA */}
-      <div className="bg-gradient-to-br from-sage-500 to-sage-700 rounded-3xl p-6 text-center relative overflow-hidden">
+      {/* ── Commit to Quest CTA — deep forest green with cream text ── */}
+      <div className="bg-gradient-to-br from-forest-600 via-forest-500 to-forest-700 rounded-[24px] p-7 text-center relative overflow-hidden color-block">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,#d4a843,transparent_50%)]" />
-        <p className="text-white text-lg font-extrabold relative">Commit to My Quest</p>
-        <p className="text-sage-200 text-xs mt-1 relative font-medium">Walk 7,500+ steps every day this week</p>
-        <button className="mt-4 bg-white text-sage-700 font-extrabold text-sm px-8 py-3 rounded-2xl shadow-lg btn-press relative hover:shadow-xl transition-shadow">
+        <div className="absolute top-[-30px] right-[-20px] w-[100px] h-[100px] rounded-full bg-forest-400/20" />
+        <Mountain size={32} className="text-forest-300/40 mx-auto mb-2 relative" />
+        <p className="text-cream-50 text-xl font-extrabold relative">Commit to My Quest</p>
+        <p className="text-forest-200 text-xs mt-1.5 relative font-medium">Walk 7,500+ steps every day this week</p>
+        <button className="mt-5 bg-cream-50 text-forest-700 font-extrabold text-sm px-8 py-3.5 rounded-[18px] shadow-lg btn-press relative hover:shadow-xl transition-shadow">
           I'm In
         </button>
       </div>

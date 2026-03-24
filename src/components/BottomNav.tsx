@@ -13,7 +13,7 @@ export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50">
       <div className="max-w-lg mx-auto px-4 pb-2">
-        <div className="bg-white/90 backdrop-blur-xl rounded-2xl card-shadow border border-cream-200/50 flex justify-around items-center h-16 px-2">
+        <div className="bg-white/90 backdrop-blur-xl rounded-[20px] card-shadow border border-cream-200/50 flex justify-around items-center h-16 px-2">
           {navItems.map(({ to, icon: Icon, label, center }) => (
             <NavLink
               key={to}
@@ -22,7 +22,7 @@ export default function BottomNav() {
               className={({ isActive }) =>
                 `flex flex-col items-center gap-0.5 transition-all relative btn-press ${
                   center ? '' : isActive
-                    ? 'text-peach-500'
+                    ? 'text-forest-500'
                     : 'text-warm-300 hover:text-warm-500'
                 }`
               }
@@ -30,10 +30,10 @@ export default function BottomNav() {
               {({ isActive }) => (
                 <>
                   {center ? (
-                    <div className={`w-12 h-12 -mt-4 rounded-2xl flex items-center justify-center shadow-lg transition-all ${
+                    <div className={`w-12 h-12 -mt-4 rounded-[18px] flex items-center justify-center shadow-lg transition-all ${
                       isActive
-                        ? 'bg-gradient-to-br from-peach-400 to-peach-600 text-white scale-105'
-                        : 'bg-gradient-to-br from-sage-400 to-sage-600 text-white'
+                        ? 'bg-gradient-to-br from-forest-400 to-forest-600 text-white scale-105'
+                        : 'bg-gradient-to-br from-forest-400 to-forest-600 text-white'
                     }`}>
                       <Icon size={22} strokeWidth={2.2} />
                     </div>
@@ -42,7 +42,7 @@ export default function BottomNav() {
                       <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
                       <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{label}</span>
                       {isActive && (
-                        <div className="absolute -bottom-1 w-5 h-1 rounded-full bg-peach-500 animate-pill" />
+                        <div className="absolute -bottom-1 w-5 h-1 rounded-full bg-forest-500 animate-pill" />
                       )}
                     </>
                   )}

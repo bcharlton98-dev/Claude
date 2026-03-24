@@ -10,62 +10,67 @@ export default function Profile() {
 
   return (
     <div className="space-y-5">
-      {/* Profile Header */}
-      <div className="bg-white rounded-3xl p-6 text-center card-shadow relative overflow-hidden grain warm-glow">
-        <div className="w-20 h-20 bg-gradient-to-br from-sage-400 to-sage-600 rounded-3xl flex items-center justify-center text-white text-2xl font-extrabold mx-auto shadow-lg">
-          {userProfile.avatar}
-        </div>
-        <h1 className="text-xl font-extrabold text-warm-800 mt-3">{userProfile.name}</h1>
-        <p className="text-xs text-warm-400 font-medium">{userProfile.username}</p>
-
-        <div className="flex justify-center gap-5 mt-4">
-          {[
-            { icon: '🔥', value: userProfile.streak, label: 'Streak' },
-            { icon: '🧊', value: userProfile.streakFreezes, label: 'Freezes' },
-            { icon: '💎', value: userProfile.gems, label: 'Gems' },
-            { icon: '🏆', value: `#${userProfile.leagueRank}`, label: userProfile.league },
-          ].map(s => (
-            <div key={s.label} className="text-center">
-              <p className="text-base font-extrabold tabular-nums">{s.icon} {s.value}</p>
-              <p className="text-[10px] text-warm-400 font-medium">{s.label}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-4 px-2">
-          <QPBar current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
+      {/* Profile Header — forest green gradient */}
+      <div className="-mx-5 -mt-6 px-5 pt-6 bg-gradient-to-b from-forest-500 to-forest-400 relative overflow-hidden">
+        <div className="absolute top-[-40px] right-[-30px] w-[120px] h-[120px] rounded-full bg-forest-400/30" />
+        <div className="text-center pb-5 relative">
+          <div className="w-20 h-20 bg-gradient-to-br from-forest-200 to-cream-100 rounded-[24px] flex items-center justify-center text-forest-700 text-2xl font-extrabold mx-auto shadow-lg border-4 border-white/30">
+            {userProfile.avatar}
+          </div>
+          <h1 className="text-xl font-extrabold text-white mt-3">{userProfile.name}</h1>
+          <p className="text-xs text-forest-200 font-medium">{userProfile.username}</p>
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats row — color blocks */}
+      <div className="flex justify-center gap-3 -mt-2">
+        {[
+          { icon: '🔥', value: userProfile.streak, label: 'Streak', bg: 'bg-peach-50' },
+          { icon: '🧊', value: userProfile.streakFreezes, label: 'Freezes', bg: 'bg-sky-50' },
+          { icon: '💎', value: userProfile.gems, label: 'Gems', bg: 'bg-mustard-50' },
+          { icon: '🏆', value: `#${userProfile.leagueRank}`, label: userProfile.league, bg: 'bg-forest-50' },
+        ].map(s => (
+          <div key={s.label} className={`text-center px-3 py-2.5 rounded-[16px] ${s.bg} flex-1`}>
+            <p className="text-base font-extrabold tabular-nums">{s.icon} {s.value}</p>
+            <p className="text-[9px] text-warm-400 font-medium">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* QP Bar */}
+      <div className="bg-white rounded-[22px] p-4 card-shadow grain relative overflow-hidden">
+        <QPBar current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
+      </div>
+
+      {/* Stats — mixed sizes */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-white rounded-3xl p-4 text-center card-shadow card-hover">
-          <p className="text-2xl font-extrabold text-warm-800 tabular-nums">{(userProfile.totalSteps / 1_000_000).toFixed(1)}M</p>
-          <p className="text-[10px] text-warm-400 font-semibold">Total Steps</p>
+        <div className="bg-gradient-to-br from-forest-50 to-sage-50 rounded-[20px] p-4 text-center card-shadow card-hover color-block">
+          <p className="text-3xl font-extrabold text-forest-600 tabular-nums">{(userProfile.totalSteps / 1_000_000).toFixed(1)}M</p>
+          <p className="text-[10px] text-forest-400 font-semibold">Total Steps</p>
         </div>
-        <div className="bg-white rounded-3xl p-4 text-center card-shadow card-hover">
-          <p className="text-2xl font-extrabold text-warm-800">🔥 {userProfile.longestStreak}</p>
-          <p className="text-[10px] text-warm-400 font-semibold">Best Streak</p>
+        <div className="bg-gradient-to-br from-peach-50 to-mustard-50 rounded-[20px] p-4 text-center card-shadow card-hover color-block">
+          <p className="text-3xl font-extrabold text-peach-600">🔥 {userProfile.longestStreak}</p>
+          <p className="text-[10px] text-peach-400 font-semibold">Best Streak</p>
         </div>
       </div>
 
       {/* Streak Milestones */}
-      <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+      <div className="bg-white rounded-[22px] p-5 card-shadow grain relative overflow-hidden">
         <h3 className="text-sm font-bold text-warm-700 mb-3">🔥 Streak Milestones</h3>
         <div className="space-y-2">
           {streakMilestones.map(m => (
-            <div key={m.days} className={`flex items-center gap-3 p-3 rounded-2xl ${m.reached ? 'bg-sage-50' : 'bg-cream-50'}`}>
+            <div key={m.days} className={`flex items-center gap-3 p-3 rounded-[16px] ${m.reached ? 'bg-forest-50' : 'bg-cream-50'}`}>
               <span className={`text-xl ${m.reached ? '' : 'grayscale opacity-40'}`}>{m.icon}</span>
               <div className="flex-1">
-                <p className={`text-xs font-bold ${m.reached ? 'text-sage-700' : 'text-warm-400'}`}>{m.label}</p>
+                <p className={`text-xs font-bold ${m.reached ? 'text-forest-700' : 'text-warm-400'}`}>{m.label}</p>
                 <p className="text-[10px] text-warm-400 font-medium">{m.days} day streak · {m.reward}</p>
               </div>
-              {m.reached && <span className="text-sm text-sage-500">✓</span>}
+              {m.reached && <span className="text-sm text-forest-500 font-bold">✓</span>}
             </div>
           ))}
         </div>
 
-        <div className="mt-4 flex items-center gap-3 bg-sky-50 rounded-2xl px-4 py-3">
+        <div className="mt-4 flex items-center gap-3 bg-sky-50 rounded-[16px] px-4 py-3">
           <span className="text-xl">🧊</span>
           <div className="flex-1">
             <p className="text-xs font-bold text-sky-600">Streak Freezes</p>
@@ -75,25 +80,25 @@ export default function Profile() {
       </div>
 
       {/* Adaptive Goal */}
-      <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+      <div className="bg-white rounded-[22px] p-5 card-shadow grain relative overflow-hidden">
         <h3 className="text-sm font-bold text-warm-700 mb-3">🎯 Goal Journey</h3>
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-[10px] text-warm-400 font-medium">Started at</p>
-            <p className="text-base font-extrabold text-warm-600 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
+            <p className="text-lg font-extrabold text-warm-600 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
           </div>
           <div className="text-center">
             <p className="text-[10px] text-warm-400 font-medium">Current goal</p>
-            <p className="text-base font-extrabold text-sage-600 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</p>
+            <p className="text-lg font-extrabold text-forest-600 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</p>
           </div>
           <div className="text-right">
             <p className="text-[10px] text-warm-400 font-medium">Target</p>
-            <p className="text-base font-extrabold text-peach-500 tabular-nums">10,000</p>
+            <p className="text-lg font-extrabold text-peach-500 tabular-nums">10,000</p>
           </div>
         </div>
         <div className="h-3 bg-cream-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-sage-400 to-sage-500 rounded-full transition-all"
+            className="h-full bg-gradient-to-r from-forest-400 to-forest-500 rounded-full transition-all"
             style={{ width: `${((adaptiveGoal.currentGoal - adaptiveGoal.baseline) / (10000 - adaptiveGoal.baseline)) * 100}%` }}
           />
         </div>
@@ -103,15 +108,15 @@ export default function Profile() {
       </div>
 
       {/* League */}
-      <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+      <div className="bg-white rounded-[22px] p-5 card-shadow grain relative overflow-hidden">
         <h3 className="text-sm font-bold text-warm-700 mb-3">🏅 Weekly League</h3>
         <div className="flex gap-1.5">
           {weeklyLeagues.map((league, i) => (
             <div
               key={league.name}
-              className={`flex-1 text-center py-2 rounded-2xl text-[10px] font-bold transition-all ${
+              className={`flex-1 text-center py-2 rounded-[14px] text-[10px] font-bold transition-all ${
                 i === currentLeagueIdx
-                  ? 'ring-2 ring-sage-500 bg-sage-50 text-sage-700'
+                  ? 'ring-2 ring-forest-500 bg-forest-50 text-forest-700'
                   : i < currentLeagueIdx
                   ? 'bg-cream-100 text-warm-500'
                   : 'bg-cream-50 text-warm-300'
@@ -128,18 +133,18 @@ export default function Profile() {
       </div>
 
       {/* Device */}
-      <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+      <div className="bg-white rounded-[22px] p-5 card-shadow grain relative overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-2xl">⌚</span>
             <div>
               <p className="text-sm font-bold text-warm-700">{userProfile.connectedDevice}</p>
-              <p className="text-[10px] text-sage-500 font-bold">Connected</p>
+              <p className="text-[10px] text-forest-500 font-bold">Connected</p>
             </div>
           </div>
           <button
             onClick={() => { setSyncing(true); setTimeout(() => setSyncing(false), 2000) }}
-            className="text-xs text-peach-500 font-bold px-4 py-2 rounded-2xl hover:bg-peach-50 transition-colors btn-press"
+            className="text-xs text-forest-600 font-bold px-4 py-2 rounded-[14px] bg-forest-50 hover:bg-forest-100 transition-colors btn-press"
           >
             {syncing ? '⟳ Syncing...' : 'Sync'}
           </button>
@@ -147,14 +152,14 @@ export default function Profile() {
         <div className="mt-3 flex gap-2">
           {['Apple Watch', 'Fitbit', 'Garmin', 'Phone'].map(d => (
             <span key={d} className={`text-[10px] px-2.5 py-1 rounded-full font-bold ${
-              d === userProfile.connectedDevice ? 'bg-sage-100 text-sage-700' : 'bg-cream-50 text-warm-400'
+              d === userProfile.connectedDevice ? 'bg-forest-100 text-forest-700' : 'bg-cream-50 text-warm-400'
             }`}>{d}</span>
           ))}
         </div>
       </div>
 
       {/* Badges — Trophy Case */}
-      <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+      <div className="bg-white rounded-[22px] p-5 card-shadow grain relative overflow-hidden">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-bold text-warm-700">🎖️ Trophy Case</h3>
           <span className="text-[10px] text-warm-400 font-bold">
@@ -165,8 +170,8 @@ export default function Profile() {
           {userProfile.badges.map(badge => (
             <div
               key={badge.id}
-              className={`text-center p-3 rounded-2xl transition-all ${
-                badge.earned ? 'bg-gradient-to-br from-mustard-50 to-sage-50 card-hover' : 'bg-cream-50 opacity-40 grayscale'
+              className={`text-center p-3 rounded-[16px] transition-all ${
+                badge.earned ? 'bg-gradient-to-br from-mustard-50 to-forest-50 card-hover' : 'bg-cream-50 opacity-40 grayscale'
               }`}
             >
               <span className="text-2xl">{badge.icon}</span>
@@ -177,7 +182,7 @@ export default function Profile() {
       </div>
 
       {/* Settings */}
-      <div className="bg-white rounded-3xl overflow-hidden card-shadow">
+      <div className="bg-white rounded-[22px] overflow-hidden card-shadow">
         {['Account Settings', 'Notifications', 'Privacy', 'Help'].map((item, i) => (
           <button
             key={item}

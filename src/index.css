@@ -1,7 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  /* Sage green primary — calm, nature, wellness */
+  /* ═══ FOREST GREEN — Bold primary brand ═══ */
+  --color-forest-50: #f2f5f0;
+  --color-forest-100: #e1e8dd;
+  --color-forest-200: #c3d1bb;
+  --color-forest-300: #97b08a;
+  --color-forest-400: #6b8f5e;
+  --color-forest-500: #4A6741;
+  --color-forest-600: #3d5636;
+  --color-forest-700: #2f432a;
+  --color-forest-800: #243320;
+  --color-forest-900: #1a2517;
+
+  /* Sage green — secondary calm tone */
   --color-sage-50: #f4f7f1;
   --color-sage-100: #e4ebe0;
   --color-sage-200: #cddac4;
@@ -10,6 +22,7 @@
   --color-sage-500: #6f8d5e;
   --color-sage-600: #577248;
   --color-sage-700: #455b3a;
+
   /* Warm peach accent — energy, warmth, CTAs */
   --color-peach-50: #fff5ee;
   --color-peach-100: #ffe8d6;
@@ -19,6 +32,7 @@
   --color-peach-500: #e07840;
   --color-peach-600: #c45e2c;
   --color-peach-700: #a44a24;
+
   /* Warm mustard — highlights, badges */
   --color-mustard-50: #fdf8eb;
   --color-mustard-100: #f9edd0;
@@ -27,11 +41,13 @@
   --color-mustard-400: #d4a843;
   --color-mustard-500: #c49230;
   --color-mustard-600: #a67524;
+
   /* Cream backgrounds */
   --color-cream-50: #faf6f1;
   --color-cream-100: #f3ede4;
   --color-cream-200: #e8e0d4;
   --color-cream-300: #d9cfc0;
+
   /* Warm neutrals */
   --color-warm-50: #f8f5f0;
   --color-warm-100: #eee9e1;
@@ -43,23 +59,28 @@
   --color-warm-700: #534c46;
   --color-warm-800: #3d3832;
   --color-warm-900: #2a2622;
+
   /* Soft rose for hearts/kudos */
   --color-rose-50: #fef2f2;
   --color-rose-400: #fb7185;
   --color-rose-500: #f43f5e;
+
   /* Sky for info/freezes */
   --color-sky-50: #f0f7ff;
   --color-sky-400: #60a5fa;
   --color-sky-500: #3b82f6;
   --color-sky-600: #2563eb;
+
   /* Lavender for XP/levels */
   --color-lavender-50: #f5f0ff;
   --color-lavender-100: #ebe0ff;
   --color-lavender-400: #a78bfa;
   --color-lavender-500: #8b5cf6;
   --color-lavender-600: #7c3aed;
-  /* Keeping some backward compatibility names */
+
+  /* Backward compat aliases */
   --color-brand-50: #fdf8eb;
+  --color-brand-100: #f9edd0;
   --color-brand-400: #d4a843;
   --color-brand-500: #c49230;
   --color-brand-600: #a67524;
@@ -136,12 +157,12 @@ body {
 }
 .card-hover:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 30px rgba(61, 56, 50, 0.08);
+  box-shadow: 0 8px 30px rgba(74, 103, 65, 0.10);
 }
 
-/* Premium card shadow — warm tinted */
+/* Premium card shadow — warm tinted, pillow-soft */
 .card-shadow {
-  box-shadow: 0 2px 24px rgba(61, 56, 50, 0.06);
+  box-shadow: 0 2px 20px rgba(74, 103, 65, 0.06), 0 1px 4px rgba(61, 56, 50, 0.04);
 }
 
 /* Streak flame animation */
@@ -187,13 +208,42 @@ body {
 
 /* Warm gradient overlays for illustrated sections */
 .warm-glow {
-  background: radial-gradient(ellipse at top right, rgba(238, 148, 96, 0.08), transparent 60%),
-              radial-gradient(ellipse at bottom left, rgba(139, 166, 122, 0.06), transparent 60%);
+  background: radial-gradient(ellipse at top right, rgba(74, 103, 65, 0.06), transparent 60%),
+              radial-gradient(ellipse at bottom left, rgba(238, 148, 96, 0.06), transparent 60%);
 }
 
 /* Day selector active dot */
 .day-active {
-  background: linear-gradient(135deg, #e07840, #ee9460);
+  background: linear-gradient(135deg, #4A6741, #6b8f5e);
   color: white;
-  box-shadow: 0 2px 12px rgba(224, 120, 64, 0.3);
+  box-shadow: 0 2px 12px rgba(74, 103, 65, 0.3);
+}
+
+/* Pulsing glow for active markers */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(74, 103, 65, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(74, 103, 65, 0.5), 0 0 40px rgba(74, 103, 65, 0.2); }
+}
+.animate-glow { animation: glow-pulse 2s ease-in-out infinite; }
+
+/* Leaderboard rank entrance */
+@keyframes rank-slide {
+  from { opacity: 0; transform: translateX(-8px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-rank { animation: rank-slide 0.3s ease-out backwards; }
+
+/* Color block card — no white, full color */
+.color-block {
+  position: relative;
+  overflow: hidden;
+}
+.color-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
 }
