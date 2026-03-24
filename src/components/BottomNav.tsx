@@ -36,7 +36,7 @@ export default function BottomNav() {
                   ) : (
                     <>
                       <Icon size={20} strokeWidth={isActive ? 2.2 : 1.8} fill={isActive ? 'currentColor' : 'none'} />
-                      <span className={`text-[10px] ${isActive ? 'font-semibold' : 'font-medium'}`}>{label}</span>
+                      <span className={`text-xs leading-snug ${isActive ? 'font-semibold' : 'font-medium'}`}>{label}</span>
                       {isActive && <div className="absolute -bottom-0.5 w-4 h-0.5 rounded-full bg-forest-600 animate-pill" />}
                     </>
                   )}

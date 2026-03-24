@@ -77,10 +77,10 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className="text-[44px] font-extrabold text-warm-800 tracking-tight tabular-nums animate-count leading-none">
+        <span className="text-5xl font-bold text-warm-800 tracking-tight tabular-nums animate-count leading-none">
           {displaySteps.toLocaleString()}
         </span>
-        <span className="text-[11px] text-warm-400 font-medium mt-1">of {goal.toLocaleString()} steps</span>
+        <span className="text-xs text-warm-400 font-medium mt-1 leading-snug">of {goal.toLocaleString()} steps</span>
       </div>
     </div>
   )

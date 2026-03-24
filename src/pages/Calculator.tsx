@@ -127,7 +127,7 @@ export default function CalculatorPage() {
             onChange={e => setGoalWeight(Number(e.target.value))}
             className="w-full mt-1.5 accent-brand-500" />
           <p className="text-center text-xl font-bold text-slate-800">{goalWeight} lbs</p>
-          <p className="text-center text-[11px] text-slate-400">Lose {weight - goalWeight} lbs</p>
+          <p className="text-center text-xs text-slate-400 leading-normal">Lose {weight - goalWeight} lbs</p>
         </div>
 
         {/* Activity Level */}
@@ -147,7 +147,7 @@ export default function CalculatorPage() {
                   }`}
                 >
                   <p className={`text-sm font-semibold ${activity === key ? 'text-brand-700' : 'text-slate-600'}`}>{cfg.label}</p>
-                  <p className="text-[11px] text-slate-400">{cfg.desc}</p>
+                  <p className="text-xs text-slate-400 leading-normal">{cfg.desc}</p>
                 </button>
               )
             })}
@@ -172,7 +172,7 @@ export default function CalculatorPage() {
                 >
                   <span className="text-xl">{cfg.emoji}</span>
                   <p className={`text-xs font-semibold mt-1 ${intensity === key ? 'text-brand-700' : 'text-slate-600'}`}>{cfg.label}</p>
-                  <p className="text-[10px] text-slate-400">{cfg.lbsPerWeek} lb/wk</p>
+                  <p className="text-xs text-slate-400 leading-tight">{cfg.lbsPerWeek} lb/wk</p>
                 </button>
               )
             })}
@@ -193,26 +193,26 @@ export default function CalculatorPage() {
           <div className="text-center">
             <TrendingDown size={24} className="text-brand-500 mx-auto mb-1" />
             <p className="text-xs text-slate-400">Your daily step goal</p>
-            <p className="text-4xl font-extrabold text-brand-600 mt-1 tracking-tight">{results.dailySteps.toLocaleString()}</p>
+            <p className="text-4xl font-bold text-brand-600 mt-1 tracking-tight">{results.dailySteps.toLocaleString()}</p>
             <p className="text-xs text-slate-400">steps per day</p>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-slate-50 rounded-lg p-3 text-center">
               <p className="text-lg font-bold text-slate-800">{results.bmr}</p>
-              <p className="text-[10px] text-slate-400">BMR (cal/day)</p>
+              <p className="text-xs text-slate-400 leading-tight">BMR (cal/day)</p>
             </div>
             <div className="bg-slate-50 rounded-lg p-3 text-center">
               <p className="text-lg font-bold text-slate-800">{results.tdee}</p>
-              <p className="text-[10px] text-slate-400">TDEE (cal/day)</p>
+              <p className="text-xs text-slate-400 leading-tight">TDEE (cal/day)</p>
             </div>
             <div className="bg-slate-50 rounded-lg p-3 text-center">
               <p className="text-lg font-bold text-slate-800">{results.calorieDeficit}</p>
-              <p className="text-[10px] text-slate-400">deficit needed</p>
+              <p className="text-xs text-slate-400 leading-tight">deficit needed</p>
             </div>
             <div className="bg-slate-50 rounded-lg p-3 text-center">
               <p className="text-lg font-bold text-slate-800">{results.weeksToGoal} wks</p>
-              <p className="text-[10px] text-slate-400">to {goalWeight} lbs</p>
+              <p className="text-xs text-slate-400 leading-tight">to {goalWeight} lbs</p>
             </div>
           </div>
 
@@ -220,7 +220,7 @@ export default function CalculatorPage() {
             🎯 Set as My Daily Goal
           </button>
 
-          <div className="flex items-start gap-2 p-2.5 bg-sky-50 rounded-lg text-[11px] text-sky-700">
+          <div className="flex items-start gap-2 p-2.5 bg-sky-50 rounded-lg text-xs text-sky-700 leading-relaxed">
             <Info size={12} className="shrink-0 mt-0.5" />
             <p>Uses the Mifflin-St Jeor equation for BMR with activity multipliers for TDEE. This is an estimate — consult a healthcare provider before starting any weight loss program.</p>
           </div>

@@ -72,9 +72,9 @@ export default function ProgressPath({ lifetimeMiles, dark = false }: ProgressPa
       </svg>
 
       <div className="flex items-center justify-between mt-1 px-1">
-        <span className={`text-[10px] font-bold ${textPrimary}`}>{current.title}</span>
-        <span className={`text-[10px] font-bold tabular-nums ${textAccent}`}>{lifetimeMiles.toLocaleString()} mi</span>
-        {next && <span className={`text-[10px] font-bold ${textSecondary}`}>{next.title}</span>}
+        <span className={`text-xs font-bold leading-snug ${textPrimary}`}>{current.title}</span>
+        <span className={`text-xs font-bold leading-snug tabular-nums ${textAccent}`}>{lifetimeMiles.toLocaleString()} mi</span>
+        {next && <span className={`text-xs font-bold leading-snug ${textSecondary}`}>{next.title}</span>}
       </div>
     </div>
   )

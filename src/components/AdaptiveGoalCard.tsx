@@ -18,7 +18,7 @@ export default function AdaptiveGoalCard() {
         <h3 className="text-sm font-bold text-warm-700 flex items-center gap-1.5">
           <TargetIcon size={14} /> Adaptive Goal
         </h3>
-        <span className="text-[10px] font-medium text-forest-600 bg-forest-50 px-2 py-1 rounded-full">
+        <span className="text-xs font-medium text-forest-600 bg-forest-50 px-2 py-1 rounded-full leading-snug">
           Week {adaptiveGoal.weekNumber}
         </span>
       </div>
@@ -26,21 +26,21 @@ export default function AdaptiveGoalCard() {
       <div className="flex items-baseline gap-2">
         <span className="text-2xl font-bold text-warm-800 tabular-nums leading-none">{adaptiveGoal.currentGoal.toLocaleString()}</span>
         <span className="text-xs text-warm-400 font-medium">steps/day</span>
-        <span className="text-[10px] font-medium text-forest-600 ml-auto bg-forest-50 px-2 py-0.5 rounded-full">+{improvement}%</span>
+        <span className="text-xs font-medium text-forest-600 ml-auto bg-forest-50 px-2 py-0.5 rounded-full leading-snug">+{improvement}%</span>
       </div>
 
       <div className="flex gap-2 text-center">
         <div className="flex-1 bg-cream-50 rounded-xl py-2.5">
           <p className="text-sm font-bold text-warm-600 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
-          <p className="text-[10px] text-warm-400 font-medium">Baseline</p>
+          <p className="text-xs text-warm-400 font-medium leading-snug">Baseline</p>
         </div>
         <div className="flex-1 bg-forest-50 rounded-xl py-2.5">
           <p className="text-sm font-bold text-forest-700 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</p>
-          <p className="text-[10px] text-forest-500 font-medium">Current</p>
+          <p className="text-xs text-forest-500 font-medium leading-snug">Current</p>
         </div>
         <div className="flex-1 bg-cream-50 rounded-xl py-2.5">
           <p className="text-sm font-bold text-warm-600 tabular-nums">10,000</p>
-          <p className="text-[10px] text-warm-400 font-medium">Target</p>
+          <p className="text-xs text-warm-400 font-medium leading-snug">Target</p>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export default function AdaptiveGoalCard() {
         </AreaChart>
       </ResponsiveContainer>
 
-      <p className="text-[10px] text-warm-400 text-center font-medium flex items-center justify-center gap-1">
+      <p className="text-xs text-warm-400 text-center font-medium flex items-center justify-center gap-1 leading-normal">
         <TrendUpIcon size={12} /> Avg steps vs. goal · <span className="text-mustard-500 font-medium">7,500 = health zone</span>
       </p>
     </div>

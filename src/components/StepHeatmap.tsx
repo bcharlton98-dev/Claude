@@ -50,7 +50,7 @@ export default function StepHeatmap() {
       {/* Day labels */}
       <div className="flex gap-[2px] mb-0.5 ml-0">
         {dayLabels.map((d, i) => (
-          <div key={i} className="flex-1 text-center text-[7px] font-bold text-warm-400">{d}</div>
+          <div key={i} className="flex-1 text-center text-xs font-bold text-warm-400 leading-snug">{d}</div>
         ))}
       </div>
       {/* Grid — compact dense */}
@@ -70,11 +70,11 @@ export default function StepHeatmap() {
       </div>
       {/* Legend */}
       <div className="flex items-center justify-end gap-0.5 mt-1.5">
-        <span className="text-[7px] text-warm-400 font-medium mr-0.5">Less</span>
+        <span className="text-xs text-warm-400 font-medium mr-0.5 leading-snug">Less</span>
         {INTENSITY_COLORS.map((c, i) => (
           <div key={i} className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
         ))}
-        <span className="text-[7px] text-warm-400 font-medium ml-0.5">More</span>
+        <span className="text-xs text-warm-400 font-medium ml-0.5 leading-snug">More</span>
       </div>
     </div>
   )

@@ -474,8 +474,8 @@ export default function QuestMap({ challenge }: { challenge: Challenge }) {
       {/* Progress footer — forest green */}
       <div className="px-4 py-3 bg-white border-t border-cream-100">
         <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[11px] font-bold text-forest-600">{Math.round(pct)}% complete</span>
-          <span className="text-[11px] text-warm-400 font-medium">
+          <span className="text-xs font-bold text-forest-600 leading-snug">{Math.round(pct)}% complete</span>
+          <span className="text-xs text-warm-400 font-medium leading-snug">
             {(dist - progress).toLocaleString()} mi remaining
           </span>
         </div>

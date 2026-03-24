@@ -31,7 +31,7 @@ function ChallengeCard({ challenge, onClick }: { challenge: Challenge; onClick: 
     <button onClick={onClick} className="w-full rounded-2xl overflow-hidden bg-white card-shadow btn-press text-left">
       <div className={`${thumb.bg} px-4 py-3 edge-highlight`}>
         <p className="text-white text-sm font-bold leading-tight">{challenge.name}</p>
-        <p className="text-white/50 text-[10px] font-medium mt-0.5">{typeLabels[challenge.type]}</p>
+        <p className="text-white/50 text-xs font-medium mt-0.5 leading-normal">{typeLabels[challenge.type]}</p>
       </div>
       <div className="px-4 py-3">
         <div className="flex items-center justify-between">
@@ -40,7 +40,7 @@ function ChallengeCard({ challenge, onClick }: { challenge: Challenge; onClick: 
             <span className="text-xs text-warm-500 font-medium">{challenge.participants.length} participants</span>
           </div>
           {yourRank > 0 && (
-            <span className="text-[10px] font-bold text-forest-600 bg-forest-50 px-2 py-0.5 rounded-full">#{yourRank}</span>
+            <span className="text-xs font-bold text-forest-600 bg-forest-50 px-2 py-0.5 rounded-full leading-tight">#{yourRank}</span>
           )}
         </div>
         {pct !== null && (
@@ -48,7 +48,7 @@ function ChallengeCard({ challenge, onClick }: { challenge: Challenge; onClick: 
             <div className="h-full bg-forest-500 rounded-full" style={{ width: `${pct}%` }} />
           </div>
         )}
-        <p className="text-[10px] text-warm-300 font-medium mt-2">
+        <p className="text-xs text-warm-300 font-medium mt-2 leading-normal">
           {new Date(challenge.startDate).toLocaleDateString()} — {new Date(challenge.endDate).toLocaleDateString()}
         </p>
       </div>
@@ -98,7 +98,7 @@ export default function Challenges() {
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-center">
                   <p className={`font-semibold text-sm ${q.completed ? 'line-through text-warm-400' : 'text-warm-700'}`}>{q.title}</p>
-                  <span className="text-[10px] text-forest-600 font-bold bg-forest-50 px-2 py-0.5 rounded-full">+{q.qpReward}</span>
+                  <span className="text-xs text-forest-600 font-bold bg-forest-50 px-2 py-0.5 rounded-full leading-tight">+{q.qpReward}</span>
                 </div>
                 {!q.completed && (
                   <div className="mt-2 h-1.5 bg-forest-100 rounded-full overflow-hidden">
@@ -127,7 +127,7 @@ export default function Challenges() {
             >
               {t.label}
               {t.count !== undefined && t.count > 0 && (
-                <span className={`ml-1 text-[10px] ${tab === t.key ? 'text-forest-500' : 'text-warm-300'}`}>{t.count}</span>
+                <span className={`ml-1 text-xs ${tab === t.key ? 'text-forest-500' : 'text-warm-300'}`}>{t.count}</span>
               )}
             </button>
           ))}

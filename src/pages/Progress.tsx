@@ -20,7 +20,7 @@ export default function Progress() {
 
       {/* Week — tonal cream band for visual break */}
       <div className="-mx-5 px-5 py-6 mt-6 bg-cream-100">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">This Week</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">This Week</p>
         <div className="bg-white rounded-2xl p-4 card-shadow">
           <ResponsiveContainer width="100%" height={130}>
             <BarChart data={weeklyStepData} barCategoryGap="18%">
@@ -35,9 +35,9 @@ export default function Progress() {
             </BarChart>
           </ResponsiveContainer>
           <div className="flex justify-center gap-5 mt-2">
-            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-forest-500 inline-block" /> Goal</span>
-            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-olive-400 inline-block" /> Health zone</span>
-            <span className="text-[10px] text-warm-400 font-medium flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-cream-300 inline-block" /> Below</span>
+            <span className="text-xs text-warm-400 font-medium leading-tight flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-forest-500 inline-block" /> Goal</span>
+            <span className="text-xs text-warm-400 font-medium leading-tight flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-olive-400 inline-block" /> Health zone</span>
+            <span className="text-xs text-warm-400 font-medium leading-tight flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-cream-300 inline-block" /> Below</span>
           </div>
         </div>
 
@@ -45,7 +45,7 @@ export default function Progress() {
         <div className="bg-white rounded-2xl card-shadow p-4 mt-3">
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm font-bold text-warm-700">Last 28 Days</p>
-            <p className="text-[10px] text-warm-400 font-medium">step intensity</p>
+            <p className="text-xs text-warm-400 font-medium leading-tight">step intensity</p>
           </div>
           <StepHeatmap />
         </div>
@@ -53,13 +53,13 @@ export default function Progress() {
 
       {/* Goals — back to page bg */}
       <div className="mt-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Goals</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Goals</p>
         <AdaptiveGoalCard />
       </div>
 
       {/* Title — dark card block for contrast */}
       <div className="mt-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Title</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Title</p>
         <div className="bg-forest-600 rounded-2xl p-4 shadow-forest edge-highlight">
           <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} dark />
         </div>
@@ -68,7 +68,7 @@ export default function Progress() {
       {/* Habits */}
       {activeStacks.length > 0 && (
         <div className="mt-6">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Habits</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Habits</p>
           <div className="bg-white rounded-2xl p-4 card-shadow">
             <h2 className="text-sm font-bold text-warm-700 mb-3 flex items-center gap-1.5">
               <LinkIcon size={14} /> Habit Stacks

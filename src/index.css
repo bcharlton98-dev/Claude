@@ -157,3 +157,14 @@ body {
 /* Hue-matched shadows for colored cards */
 .shadow-forest { box-shadow: 0 2px 8px rgba(45,94,59,0.15), 0 8px 24px rgba(45,94,59,0.1); }
 .shadow-ember { box-shadow: 0 2px 8px rgba(190,115,57,0.2), 0 8px 20px rgba(190,115,57,0.12); }
+
+/* ── Accessibility: respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .btn-press,
+  .card-hover,
+  .animate-rank,
+  .animate-pill {
+    animation: none;
+    transition: none;
+  }
+}

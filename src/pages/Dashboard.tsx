@@ -84,7 +84,7 @@ export default function Dashboard() {
         {/* Step count + ring — big, white on green */}
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-[72px] font-bold text-white tabular-nums leading-none tracking-tighter block">
+            <span className="text-7xl font-bold text-white tabular-nums leading-none tracking-tighter block">
               {todayStats.steps.toLocaleString()}
             </span>
             <div className="flex items-center gap-4 mt-2">
@@ -103,12 +103,12 @@ export default function Dashboard() {
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-2xl font-bold text-white tabular-nums">{goalPct}%</span>
-              <span className="text-[9px] text-white/50 font-medium">goal</span>
+              <span className="text-xs text-white/50 font-medium leading-tight">goal</span>
             </div>
           </div>
         </div>
 
-        {terrain.label && <p className="text-white/25 text-[10px] font-medium mt-3">{terrain.label}</p>}
+        {terrain.label && <p className="text-white/25 text-xs font-medium mt-3 leading-normal">{terrain.label}</p>}
       </div>
 
       {/* ══ ZONE + STATS — overlapping cards that bridge header and body ══ */}
@@ -128,12 +128,12 @@ export default function Dashboard() {
         <div className="bg-forest-600 rounded-2xl p-5 shadow-forest edge-highlight">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[28px] font-bold text-white leading-none tracking-tight">{titleInfo.current.title}</p>
+              <p className="text-3xl font-bold text-white leading-none tracking-tight">{titleInfo.current.title}</p>
               <p className="text-xs text-white/50 font-medium mt-1">{userProfile.lifetimeMiles.toLocaleString()} lifetime miles</p>
             </div>
             <div className="text-right">
               <p className="text-lg font-bold text-gold-300 tabular-nums">+{todayStats.qpEarned}</p>
-              <p className="text-[10px] text-white/40 font-medium">QP today</p>
+              <p className="text-xs text-white/40 font-medium leading-tight">QP today</p>
             </div>
           </div>
           {titleInfo.next && (
@@ -145,8 +145,8 @@ export default function Dashboard() {
                 }} />
               </div>
               <div className="flex justify-between mt-1.5">
-                <span className="text-[10px] text-white/40 font-medium">{titleInfo.current.title}</span>
-                <span className="text-[10px] text-gold-300 font-medium">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</span>
+                <span className="text-xs text-white/40 font-medium leading-tight">{titleInfo.current.title}</span>
+                <span className="text-xs text-gold-300 font-medium leading-tight">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</span>
               </div>
             </div>
           )}
@@ -166,7 +166,7 @@ export default function Dashboard() {
 
       {/* ══ JOURNEY — tonal cream background to break up the white ══ */}
       <div className="mt-6 -mx-5 px-5 py-6 bg-cream-100">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Journey</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Journey</p>
 
         <div className="bg-white rounded-2xl card-shadow p-4">
           <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
@@ -190,13 +190,13 @@ export default function Dashboard() {
 
       {/* ══ FRIENDS — back to page bg ══ */}
       <div className="mt-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Friends</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Friends</p>
 
         {/* Dark leaderboard — forest background, not white */}
         <div className="bg-forest-600 rounded-2xl overflow-hidden shadow-forest">
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
             <p className="text-sm font-bold text-white">Today's Steps</p>
-            <p className="text-[10px] text-white/40 font-medium">{friends.length} friends</p>
+            <p className="text-xs text-white/40 font-medium leading-tight">{friends.length} friends</p>
           </div>
           <div>
             {[...friends].sort((a, b) => b.stepsToday - a.stepsToday).map((f, i) => (
@@ -205,9 +205,9 @@ export default function Dashboard() {
                 <AvatarCircle name={f.name} size={28} />
                 <div className="flex-1 min-w-0">
                   <p className={`text-sm font-semibold leading-tight ${f.isYou ? 'text-white' : 'text-white/80'}`}>
-                    {f.name} {f.isYou && <span className="text-[10px] text-white/40 font-medium">(you)</span>}
+                    {f.name} {f.isYou && <span className="text-xs text-white/40 font-medium">(you)</span>}
                   </p>
-                  <span className="text-[10px] text-white/30 font-medium flex items-center gap-1">
+                  <span className="text-xs text-white/30 font-medium flex items-center gap-1 leading-tight">
                     <FlameIcon size={10} /> {f.streak}d
                   </span>
                 </div>

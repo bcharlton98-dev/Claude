@@ -174,7 +174,7 @@ export function RankCircle({ rank, size = 28 }: { rank: number; size?: number })
   const c = colors[rank] || { bg: '#E5E0D8', text: '#6e655e' }
   return (
     <div
-      className="rounded-full flex items-center justify-center font-extrabold shrink-0"
+      className="rounded-full flex items-center justify-center font-bold shrink-0"
       style={{ width: size, height: size, backgroundColor: c.bg, color: c.text, fontSize: size * 0.4 }}
     >
       {rank}

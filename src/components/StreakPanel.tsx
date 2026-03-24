@@ -42,7 +42,7 @@ export default function StreakPanel() {
                       style={{ width: `${Math.min(((userProfile.streak - (streakMilestones[i - 1]?.days || 0)) / (m.days - (streakMilestones[i - 1]?.days || 0))) * 100, 100)}%` }} />
                   )}
                 </div>
-                <span className={`text-[10px] font-medium ${m.reached ? 'text-forest-600' : 'text-warm-300'}`}>{m.days}d</span>
+                <span className={`text-xs font-medium leading-snug ${m.reached ? 'text-forest-600' : 'text-warm-300'}`}>{m.days}d</span>
               </div>
             )
           })}
@@ -54,7 +54,7 @@ export default function StreakPanel() {
               <BadgeIcon icon={nextMilestone.icon} size={20} color="#9E9284" />
               <div>
                 <p className="text-xs font-bold text-warm-700">{nextMilestone.label}</p>
-                <p className="text-[10px] text-warm-400 font-medium">{daysToNext} days to go · {nextMilestone.reward}</p>
+                <p className="text-xs text-warm-400 font-medium leading-normal">{daysToNext} days to go · {nextMilestone.reward}</p>
               </div>
             </div>
             <span className="text-xs font-bold text-warm-500 bg-cream-200 px-2 py-1 rounded-lg">{nextMilestone.days}d</span>

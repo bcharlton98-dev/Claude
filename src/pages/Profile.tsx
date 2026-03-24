@@ -26,13 +26,13 @@ export default function Profile() {
       <div className="grid grid-cols-2 gap-3 -mt-8">
         <div className="bg-white rounded-2xl p-4 text-center card-elevated">
           <p className="text-2xl font-bold text-warm-800 tabular-nums">{userProfile.lifetimeMiles.toLocaleString()}</p>
-          <p className="text-[10px] text-warm-400 font-medium mt-1">Lifetime Miles</p>
+          <p className="text-xs text-warm-400 font-medium mt-1 leading-tight">Lifetime Miles</p>
         </div>
         <div className="bg-white rounded-2xl p-4 text-center card-elevated">
           <p className="text-2xl font-bold text-warm-800 tabular-nums flex items-center justify-center gap-1">
             <FlameIcon size={20} /> {userProfile.longestStreak}
           </p>
-          <p className="text-[10px] text-warm-400 font-medium mt-1">Best Streak</p>
+          <p className="text-xs text-warm-400 font-medium mt-1 leading-tight">Best Streak</p>
         </div>
       </div>
 
@@ -40,21 +40,21 @@ export default function Profile() {
       <div className="flex gap-3 mt-3">
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
           <FlameIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">{userProfile.streak}d</span>
-          <span className="text-[10px] text-warm-500 font-medium">streak</span>
+          <span className="text-xs text-warm-500 font-medium leading-tight">streak</span>
         </div>
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
           <GemIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">{userProfile.gems}</span>
-          <span className="text-[10px] text-warm-500 font-medium">gems</span>
+          <span className="text-xs text-warm-500 font-medium leading-tight">gems</span>
         </div>
         <div className="flex-1 bg-cream-200 rounded-xl px-3 py-2.5 flex items-center gap-2">
           <TrophyIcon size={14} /><span className="text-xs font-bold text-warm-700 tabular-nums">#{userProfile.leagueRank}</span>
-          <span className="text-[10px] text-warm-500 font-medium">{userProfile.league}</span>
+          <span className="text-xs text-warm-500 font-medium leading-tight">{userProfile.league}</span>
         </div>
       </div>
 
       {/* Walking Title — cream band */}
       <div className="-mx-5 px-5 py-5 mt-6 bg-cream-100">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Title</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Title</p>
         <div className="bg-white rounded-2xl p-4 card-shadow">
           <QPBar lifetimeMiles={userProfile.lifetimeMiles} />
         </div>
@@ -62,7 +62,7 @@ export default function Profile() {
 
       {/* Milestones — dark card for contrast */}
       <div className="mt-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Milestones</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Milestones</p>
         <div className="bg-forest-600 rounded-2xl p-4 shadow-forest edge-highlight">
           <div className="flex items-center gap-1.5 mb-3">
             <FlameIcon size={14} />
@@ -74,7 +74,7 @@ export default function Profile() {
                 <BadgeIcon icon={m.icon} size={20} color={m.reached ? '#a4b47a' : '#ffffff40'} />
                 <div className="flex-1">
                   <p className={`text-xs font-semibold ${m.reached ? 'text-white' : 'text-white/30'}`}>{m.label}</p>
-                  <p className="text-[10px] text-white/30 font-medium">{m.days}d · {m.reward}</p>
+                  <p className="text-xs text-white/30 font-medium leading-normal">{m.days}d · {m.reward}</p>
                 </div>
                 {m.reached && <CheckIcon size={14} />}
               </div>
@@ -85,7 +85,7 @@ export default function Profile() {
 
       {/* Goal Journey */}
       <div className="mt-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Goal</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Goal</p>
         <div className="bg-white rounded-2xl p-4 card-shadow">
           <div className="flex items-center gap-1.5 mb-3">
             <TargetIcon size={14} />
@@ -93,15 +93,15 @@ export default function Profile() {
           </div>
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-[10px] text-warm-400 font-medium">Started at</p>
+              <p className="text-xs text-warm-400 font-medium leading-tight">Started at</p>
               <p className="text-base font-bold text-warm-700 tabular-nums">{adaptiveGoal.baseline.toLocaleString()}</p>
             </div>
             <div className="text-center">
-              <p className="text-[10px] text-warm-400 font-medium">Current</p>
+              <p className="text-xs text-warm-400 font-medium leading-tight">Current</p>
               <p className="text-base font-bold text-forest-600 tabular-nums">{adaptiveGoal.currentGoal.toLocaleString()}</p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] text-warm-400 font-medium">Target</p>
+              <p className="text-xs text-warm-400 font-medium leading-tight">Target</p>
               <p className="text-base font-bold text-warm-700 tabular-nums">10,000</p>
             </div>
           </div>
@@ -114,22 +114,22 @@ export default function Profile() {
 
       {/* League — cream band */}
       <div className="-mx-5 px-5 py-5 mt-6 bg-cream-100">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">League</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">League</p>
         <div className="bg-white rounded-2xl p-4 card-shadow">
           <div className="flex gap-1.5">
             {weeklyLeagues.map((league, i) => (
-              <div key={league.name} className={`flex-1 text-center py-2 rounded-xl text-[10px] font-semibold ${
+              <div key={league.name} className={`flex-1 text-center py-2 rounded-xl text-xs font-semibold ${
                 i === currentLeagueIdx ? 'ring-2 ring-forest-500 bg-forest-50 text-forest-700'
                   : i < currentLeagueIdx ? 'bg-cream-200 text-warm-600' : 'bg-cream-100 text-warm-300'
               }`}>
-                <div className="w-5 h-5 rounded-full mx-auto flex items-center justify-center text-[9px] font-bold text-white" style={{ backgroundColor: league.color }}>
+                <div className="w-5 h-5 rounded-full mx-auto flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: league.color }}>
                   {league.icon}
                 </div>
                 <p className="mt-0.5">{league.name}</p>
               </div>
             ))}
           </div>
-          <p className="text-[10px] text-warm-400 mt-3 text-center font-medium">
+          <p className="text-xs text-warm-400 mt-3 text-center font-medium leading-normal">
             #{userProfile.leagueRank} in {userProfile.league} · {userProfile.qp.toLocaleString()} QP
           </p>
         </div>
@@ -137,13 +137,13 @@ export default function Profile() {
 
       {/* Trophy Case — dark for drama */}
       <div className="mt-6">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-warm-400 mb-3">Trophies</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-warm-400 mb-3">Trophies</p>
         <div className="bg-warm-800 rounded-2xl p-4 edge-highlight" style={{ boxShadow: '0 2px 8px rgba(53,45,36,0.2)' }}>
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
               <TrophyIcon size={14} /> Trophy Case
             </h3>
-            <span className="text-[10px] text-white/40 font-medium">
+            <span className="text-xs text-white/40 font-medium leading-tight">
               {userProfile.badges.filter(b => b.earned).length}/{userProfile.badges.length}
             </span>
           </div>
@@ -153,7 +153,7 @@ export default function Profile() {
                 badge.earned ? 'bg-white/10' : 'bg-white/5 opacity-40'
               }`}>
                 <BadgeIcon icon={badge.icon} size={24} color={badge.earned ? '#D4A050' : '#ffffff30'} />
-                <p className={`text-[10px] font-semibold mt-1 leading-tight ${badge.earned ? 'text-white/80' : 'text-white/20'}`}>{badge.name}</p>
+                <p className={`text-xs font-semibold mt-1 leading-tight ${badge.earned ? 'text-white/80' : 'text-white/20'}`}>{badge.name}</p>
               </div>
             ))}
           </div>
@@ -171,7 +171,7 @@ export default function Profile() {
               </svg>
               <div>
                 <p className="text-sm font-semibold text-warm-700">{userProfile.connectedDevice}</p>
-                <p className="text-[10px] text-forest-500 font-medium">Connected</p>
+                <p className="text-xs text-forest-500 font-medium leading-tight">Connected</p>
               </div>
             </div>
             <button onClick={() => { setSyncing(true); setTimeout(() => setSyncing(false), 2000) }}

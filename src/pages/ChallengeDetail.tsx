@@ -28,7 +28,7 @@ function KudosButton({ participant, onKudos }: { participant: Participant; onKud
     <button
       onClick={() => { if (!hasGiven && !participant.isYou) { setJustGave(true); onKudos() } }}
       disabled={participant.isYou}
-      className={`flex items-center gap-0.5 px-2 py-1 rounded-full text-[10px] font-medium transition-all btn-press ${
+      className={`flex items-center gap-0.5 px-2 py-1 rounded-full text-xs font-medium transition-all btn-press ${
         participant.isYou ? 'bg-cream-100 text-warm-300'
           : hasGiven ? 'bg-rose-50 text-rose-500'
           : 'bg-cream-100 text-warm-400 hover:bg-rose-50 hover:text-rose-500'
@@ -57,7 +57,7 @@ function Leaderboard({ participants, sortBy = 'steps' }: { participants: Partici
               {p.name} {p.isYou && <span className="text-warm-400">(You)</span>}
             </span>
             {p.streak > 0 && (
-              <span className="text-[10px] text-warm-400 font-medium flex items-center gap-0.5">
+              <span className="text-xs text-warm-400 font-medium flex items-center gap-0.5 leading-tight">
                 <FlameIcon size={9} /> {p.streak}d
               </span>
             )}
