@@ -35,13 +35,13 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f59e0b" />
-            <stop offset="50%" stopColor="#14b8a6" />
-            <stop offset="100%" stopColor="#0d9488" />
+            <stop offset="0%" stopColor="#8ba67a" />
+            <stop offset="50%" stopColor="#6f8d5e" />
+            <stop offset="100%" stopColor="#577248" />
           </linearGradient>
           <linearGradient id="ringGradComplete" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#f59e0b" />
-            <stop offset="100%" stopColor="#f97316" />
+            <stop offset="0%" stopColor="#ee9460" />
+            <stop offset="100%" stopColor="#e07840" />
           </linearGradient>
         </defs>
         {/* Background track */}
@@ -50,7 +50,7 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#f0e4d4"
+          stroke="#e8e0d4"
           strokeWidth={strokeWidth}
         />
         {/* Progress arc */}
@@ -68,10 +68,10 @@ export default function StepRing({ current, goal, size = 180, strokeWidth = 12 }
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className="text-4xl font-extrabold text-slate-800 tracking-tight tabular-nums animate-count">
+        <span className="text-4xl font-extrabold text-warm-800 tracking-tight tabular-nums animate-count">
           {displaySteps.toLocaleString()}
         </span>
-        <span className="text-xs text-slate-400 font-medium mt-0.5">of {goal.toLocaleString()} steps</span>
+        <span className="text-xs text-warm-400 font-medium mt-0.5">of {goal.toLocaleString()} steps</span>
       </div>
     </div>
   )

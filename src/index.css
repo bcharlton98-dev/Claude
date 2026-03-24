@@ -1,67 +1,98 @@
 @import "tailwindcss";
 
 @theme {
-  /* Warm amber primary — trails, sunlight, achievement */
-  --color-brand-50: #fffbeb;
-  --color-brand-100: #fef3c7;
-  --color-brand-200: #fde68a;
-  --color-brand-300: #fcd34d;
-  --color-brand-400: #fbbf24;
-  --color-brand-500: #f59e0b;
-  --color-brand-600: #d97706;
-  --color-brand-700: #b45309;
-  /* Accent teal — nature, health, progress */
-  --color-accent-50: #f0fdfa;
-  --color-accent-100: #ccfbf1;
-  --color-accent-200: #99f6e4;
-  --color-accent-300: #5eead4;
-  --color-accent-400: #2dd4bf;
-  --color-accent-500: #14b8a6;
-  --color-accent-600: #0d9488;
-  --color-accent-700: #0f766e;
-  /* Streak fire */
-  --color-fire-400: #fb923c;
-  --color-fire-500: #f97316;
-  --color-fire-600: #ea580c;
-  /* Achievement gold */
-  --color-gold-400: #fbbf24;
-  --color-gold-500: #f59e0b;
-  /* Royal purple for gems & XP */
-  --color-royal-50: #f5f3ff;
-  --color-royal-100: #ede9fe;
+  /* Sage green primary — calm, nature, wellness */
+  --color-sage-50: #f4f7f1;
+  --color-sage-100: #e4ebe0;
+  --color-sage-200: #cddac4;
+  --color-sage-300: #aec2a0;
+  --color-sage-400: #8ba67a;
+  --color-sage-500: #6f8d5e;
+  --color-sage-600: #577248;
+  --color-sage-700: #455b3a;
+  /* Warm peach accent — energy, warmth, CTAs */
+  --color-peach-50: #fff5ee;
+  --color-peach-100: #ffe8d6;
+  --color-peach-200: #fdd0ad;
+  --color-peach-300: #f5b182;
+  --color-peach-400: #ee9460;
+  --color-peach-500: #e07840;
+  --color-peach-600: #c45e2c;
+  --color-peach-700: #a44a24;
+  /* Warm mustard — highlights, badges */
+  --color-mustard-50: #fdf8eb;
+  --color-mustard-100: #f9edd0;
+  --color-mustard-200: #f3dba1;
+  --color-mustard-300: #e8c36a;
+  --color-mustard-400: #d4a843;
+  --color-mustard-500: #c49230;
+  --color-mustard-600: #a67524;
+  /* Cream backgrounds */
+  --color-cream-50: #faf6f1;
+  --color-cream-100: #f3ede4;
+  --color-cream-200: #e8e0d4;
+  --color-cream-300: #d9cfc0;
+  /* Warm neutrals */
+  --color-warm-50: #f8f5f0;
+  --color-warm-100: #eee9e1;
+  --color-warm-200: #ddd6cb;
+  --color-warm-300: #c4bbb0;
+  --color-warm-400: #a39890;
+  --color-warm-500: #8a8078;
+  --color-warm-600: #6e655e;
+  --color-warm-700: #534c46;
+  --color-warm-800: #3d3832;
+  --color-warm-900: #2a2622;
+  /* Soft rose for hearts/kudos */
+  --color-rose-50: #fef2f2;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+  /* Sky for info/freezes */
+  --color-sky-50: #f0f7ff;
+  --color-sky-400: #60a5fa;
+  --color-sky-500: #3b82f6;
+  --color-sky-600: #2563eb;
+  /* Lavender for XP/levels */
+  --color-lavender-50: #f5f0ff;
+  --color-lavender-100: #ebe0ff;
+  --color-lavender-400: #a78bfa;
+  --color-lavender-500: #8b5cf6;
+  --color-lavender-600: #7c3aed;
+  /* Keeping some backward compatibility names */
+  --color-brand-50: #fdf8eb;
+  --color-brand-400: #d4a843;
+  --color-brand-500: #c49230;
+  --color-brand-600: #a67524;
+  --color-fire-400: #ee9460;
+  --color-fire-500: #e07840;
+  --color-fire-600: #c45e2c;
+  --color-accent-50: #f4f7f1;
+  --color-accent-100: #e4ebe0;
+  --color-accent-200: #cddac4;
+  --color-accent-400: #8ba67a;
+  --color-accent-500: #6f8d5e;
+  --color-accent-600: #577248;
+  --color-accent-700: #455b3a;
+  --color-royal-50: #f5f0ff;
   --color-royal-400: #a78bfa;
   --color-royal-500: #8b5cf6;
   --color-royal-600: #7c3aed;
-  /* Sky for info */
-  --color-sky-400: #38bdf8;
-  --color-sky-500: #0ea5e9;
-  /* Status colors */
-  --color-rose-400: #fb7185;
-  --color-rose-500: #f43f5e;
-  --color-pink-400: #f472b6;
-  --color-pink-500: #ec4899;
-  /* Warm neutrals */
-  --color-sand-50: #fdf8f3;
-  --color-sand-100: #faf0e4;
-  --color-sand-200: #f0e4d4;
-  /* Slate neutrals */
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
+  --color-sand-50: #faf6f1;
+  --color-sand-100: #f3ede4;
+  --color-sand-200: #e8e0d4;
+  --color-slate-300: #c4bbb0;
+  --color-slate-400: #a39890;
+  --color-slate-500: #8a8078;
+  --color-slate-600: #6e655e;
+  --color-slate-700: #534c46;
+  --color-slate-800: #3d3832;
 }
 
 body {
   margin: 0;
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #fdf8f3;
-  color: #1e293b;
+  background: #faf6f1;
+  color: #3d3832;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -78,7 +109,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.03;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   pointer-events: none;
   border-radius: inherit;
@@ -105,12 +136,12 @@ body {
 }
 .card-hover:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 30px rgba(61, 56, 50, 0.08);
 }
 
-/* Premium card shadow */
+/* Premium card shadow — warm tinted */
 .card-shadow {
-  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 24px rgba(61, 56, 50, 0.06);
 }
 
 /* Streak flame animation */
@@ -121,12 +152,6 @@ body {
   75% { transform: scaleY(1.05) scaleX(0.97); }
 }
 .animate-flame { animation: flame 1.5s ease-in-out infinite; }
-
-/* Confetti burst */
-@keyframes confetti-fall {
-  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(60px) rotate(360deg); opacity: 0; }
-}
 
 /* Pill slide indicator */
 @keyframes pill-slide {
@@ -142,3 +167,33 @@ body {
   100% { transform: scale(1); }
 }
 .animate-ring-complete { animation: ring-complete 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Illustrated card backgrounds */
+.card-illustrated {
+  position: relative;
+  overflow: hidden;
+}
+.card-illustrated::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Warm gradient overlays for illustrated sections */
+.warm-glow {
+  background: radial-gradient(ellipse at top right, rgba(238, 148, 96, 0.08), transparent 60%),
+              radial-gradient(ellipse at bottom left, rgba(139, 166, 122, 0.06), transparent 60%);
+}
+
+/* Day selector active dot */
+.day-active {
+  background: linear-gradient(135deg, #e07840, #ee9460);
+  color: white;
+  box-shadow: 0 2px 12px rgba(224, 120, 64, 0.3);
+}
