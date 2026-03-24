@@ -17,10 +17,10 @@ function getGreeting(): string {
 
 function getMotivation(steps: number, goal: number): string {
   const pct = steps / goal
-  if (pct >= 1) return "You crushed it! You're a walker. 🎉"
-  if (steps >= HEALTH_ZONE) return "You've hit the health zone! Keep going."
+  if (pct >= 1) return "You crushed it today! 🎉"
+  if (steps >= HEALTH_ZONE) return "Health zone reached! Keep going."
   if (pct >= 0.5) return "Over halfway — you've got this."
-  return "Every step counts. Let's build that habit."
+  return "Every step counts. Let's go."
 }
 
 export default function Dashboard() {
@@ -29,149 +29,148 @@ export default function Dashboard() {
   const activeStacks = habitStacks.filter(h => h.active)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-bold text-slate-800 tracking-tight">Walk Quest</h1>
-          <p className="text-xs text-slate-400">{getGreeting()}, {userProfile.name.split(' ')[0]}</p>
+          <h1 className="text-2xl font-extrabold text-slate-800 tracking-tight">Walk Quest</h1>
+          <p className="text-sm text-slate-400 font-medium">{getGreeting()}, {userProfile.name.split(' ')[0]}</p>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="flex items-center gap-1 bg-fire-500/10 text-fire-500 px-2 py-1 rounded-full text-xs font-bold">
-            🔥 {userProfile.streak}
+          <span className="flex items-center gap-1 bg-fire-500/10 text-fire-500 px-2.5 py-1.5 rounded-2xl text-xs font-extrabold btn-press">
+            <span className="animate-flame inline-block text-sm">🔥</span> {userProfile.streak}
           </span>
-          <span className="flex items-center gap-1 bg-sky-400/10 text-sky-500 px-2 py-1 rounded-full text-xs font-bold">
-            🧊 {userProfile.streakFreezes}
-          </span>
-          <span className="flex items-center gap-1 bg-royal-500/10 text-royal-500 px-2 py-1 rounded-full text-xs font-bold">
+          <span className="flex items-center gap-1 bg-royal-50 text-royal-500 px-2.5 py-1.5 rounded-2xl text-xs font-extrabold btn-press">
             💎 {userProfile.gems}
           </span>
         </div>
       </div>
 
-      {/* Step Ring */}
-      <div className="bg-white rounded-2xl p-5 flex flex-col items-center">
+      {/* Step Ring — Hero Card */}
+      <div className="bg-white rounded-3xl p-6 card-shadow relative overflow-hidden grain flex flex-col items-center">
+        {/* Subtle top accent */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-400 via-accent-400 to-accent-500" />
         <StepRing current={todayStats.steps} goal={todayStats.goal} />
         {stepsToGo > 0 ? (
-          <p className="text-xs text-slate-400 mt-2">
-            <span className="font-bold text-brand-600">{stepsToGo.toLocaleString()}</span> steps to go
+          <p className="text-sm text-slate-400 mt-3 font-medium">
+            <span className="font-extrabold text-accent-600 tabular-nums">{stepsToGo.toLocaleString()}</span> steps to go
           </p>
         ) : (
-          <p className="text-xs text-brand-600 font-bold mt-2">Goal complete! 🎉</p>
+          <p className="text-sm text-brand-600 font-extrabold mt-3">Goal complete! 🎉</p>
         )}
-        <p className="text-[11px] text-slate-400 mt-1">{getMotivation(todayStats.steps, todayStats.goal)}</p>
+        <p className="text-xs text-slate-400 mt-1">{getMotivation(todayStats.steps, todayStats.goal)}</p>
 
-        {/* 7,500 Health Zone Indicator */}
+        {/* Health Zone Badge */}
         {hitHealthZone && (
-          <div className="mt-2 flex items-center gap-1.5 bg-gold-400/10 px-3 py-1.5 rounded-full">
-            <span className="text-xs">✨</span>
-            <span className="text-[11px] font-semibold text-gold-500">Health Zone reached — major benefits unlocked!</span>
+          <div className="mt-3 flex items-center gap-2 bg-gradient-to-r from-brand-50 to-accent-50 px-4 py-2 rounded-2xl">
+            <span className="text-sm">✨</span>
+            <span className="text-xs font-bold text-brand-600">Health Zone — major benefits unlocked!</span>
           </div>
         )}
       </div>
 
-      {/* Streak Panel */}
+      {/* Streak */}
       <StreakPanel />
 
       {/* QP Bar */}
-      <div className="bg-white rounded-xl p-3.5">
+      <div className="bg-white rounded-3xl p-4.5 card-shadow grain relative overflow-hidden">
         <QPBar current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-4 gap-2">
+      {/* Quick Stats — Bento Grid */}
+      <div className="grid grid-cols-4 gap-3">
         {[
-          { icon: '🔥', value: todayStats.calories.toString(), label: 'cal' },
-          { icon: '👟', value: `${todayStats.distance}`, label: 'mi' },
-          { icon: '⏱️', value: todayStats.activeMinutes.toString(), label: 'min' },
-          { icon: '⚡', value: `+${todayStats.qpEarned}`, label: 'QP' },
+          { icon: '🔥', value: todayStats.calories.toString(), label: 'cal', color: 'from-fire-500/5 to-brand-500/5' },
+          { icon: '👟', value: `${todayStats.distance}`, label: 'miles', color: 'from-accent-500/5 to-accent-500/10' },
+          { icon: '⏱️', value: todayStats.activeMinutes.toString(), label: 'min', color: 'from-sky-500/5 to-sky-500/10' },
+          { icon: '⚡', value: `+${todayStats.qpEarned}`, label: 'QP', color: 'from-royal-500/5 to-royal-500/10' },
         ].map(s => (
-          <div key={s.label} className="bg-white rounded-xl p-2.5 text-center">
-            <span className="text-lg">{s.icon}</span>
-            <p className="text-sm font-bold text-slate-800 mt-0.5">{s.value}</p>
-            <p className="text-[10px] text-slate-400 font-medium">{s.label}</p>
+          <div key={s.label} className={`bg-gradient-to-br ${s.color} rounded-2xl p-3 text-center card-hover`}>
+            <span className="text-xl">{s.icon}</span>
+            <p className="text-base font-extrabold text-slate-800 mt-1 tabular-nums">{s.value}</p>
+            <p className="text-[10px] text-slate-400 font-semibold">{s.label}</p>
           </div>
         ))}
       </div>
 
-      {/* Adaptive Goal Card */}
+      {/* Adaptive Goal */}
       <AdaptiveGoalCard />
 
       {/* Habit Stacks */}
       {activeStacks.length > 0 && (
-        <div className="bg-white rounded-xl p-3.5">
-          <h2 className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1">
-            🔗 My Habit Stacks
+        <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+          <h2 className="text-sm font-bold text-slate-700 mb-3 flex items-center gap-1.5">
+            🔗 Habit Stacks
           </h2>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             {activeStacks.map(h => (
-              <div key={h.id} className="flex items-center gap-2 bg-brand-50/50 rounded-lg px-3 py-2">
-                <span className="text-base">{h.icon}</span>
-                <p className="text-xs text-slate-600">
-                  <span className="font-medium text-slate-700">{h.anchor}</span>, {h.habit}
+              <div key={h.id} className="flex items-center gap-3 bg-sand-50 rounded-2xl px-4 py-3 card-hover">
+                <span className="text-lg">{h.icon}</span>
+                <p className="text-xs text-slate-600 font-medium">
+                  <span className="font-bold text-slate-700">{h.anchor}</span>, {h.habit}
                 </p>
               </div>
             ))}
           </div>
-          <p className="text-[10px] text-slate-400 mt-2 text-center">
+          <p className="text-[10px] text-slate-400 mt-3 text-center font-medium">
             Habit stacking increases success by 64%
           </p>
         </div>
       )}
 
       {/* Weekly Chart */}
-      <div className="bg-white rounded-xl p-3.5">
-        <div className="flex items-center justify-between mb-2">
-          <h2 className="text-sm font-semibold text-slate-700 flex items-center gap-1">
-            <TrendingUp size={14} className="text-brand-500" /> This Week
+      <div className="bg-white rounded-3xl p-5 card-shadow grain relative overflow-hidden">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold text-slate-700 flex items-center gap-1.5">
+            <TrendingUp size={15} className="text-accent-500" /> This Week
           </h2>
         </div>
-        <ResponsiveContainer width="100%" height={100}>
-          <BarChart data={weeklyStepData} barCategoryGap="25%">
-            <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} />
+        <ResponsiveContainer width="100%" height={110}>
+          <BarChart data={weeklyStepData} barCategoryGap="20%">
+            <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8', fontWeight: 600 }} />
             <ReferenceLine y={HEALTH_ZONE} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: '7.5k', fontSize: 9, fill: '#f59e0b', position: 'right' }} />
             <ReferenceLine y={10000} stroke="#e2e8f0" strokeDasharray="3 3" />
-            <Bar dataKey="steps" radius={[4, 4, 0, 0]}>
+            <Bar dataKey="steps" radius={[6, 6, 0, 0]}>
               {weeklyStepData.map((entry, i) => (
-                <Cell key={i} fill={entry.steps >= 10000 ? '#7c3aed' : entry.steps >= HEALTH_ZONE ? '#c4b5fd' : '#e2e8f0'} />
+                <Cell key={i} fill={entry.steps >= 10000 ? '#0d9488' : entry.steps >= HEALTH_ZONE ? '#99f6e4' : '#f0e4d4'} />
               ))}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-        <div className="flex justify-center gap-3 mt-1">
-          <span className="text-[9px] text-slate-400 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-brand-500 inline-block" /> Goal</span>
-          <span className="text-[9px] text-slate-400 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-brand-200 inline-block" /> Health zone</span>
-          <span className="text-[9px] text-slate-400 flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-200 inline-block" /> Below</span>
+        <div className="flex justify-center gap-4 mt-2">
+          <span className="text-[9px] text-slate-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-accent-600 inline-block" /> Goal</span>
+          <span className="text-[9px] text-slate-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-accent-200 inline-block" /> Health zone</span>
+          <span className="text-[9px] text-slate-400 font-semibold flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-sand-200 inline-block" /> Below</span>
         </div>
       </div>
 
       {/* Daily Quests */}
       <div>
-        <h2 className="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-1">
-          <Sparkles size={14} className="text-gold-500" /> Daily Quests
+        <h2 className="text-base font-bold text-slate-700 mb-3 flex items-center gap-1.5">
+          <Sparkles size={16} className="text-brand-500" /> Daily Quests
         </h2>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           {dailyQuests.map(q => (
             <div
               key={q.id}
-              className={`bg-white rounded-xl p-3 flex items-center gap-3 ${
+              className={`bg-white rounded-2xl p-4 flex items-center gap-3.5 card-shadow card-hover ${
                 q.completed ? 'opacity-60' : ''
               }`}
             >
-              <span className="text-xl w-8 text-center">
+              <span className="text-2xl w-10 text-center">
                 {q.completed ? '✅' : q.type === 'steps' ? '👟' : q.type === 'distance' ? '🗺️' : q.type === 'active_minutes' ? '⏱️' : '👋'}
               </span>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-center">
-                  <p className={`font-medium text-sm ${q.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
+                  <p className={`font-bold text-sm ${q.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
                     {q.title}
                   </p>
-                  <span className="text-[11px] text-brand-600 font-bold">+{q.qpReward} QP</span>
+                  <span className="text-[11px] text-royal-600 font-extrabold bg-royal-50 px-2 py-0.5 rounded-full">+{q.qpReward} QP</span>
                 </div>
                 {!q.completed && (
-                  <div className="mt-1.5 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                  <div className="mt-2 h-2 bg-sand-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-brand-400 rounded-full"
+                      className="h-full bg-gradient-to-r from-accent-400 to-accent-500 rounded-full transition-all duration-500"
                       style={{ width: `${Math.min((q.current / q.target) * 100, 100)}%` }}
                     />
                   </div>
@@ -183,10 +182,11 @@ export default function Dashboard() {
       </div>
 
       {/* Commit to Quest CTA */}
-      <div className="bg-gradient-to-r from-brand-500 to-brand-600 rounded-xl p-4 text-center">
-        <p className="text-white text-sm font-bold">Commit to My Quest</p>
-        <p className="text-brand-100 text-[11px] mt-0.5">Walk 7,500+ steps every day this week</p>
-        <button className="mt-2 bg-white text-brand-600 font-bold text-xs px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-shadow">
+      <div className="bg-gradient-to-br from-accent-500 to-accent-700 rounded-3xl p-6 text-center relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,#fbbf24,transparent_50%)]" />
+        <p className="text-white text-lg font-extrabold relative">Commit to My Quest</p>
+        <p className="text-accent-100 text-xs mt-1 relative font-medium">Walk 7,500+ steps every day this week</p>
+        <button className="mt-4 bg-white text-accent-700 font-extrabold text-sm px-8 py-3 rounded-2xl shadow-lg btn-press relative hover:shadow-xl transition-shadow">
           I'm In
         </button>
       </div>

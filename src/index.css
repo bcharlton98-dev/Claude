@@ -1,15 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  /* Adventure Violet — quest-themed primary */
-  --color-brand-50: #f5f3ff;
-  --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd6fe;
-  --color-brand-300: #c4b5fd;
-  --color-brand-400: #a78bfa;
-  --color-brand-500: #7c3aed;
-  --color-brand-600: #6d28d9;
-  --color-brand-700: #5b21b6;
+  /* Warm amber primary — trails, sunlight, achievement */
+  --color-brand-50: #fffbeb;
+  --color-brand-100: #fef3c7;
+  --color-brand-200: #fde68a;
+  --color-brand-300: #fcd34d;
+  --color-brand-400: #fbbf24;
+  --color-brand-500: #f59e0b;
+  --color-brand-600: #d97706;
+  --color-brand-700: #b45309;
+  /* Accent teal — nature, health, progress */
+  --color-accent-50: #f0fdfa;
+  --color-accent-100: #ccfbf1;
+  --color-accent-200: #99f6e4;
+  --color-accent-300: #5eead4;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6;
+  --color-accent-600: #0d9488;
+  --color-accent-700: #0f766e;
   /* Streak fire */
   --color-fire-400: #fb923c;
   --color-fire-500: #f97316;
@@ -17,14 +26,13 @@
   /* Achievement gold */
   --color-gold-400: #fbbf24;
   --color-gold-500: #f59e0b;
-  /* Accent teal — for maps, progress, secondary actions */
-  --color-teal-400: #2dd4bf;
-  --color-teal-500: #14b8a6;
-  --color-teal-600: #0d9488;
-  /* Royal purple kept for gems */
+  /* Royal purple for gems & XP */
+  --color-royal-50: #f5f3ff;
+  --color-royal-100: #ede9fe;
   --color-royal-400: #a78bfa;
   --color-royal-500: #8b5cf6;
-  /* Sky for info/maps */
+  --color-royal-600: #7c3aed;
+  /* Sky for info */
   --color-sky-400: #38bdf8;
   --color-sky-500: #0ea5e9;
   /* Status colors */
@@ -32,7 +40,11 @@
   --color-rose-500: #f43f5e;
   --color-pink-400: #f472b6;
   --color-pink-500: #ec4899;
-  /* Neutral slate */
+  /* Warm neutrals */
+  --color-sand-50: #fdf8f3;
+  --color-sand-100: #faf0e4;
+  --color-sand-200: #f0e4d4;
+  /* Slate neutrals */
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
   --color-slate-200: #e2e8f0;
@@ -47,8 +59,8 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f5f3ff;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #fdf8f3;
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
 }
@@ -60,3 +72,73 @@ body {
 /* Hide scrollbar for filter chips */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Subtle grain texture on cards */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Animated counting number */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-count { animation: countUp 0.6s ease-out; }
+
+/* Spring-based button press */
+.btn-press {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-press:active {
+  transform: scale(0.95);
+}
+
+/* Smooth card hover */
+.card-hover {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+.card-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+/* Premium card shadow */
+.card-shadow {
+  box-shadow: 0 1px 20px rgba(0,0,0,0.04);
+}
+
+/* Streak flame animation */
+@keyframes flame {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  25% { transform: scaleY(1.1) scaleX(0.95); }
+  50% { transform: scaleY(0.95) scaleX(1.05); }
+  75% { transform: scaleY(1.05) scaleX(0.97); }
+}
+.animate-flame { animation: flame 1.5s ease-in-out infinite; }
+
+/* Confetti burst */
+@keyframes confetti-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(60px) rotate(360deg); opacity: 0; }
+}
+
+/* Pill slide indicator */
+@keyframes pill-slide {
+  from { transform: scaleX(0.8); opacity: 0.5; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+.animate-pill { animation: pill-slide 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* Progress ring pulse on completion */
+@keyframes ring-complete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+.animate-ring-complete { animation: ring-complete 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
