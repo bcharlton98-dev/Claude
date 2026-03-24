@@ -96,14 +96,9 @@ export default function Dashboard() {
             <p className="text-white/70 text-sm font-semibold">{getGreeting()},</p>
             <p className="text-white text-xl font-extrabold tracking-tight">{userProfile.name.split(' ')[0]}</p>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="flex items-center gap-1 bg-white/15 backdrop-blur-sm text-white px-3 py-1.5 rounded-2xl text-xs font-extrabold">
-              <span className="animate-flame inline-block text-sm">🔥</span> {userProfile.streak}
-            </span>
-            <span className="flex items-center gap-1 bg-white/15 backdrop-blur-sm text-white px-3 py-1.5 rounded-2xl text-xs font-extrabold">
-              💎 {userProfile.gems}
-            </span>
-          </div>
+          <span className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white px-3.5 py-2 rounded-2xl text-xs font-extrabold">
+            <span className="animate-flame inline-block text-sm">🔥</span> {userProfile.streak} day streak
+          </span>
         </div>
         {/* Terrain label */}
         {terrain.label && (
@@ -170,19 +165,15 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Row 3: Bento grid — 3 tiles (calories big, miles small, minutes small) */}
-          <div className="grid grid-cols-4 gap-3 mt-3">
-            <div className="col-span-2 bg-peach-50 rounded-[20px] py-4 px-4 color-block">
-              <p className="text-3xl font-extrabold text-peach-600 tabular-nums leading-none">{todayStats.calories}</p>
-              <p className="text-[10px] text-peach-400 font-bold mt-1">calories</p>
+          {/* Row 3: QP + Level tiles */}
+          <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="bg-forest-50 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
+              <p className="text-2xl font-extrabold text-forest-600 tabular-nums leading-none">+{todayStats.qpEarned}</p>
+              <p className="text-[10px] text-forest-400 font-bold mt-1">QP earned</p>
             </div>
-            <div className="col-span-1 bg-forest-50 rounded-[18px] py-3 px-3 text-center color-block flex flex-col justify-center">
-              <p className="text-lg font-extrabold text-forest-600 tabular-nums leading-none">+{todayStats.qpEarned}</p>
-              <p className="text-[8px] text-forest-400 font-bold mt-0.5">QP</p>
-            </div>
-            <div className="col-span-1 bg-lavender-50 rounded-[18px] py-3 px-3 text-center color-block flex flex-col justify-center">
-              <p className="text-lg font-extrabold text-lavender-600 tabular-nums leading-none">Lv{userProfile.level}</p>
-              <p className="text-[8px] text-lavender-400 font-bold mt-0.5">{userProfile.league}</p>
+            <div className="bg-lavender-50 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
+              <p className="text-2xl font-extrabold text-lavender-600 tabular-nums leading-none">Lv{userProfile.level}</p>
+              <p className="text-[10px] text-lavender-400 font-bold mt-1">{userProfile.league}</p>
             </div>
           </div>
         </div>
