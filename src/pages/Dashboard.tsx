@@ -140,18 +140,31 @@ export default function Dashboard() {
           </span>
         </div>
 
-        {/* QP + Title — tight tiles */}
-        <div className="grid grid-cols-2 gap-3 mt-4">
-          <div className="bg-forest-600 rounded-2xl py-4 px-4 text-center">
-            <p className="text-xl font-bold text-white tabular-nums leading-none">+{todayStats.qpEarned}</p>
-            <p className="text-[10px] text-forest-200 font-medium mt-1">QP earned</p>
+        {/* Title progress — unified card */}
+        <div className="bg-forest-600 rounded-2xl p-4 mt-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-lg font-bold text-white leading-none">{titleInfo.current.title}</p>
+              <p className="text-xs text-forest-200 font-medium mt-1">{userProfile.lifetimeMiles.toLocaleString()} miles walked</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-white tabular-nums">+{todayStats.qpEarned} QP</p>
+              <p className="text-[10px] text-forest-200 font-medium">today</p>
+            </div>
           </div>
-          <div className="bg-cream-100 rounded-2xl py-4 px-4 text-center">
-            <p className="text-sm font-bold text-warm-700 leading-none">{titleInfo.current.title}</p>
-            {titleInfo.next && (
-              <p className="text-[10px] text-warm-400 font-medium mt-1">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</p>
-            )}
-          </div>
+          {titleInfo.next && (
+            <div className="mt-3">
+              <div className="flex justify-between text-[10px] text-forest-200 font-medium mb-1">
+                <span>{titleInfo.current.title}</span>
+                <span>{titleInfo.next.title}</span>
+              </div>
+              <div className="h-1.5 bg-forest-700 rounded-full overflow-hidden">
+                <div className="h-full bg-white/80 rounded-full transition-all duration-700"
+                  style={{ width: `${Math.round(titleInfo.progress * 100)}%` }} />
+              </div>
+              <p className="text-[10px] text-forest-200 font-medium mt-1">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</p>
+            </div>
+          )}
         </div>
       </div>
 
