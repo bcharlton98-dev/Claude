@@ -1,5 +1,5 @@
 import ProgressPath from '../components/ProgressPath'
-import { todayStats, userProfile, dailyQuests, challenges, notifications, friends } from '../data/mockData'
+import { todayStats, userProfile, dailyQuests, challenges, notifications, friends, getCurrentTitle } from '../data/mockData'
 
 const HEALTH_ZONE = 7_500
 
@@ -79,6 +79,7 @@ export default function Dashboard() {
   const raceChallenge = challenges.find(c => c.type === 'virtual_race' && c.isActive)
   const goalPct = Math.round((todayStats.steps / todayStats.goal) * 100)
   const terrain = getTerrainTheme()
+  const titleInfo = getCurrentTitle(userProfile.lifetimeMiles)
 
   return (
     <div className="flex flex-col gap-4">
@@ -88,6 +89,25 @@ export default function Dashboard() {
         <div className="absolute top-[-40px] right-[-30px] w-[140px] h-[140px] rounded-full bg-white/5" />
         <div className="absolute bottom-[-20px] left-[-20px] w-[80px] h-[80px] rounded-full bg-black/5" />
         <div className="absolute top-[20px] right-[60px] w-[40px] h-[40px] rounded-full bg-white/5" />
+
+        {/* WalkQuest Logo */}
+        <div className="relative mb-3">
+          <svg width="130" height="28" viewBox="0 0 260 56" fill="none" aria-label="WalkQuest">
+            <text x="0" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">
+              Walk
+            </text>
+            <text x="120" y="44" fontFamily="system-ui, -apple-system, sans-serif" fontSize="48" fontWeight="800" fill="white" letterSpacing="-1">
+              Quest
+            </text>
+            {/* Sparkle accent on the u */}
+            <g transform="translate(172, 4)" stroke="#d4a843" strokeWidth="2" strokeLinecap="round">
+              <line x1="4" y1="0" x2="4" y2="7" />
+              <line x1="0" y1="3.5" x2="8" y2="3.5" />
+              <line x1="1" y1="0.5" x2="7" y2="6.5" />
+              <line x1="7" y1="0.5" x2="1" y2="6.5" />
+            </g>
+          </svg>
+        </div>
 
         <div className="flex items-center justify-between relative">
           <div>
@@ -203,8 +223,10 @@ export default function Dashboard() {
               <p className="text-[10px] text-forest-200 font-bold mt-1">QP earned</p>
             </div>
             <div className="bg-lavender-50 rounded-[20px] py-4 px-4 text-center color-block flex flex-col justify-center">
-              <p className="text-2xl font-extrabold text-lavender-600 tabular-nums leading-none">Lv{userProfile.level}</p>
-              <p className="text-[10px] text-lavender-400 font-bold mt-1">{userProfile.league}</p>
+              <p className="text-lg font-extrabold text-lavender-600 leading-none">{titleInfo.current.title}</p>
+              {titleInfo.next && (
+                <p className="text-[10px] text-lavender-400 font-bold mt-1">{titleInfo.milesToNext.toLocaleString()} mi to {titleInfo.next.title}</p>
+              )}
             </div>
           </div>
       </div>
@@ -218,7 +240,7 @@ export default function Dashboard() {
         <div>
           {/* Progress Path — winding trail for QP */}
           <div className="bg-white rounded-[22px] card-shadow p-4 relative overflow-hidden grain">
-            <ProgressPath current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
+            <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
           </div>
 
           {/* Virtual race status */}

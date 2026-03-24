@@ -1,11 +1,12 @@
+import { getCurrentTitle } from '../data/mockData'
+
 interface ProgressPathProps {
-  current: number
-  max: number
-  level: number
+  lifetimeMiles: number
 }
 
-export default function ProgressPath({ current, max, level }: ProgressPathProps) {
-  const pct = Math.min(current / max, 1)
+export default function ProgressPath({ lifetimeMiles }: ProgressPathProps) {
+  const { current, next, progress } = getCurrentTitle(lifetimeMiles)
+  const pct = next ? progress : 1
   const width = 320
   const height = 60
 
@@ -73,16 +74,6 @@ export default function ProgressPath({ current, max, level }: ProgressPathProps)
                 stroke={reached ? '#3d5636' : '#d9cfc0'}
                 strokeWidth={1.5}
               />
-              {i === 0 && (
-                <text x={m.x} y={m.y + 4} textAnchor="middle" fontSize={7} fontWeight={700} fill="white">
-                  {level}
-                </text>
-              )}
-              {i === milestones.length - 1 && (
-                <text x={m.x} y={m.y + 4} textAnchor="middle" fontSize={7} fontWeight={700} fill={reached ? 'white' : '#a39890'}>
-                  {level + 1}
-                </text>
-              )}
               {(i === 1 || i === 2) && reached && (
                 <text x={m.x} y={m.y + 3.5} textAnchor="middle" fontSize={7}>⭐</text>
               )}
@@ -98,11 +89,11 @@ export default function ProgressPath({ current, max, level }: ProgressPathProps)
         <text x={currentX} y={currentY + 3.5} textAnchor="middle" fontSize={8}>🚶</text>
       </svg>
 
-      {/* QP text below */}
+      {/* Title text below */}
       <div className="flex items-center justify-between mt-1 px-1">
-        <span className="text-[10px] font-bold text-warm-500">Level {level}</span>
-        <span className="text-[10px] font-extrabold text-forest-600 tabular-nums">{current.toLocaleString()} / {max.toLocaleString()} QP</span>
-        <span className="text-[10px] font-bold text-warm-400">Level {level + 1}</span>
+        <span className="text-[10px] font-bold text-warm-500">{current.title}</span>
+        <span className="text-[10px] font-extrabold text-forest-600 tabular-nums">{lifetimeMiles.toLocaleString()} mi</span>
+        {next && <span className="text-[10px] font-bold text-warm-400">{next.title}</span>}
       </div>
     </div>
   )

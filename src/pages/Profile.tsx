@@ -37,16 +37,16 @@ export default function Profile() {
         ))}
       </div>
 
-      {/* QP Bar */}
+      {/* Walking Title */}
       <div className="bg-white rounded-[22px] p-4 card-shadow grain relative overflow-hidden">
-        <QPBar current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
+        <QPBar lifetimeMiles={userProfile.lifetimeMiles} />
       </div>
 
       {/* Stats — mixed sizes */}
       <div className="grid grid-cols-2 gap-3">
         <div className="bg-gradient-to-br from-forest-50 to-sage-50 rounded-[20px] p-4 text-center card-shadow card-hover color-block">
-          <p className="text-3xl font-extrabold text-forest-600 tabular-nums">{(userProfile.totalSteps / 1_000_000).toFixed(1)}M</p>
-          <p className="text-[10px] text-forest-400 font-semibold">Total Steps</p>
+          <p className="text-3xl font-extrabold text-forest-600 tabular-nums">{userProfile.lifetimeMiles.toLocaleString()}</p>
+          <p className="text-[10px] text-forest-400 font-semibold">Lifetime Miles</p>
         </div>
         <div className="bg-gradient-to-br from-peach-50 to-mustard-50 rounded-[20px] p-4 text-center card-shadow card-hover color-block">
           <p className="text-3xl font-extrabold text-peach-600">🔥 {userProfile.longestStreak}</p>

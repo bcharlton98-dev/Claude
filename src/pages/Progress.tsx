@@ -15,16 +15,16 @@ export default function Progress() {
     <div className="space-y-5">
       <h1 className="text-2xl font-extrabold text-warm-800 tracking-tight">Progress</h1>
 
-      {/* ── Section: LEVEL ── */}
+      {/* ── Section: TITLE ── */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-1 h-5 rounded-full bg-lavender-500" />
-          <span className="text-[12px] font-bold uppercase tracking-widest text-lavender-600">Level</span>
+          <span className="text-[12px] font-bold uppercase tracking-widest text-lavender-600">Title</span>
         </div>
         <div>
           {/* QP Progress Path — winding trail */}
           <div className="bg-white rounded-[22px] p-4 card-shadow grain relative overflow-hidden">
-            <ProgressPath current={userProfile.qp} max={userProfile.qpToNextLevel} level={userProfile.level} />
+            <ProgressPath lifetimeMiles={userProfile.lifetimeMiles} />
           </div>
         </div>
       </div>

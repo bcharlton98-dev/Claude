@@ -2,9 +2,7 @@ export interface UserProfile {
   name: string
   username: string
   avatar: string
-  level: number
   qp: number
-  qpToNextLevel: number
   gems: number
   streak: number
   longestStreak: number
@@ -13,6 +11,7 @@ export interface UserProfile {
   league: string
   leagueRank: number
   totalSteps: number
+  lifetimeMiles: number
   joinDate: string
   connectedDevice: string
   badges: Badge[]
@@ -127,15 +126,57 @@ export interface Notification {
   read: boolean
 }
 
+// --- Title Tiers (by lifetime miles) ---
+
+export interface TitleTier {
+  miles: number
+  title: string
+}
+
+export const titleTiers: TitleTier[] = [
+  { miles: 0, title: 'First Steps' },
+  { miles: 26, title: 'Marathoner' },
+  { miles: 100, title: 'Trail Walker' },
+  { miles: 250, title: 'Pathfinder' },
+  { miles: 500, title: 'Explorer' },
+  { miles: 1_000, title: 'Wayfinder' },
+  { miles: 1_600, title: 'Reef Runner' },
+  { miles: 2_500, title: 'Trailblazer' },
+  { miles: 4_000, title: 'Continental' },
+  { miles: 5_500, title: 'Wall Walker' },
+  { miles: 8_000, title: 'Summit Seeker' },
+  { miles: 12_430, title: 'Pole to Pole' },
+  { miles: 20_000, title: 'Globe Trotter' },
+  { miles: 25_000, title: 'World Walker' },
+  { miles: 40_000, title: 'Orbit Runner' },
+  { miles: 60_000, title: 'Moonbound' },
+  { miles: 100_000, title: 'Legend' },
+  { miles: 150_000, title: 'Mythic' },
+  { miles: 238_900, title: 'Lunar' },
+]
+
+export function getCurrentTitle(lifetimeMiles: number): { current: TitleTier; next: TitleTier | null; milesToNext: number; progress: number } {
+  let currentIdx = 0
+  for (let i = titleTiers.length - 1; i >= 0; i--) {
+    if (lifetimeMiles >= titleTiers[i].miles) {
+      currentIdx = i
+      break
+    }
+  }
+  const current = titleTiers[currentIdx]
+  const next = currentIdx < titleTiers.length - 1 ? titleTiers[currentIdx + 1] : null
+  const milesToNext = next ? next.miles - lifetimeMiles : 0
+  const progress = next ? (lifetimeMiles - current.miles) / (next.miles - current.miles) : 1
+  return { current, next, milesToNext, progress }
+}
+
 // --- Mock Data ---
 
 export const userProfile: UserProfile = {
   name: 'Alex Chen',
   username: '@alexwalks',
   avatar: 'AC',
-  level: 14,
   qp: 2340,
-  qpToNextLevel: 3000,
   gems: 285,
   streak: 12,
   longestStreak: 31,
@@ -144,6 +185,7 @@ export const userProfile: UserProfile = {
   league: 'Gold',
   leagueRank: 3,
   totalSteps: 1_847_230,
+  lifetimeMiles: 873,
   joinDate: '2026-01-15',
   connectedDevice: 'Apple Watch',
   adaptiveGoal: {
