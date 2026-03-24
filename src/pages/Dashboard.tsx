@@ -1,4 +1,3 @@
-import StepRing from '../components/StepRing'
 import StepHeatmap from '../components/StepHeatmap'
 import ProgressPath from '../components/ProgressPath'
 import { todayStats, userProfile, dailyQuests, challenges, notifications } from '../data/mockData'
@@ -134,10 +133,33 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Step Ring — compact square tile */}
-            <div className="col-span-2 bg-white rounded-[22px] card-shadow flex flex-col items-center justify-center py-3 relative overflow-hidden grain">
-              <StepRing current={todayStats.steps} goal={todayStats.goal} size={100} strokeWidth={8} />
-              <p className="text-[9px] text-warm-400 font-bold mt-1 tabular-nums">{goalPct}%</p>
+            {/* Goal gauge — semicircle arc */}
+            <div className="col-span-2 bg-white rounded-[22px] card-shadow flex flex-col items-center justify-center py-4 px-3 relative overflow-hidden grain">
+              <svg width={100} height={62} viewBox="0 0 100 62">
+                <defs>
+                  <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#aec2a0" />
+                    <stop offset="100%" stopColor="#4A6741" />
+                  </linearGradient>
+                </defs>
+                {/* Background arc */}
+                <path
+                  d="M 10 55 A 40 40 0 0 1 90 55"
+                  fill="none" stroke="#e8e0d4" strokeWidth={7} strokeLinecap="round"
+                />
+                {/* Progress arc */}
+                <path
+                  d="M 10 55 A 40 40 0 0 1 90 55"
+                  fill="none" stroke="url(#gaugeGrad)" strokeWidth={7} strokeLinecap="round"
+                  strokeDasharray={`${Math.min(goalPct, 100) * 1.257} 125.7`}
+                  className="transition-all duration-1000 ease-out"
+                />
+                {/* Percentage text */}
+                <text x={50} y={50} textAnchor="middle" fontSize={22} fontWeight={800} fill="#4A6741" fontFamily="inherit">
+                  {goalPct}%
+                </text>
+              </svg>
+              <p className="text-[9px] text-warm-400 font-bold mt-0.5 tabular-nums">of {todayStats.goal.toLocaleString()}</p>
             </div>
           </div>
 
