@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Search, MapPin, Briefcase, ExternalLink, Bookmark, BookmarkCheck, ChevronDown, ChevronUp, RefreshCw, Wifi, WifiOff, Filter, CheckCircle2, Clock, X } from 'lucide-react';
+import { Search, MapPin, Briefcase, ExternalLink, Bookmark, BookmarkCheck, ChevronDown, ChevronUp, RefreshCw, Wifi, CheckCircle2, X } from 'lucide-react';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
