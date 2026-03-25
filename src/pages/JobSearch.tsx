@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Search, MapPin, Briefcase, ExternalLink, Bookmark, BookmarkCheck, ChevronDown, ChevronUp, RefreshCw, Wifi, CheckCircle2, X } from 'lucide-react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { Search, MapPin, Briefcase, ExternalLink, Bookmark, BookmarkCheck, ChevronDown, ChevronUp, RefreshCw, Wifi, CheckCircle2, X, GraduationCap, Building2, Heart, BookOpen } from 'lucide-react';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -80,8 +80,6 @@ export default function JobSearch() {
   const [errors, setErrors] = useState<string[]>([]);
 
   const [directLinks, setDirectLinks] = useState<DirectLinks | null>(null);
-  const [showLinks, setShowLinks] = useState(true);
-  const [showPlatforms, setShowPlatforms] = useState(true);
   const [showTracked, setShowTracked] = useState(false);
 
   const [tracked, setTracked] = useState<Record<string, TrackedJob>>(loadTracked);
@@ -178,8 +176,8 @@ export default function JobSearch() {
     setLoading(false);
   }, [keywords, location, includeRemote, remoteOnly]);
 
-  // Auto-search on mount
-  useEffect(() => { doSearch(); }, []);
+  const [bottomSheet, setBottomSheet] = useState<string | null>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   const applyKeywordPreset = (preset: typeof KEYWORD_PRESETS[0]) => {
     setKeywords(preset.keywords);
@@ -578,61 +576,57 @@ export default function JobSearch() {
         </div>
       )}
 
-      {/* Direct Links */}
-      <div className="px-4 mt-6">
-        <button
-          onClick={() => setShowLinks(!showLinks)}
-          className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3"
-        >
-          <span className="flex items-center gap-2 font-semibold text-gray-800">
-            <Briefcase size={18} />
-            Browse Job Boards Directly
-          </span>
-          {showLinks ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-        </button>
+      {/* Category Buttons */}
+      {directLinks && (
+        <div className="px-4 mt-6">
+          <h2 className="font-bold text-gray-800 mb-3">Browse by Category</h2>
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setBottomSheet('jobBoards')}
+              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+            >
+              <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
+                <Briefcase size={20} className="text-blue-600" />
+              </div>
+              <p className="text-sm font-semibold text-gray-900">Job Boards</p>
+              <p className="text-xs text-gray-500 mt-0.5">{directLinks.jobBoards.length} sites</p>
+            </button>
 
-        {showLinks && directLinks && (
-          <div className="mt-2 space-y-4">
-            <LinkSection title="Job Boards" links={directLinks.jobBoards} />
-            <LinkSection title="Nonprofit Boards" links={directLinks.nonprofitBoards} />
-            <LinkSection title="Local - Grant County" links={directLinks.localResources} />
+            <button
+              onClick={() => setBottomSheet('local')}
+              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+            >
+              <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mb-2">
+                <Building2 size={20} className="text-green-600" />
+              </div>
+              <p className="text-sm font-semibold text-gray-900">Local - Grant County</p>
+              <p className="text-xs text-gray-500 mt-0.5">{directLinks.localResources.length} sites</p>
+            </button>
+
+            <button
+              onClick={() => setBottomSheet('nonprofit')}
+              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+            >
+              <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-2">
+                <Heart size={20} className="text-purple-600" />
+              </div>
+              <p className="text-sm font-semibold text-gray-900">Nonprofit Boards</p>
+              <p className="text-xs text-gray-500 mt-0.5">{directLinks.nonprofitBoards.length} sites</p>
+            </button>
+
+            <button
+              onClick={() => setBottomSheet('tutoring')}
+              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+            >
+              <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-2">
+                <BookOpen size={20} className="text-orange-600" />
+              </div>
+              <p className="text-sm font-semibold text-gray-900">Tutoring Platforms</p>
+              <p className="text-xs text-gray-500 mt-0.5">Sign up & earn</p>
+            </button>
           </div>
-        )}
-      </div>
-
-      {/* Tutoring Platforms */}
-      <div className="px-4 mt-3">
-        <button
-          onClick={() => setShowPlatforms(!showPlatforms)}
-          className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-xl px-4 py-3"
-        >
-          <span className="flex items-center gap-2 font-semibold text-gray-800">
-            <Bookmark size={18} />
-            Tutoring Platforms (Sign Up & Earn)
-          </span>
-          {showPlatforms ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-        </button>
-
-        {showPlatforms && directLinks && (
-          <div className="mt-2 space-y-2">
-            {directLinks.tutoringPlatforms.map(p => (
-              <a
-                key={p.name}
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between bg-white rounded-xl border border-gray-200 p-3 hover:bg-gray-50"
-              >
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{p.name}</p>
-                  {p.note && <p className="text-xs text-gray-500 mt-0.5">{p.note}</p>}
-                </div>
-                <ExternalLink size={16} className="text-gray-400 shrink-0" />
-              </a>
-            ))}
-          </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Tips */}
       <div className="px-4 mt-6 mb-4">
@@ -648,30 +642,94 @@ export default function JobSearch() {
           </ul>
         </div>
       </div>
+
+      {/* Bottom Sheet Overlay */}
+      {bottomSheet && directLinks && (
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center"
+          onClick={(e) => { if (e.target === e.currentTarget) setBottomSheet(null); }}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/40 animate-[fadeIn_0.2s_ease-out]" />
+
+          {/* Sheet */}
+          <div
+            ref={sheetRef}
+            className="relative w-full max-w-lg bg-white rounded-t-3xl max-h-[85vh] flex flex-col animate-[slideUp_0.3s_ease-out]"
+          >
+            {/* Handle */}
+            <div className="flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 bg-gray-300 rounded-full" />
+            </div>
+
+            {/* Sheet Header */}
+            <div className="flex items-center justify-between px-5 pb-3 border-b border-gray-100">
+              <h2 className="text-lg font-bold text-gray-900">
+                {bottomSheet === 'jobBoards' && 'Job Boards'}
+                {bottomSheet === 'local' && 'Local - Grant County'}
+                {bottomSheet === 'nonprofit' && 'Nonprofit Boards'}
+                {bottomSheet === 'tutoring' && 'Tutoring Platforms'}
+              </h2>
+              <button
+                onClick={() => setBottomSheet(null)}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+              >
+                <X size={18} className="text-gray-600" />
+              </button>
+            </div>
+
+            {/* Sheet Content */}
+            <div className="overflow-y-auto px-5 py-3 space-y-2">
+              {bottomSheet === 'jobBoards' && directLinks.jobBoards.map(link => (
+                <SheetLink key={link.name} name={link.name} url={link.url} />
+              ))}
+
+              {bottomSheet === 'local' && directLinks.localResources.map(link => (
+                <SheetLink key={link.name} name={link.name} url={link.url} />
+              ))}
+
+              {bottomSheet === 'nonprofit' && directLinks.nonprofitBoards.map(link => (
+                <SheetLink key={link.name} name={link.name} url={link.url} />
+              ))}
+
+              {bottomSheet === 'tutoring' && directLinks.tutoringPlatforms.map(p => (
+                <a
+                  key={p.name}
+                  href={p.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between bg-gray-50 rounded-xl p-3.5 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                >
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{p.name}</p>
+                    {p.note && <p className="text-xs text-gray-500 mt-0.5">{p.note}</p>}
+                  </div>
+                  <ExternalLink size={16} className="text-gray-400 shrink-0" />
+                </a>
+              ))}
+
+              {/* Extra padding at bottom for safe area */}
+              <div className="h-6" />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 // ─── Sub-components ─────────────────────────────────────────────────────────
 
-function LinkSection({ title, links }: { title: string; links: { name: string; url: string }[] }) {
+function SheetLink({ name, url }: { name: string; url: string }) {
   return (
-    <div>
-      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-1 mb-1.5">{title}</h3>
-      <div className="space-y-1.5">
-        {links.map(link => (
-          <a
-            key={link.name}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-white rounded-xl border border-gray-200 px-3 py-2.5 hover:bg-gray-50"
-          >
-            <span className="text-sm text-gray-800">{link.name}</span>
-            <ExternalLink size={14} className="text-gray-400" />
-          </a>
-        ))}
-      </div>
-    </div>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-between bg-gray-50 rounded-xl p-3.5 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+    >
+      <span className="text-sm font-medium text-gray-900">{name}</span>
+      <ExternalLink size={16} className="text-gray-400 shrink-0" />
+    </a>
   );
 }
