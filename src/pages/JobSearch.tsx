@@ -1,18 +1,7 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { Search, MapPin, Briefcase, ExternalLink, Bookmark, BookmarkCheck, ChevronDown, ChevronUp, RefreshCw, Wifi, CheckCircle2, X, GraduationCap, Building2, Heart, BookOpen } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { MapPin, Briefcase, ExternalLink, ChevronDown, ChevronUp, CheckCircle2, X, Building2, Heart, BookOpen } from 'lucide-react';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
-
-interface JobResult {
-  title: string;
-  company: string;
-  location: string;
-  salary: string;
-  url: string;
-  source: string;
-  description: string;
-  remote: boolean;
-}
 
 interface DirectLinks {
   jobBoards: { name: string; url: string }[];
@@ -26,7 +15,6 @@ type ApplicationStatus = 'applied' | 'interviewing' | 'rejected' | 'saved';
 interface TrackedJob {
   url: string;
   title: string;
-  company: string;
   status: ApplicationStatus;
   date: string;
   notes: string;
@@ -65,119 +53,67 @@ function saveTracked(tracked: Record<string, TrackedJob>) {
   localStorage.setItem('jobTracker', JSON.stringify(tracked));
 }
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+function buildLinks(keyword: string, location: string): DirectLinks {
+  const kw = encodeURIComponent(keyword);
+  const loc = encodeURIComponent(location);
+  return {
+    jobBoards: [
+      { name: 'Indeed', url: `https://www.indeed.com/jobs?q=${kw}&l=${loc}&fromage=14` },
+      { name: 'ZipRecruiter', url: `https://www.ziprecruiter.com/jobs-search?search=${kw}&location=${loc}` },
+      { name: 'LinkedIn', url: `https://www.linkedin.com/jobs/search/?keywords=${kw}&location=${loc}` },
+      { name: 'SchoolSpring', url: `https://www.schoolspring.com/jobs?term=${kw}` },
+      { name: 'EDJOIN', url: `https://www.edjoin.org/Home/Jobs?keyword=${kw}` },
+      { name: 'K12JobSpot', url: `https://www.k12jobspot.com/search?q=${kw}` },
+      { name: 'EdWeek Jobs', url: 'https://www.edweek.org/jobs' },
+      { name: 'Glassdoor', url: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${kw}&locKeyword=${loc}` },
+      { name: 'SimplyHired', url: `https://www.simplyhired.com/search?q=${kw}&l=${loc}` },
+    ],
+    nonprofitBoards: [
+      { name: 'Idealist', url: `https://www.idealist.org/en/jobs?q=${kw}&type=JOB` },
+      { name: 'Foundation List', url: 'https://www.foundationlist.org/education-job-postings/' },
+      { name: 'ILA Career Center', url: 'https://careers.literacyworldwide.org/' },
+      { name: 'Nonprofit Talent', url: 'https://jobs.nonprofittalent.com/category/education' },
+    ],
+    localResources: [
+      { name: 'Grant County Schools Portal', url: 'https://grantcounty.tedk12.com/hire/index.aspx' },
+      { name: 'Marion Community Schools', url: 'https://www.marion.k12.in.us/apps/pages/index.jsp?uREC_ID=3890106&type=d&pREC_ID=2478909' },
+      { name: 'Indeed - Marion IN', url: 'https://www.indeed.com/q-teaching-l-marion,-in-jobs.html' },
+    ],
+    tutoringPlatforms: [
+      { name: 'Wyzant', url: 'https://www.wyzant.com/tutorsignupstart', note: 'Set your own rate, $30-80/hr' },
+      { name: 'BookNook', url: 'https://apply.booknook.com/online-tutoring-jobs', note: 'Reading/literacy specific, K-8' },
+      { name: 'Ignite Reading', url: 'https://ignite-reading.com/online-tutoring-jobs/', note: '$17.50-$20/hr, paid training' },
+      { name: 'Varsity Tutors', url: 'https://www.varsitytutors.com/tutoring-jobs', note: 'Steady student matching' },
+      { name: 'OpenLiteracy', url: 'https://www.openliteracy.com/jobs', note: 'K-6 reading sessions' },
+      { name: 'Hoot Reading', url: 'https://www.hootreading.com/', note: '$18-$20/hr, phonics focus' },
+      { name: 'Tutor.com', url: 'https://www.tutor.com/apply', note: 'Library/school partnerships' },
+      { name: 'Care.com', url: 'https://www.care.com/enroll-provider', note: 'In-person, local families' },
+      { name: 'Thumbtack', url: 'https://www.thumbtack.com/pro/', note: 'Local tutoring gigs' },
+    ],
+  };
+}
+
 // ─── Component ──────────────────────────────────────────────────────────────
 
 export default function JobSearch() {
   const [keywords, setKeywords] = useState(['reading tutor', 'literacy tutor', 'reading specialist']);
   const [keywordInput, setKeywordInput] = useState('reading tutor, literacy tutor, reading specialist');
   const [location, setLocation] = useState('Marion, IN');
-  const [includeRemote, setIncludeRemote] = useState(true);
-  const [remoteOnly, setRemoteOnly] = useState(false);
-
-  const [results, setResults] = useState<JobResult[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchedAt, setSearchedAt] = useState('');
-  const [errors, setErrors] = useState<string[]>([]);
-
-  const [directLinks, setDirectLinks] = useState<DirectLinks | null>(null);
+  const [directLinks, setDirectLinks] = useState<DirectLinks>(() => buildLinks('reading tutor', 'Marion, IN'));
+  const [bottomSheet, setBottomSheet] = useState<string | null>(null);
   const [showTracked, setShowTracked] = useState(false);
-
   const [tracked, setTracked] = useState<Record<string, TrackedJob>>(loadTracked);
-  const [activeFilter, setActiveFilter] = useState<string>('all');
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   // Persist tracked jobs
   useEffect(() => { saveTracked(tracked); }, [tracked]);
 
-  // Build direct links from current search params
+  // Rebuild links when keywords or location change
   useEffect(() => {
-    const kw = encodeURIComponent(keywords[0] || 'reading tutor');
-    const loc = encodeURIComponent(location);
-    setDirectLinks({
-      jobBoards: [
-        { name: 'Indeed', url: `https://www.indeed.com/jobs?q=${kw}&l=${loc}&fromage=14` },
-        { name: 'ZipRecruiter', url: `https://www.ziprecruiter.com/jobs-search?search=${kw}&location=${loc}` },
-        { name: 'LinkedIn', url: `https://www.linkedin.com/jobs/search/?keywords=${kw}&location=${loc}` },
-        { name: 'SchoolSpring', url: `https://www.schoolspring.com/jobs?term=${kw}` },
-        { name: 'EDJOIN', url: `https://www.edjoin.org/Home/Jobs?keyword=${kw}` },
-        { name: 'K12JobSpot', url: `https://www.k12jobspot.com/search?q=${kw}` },
-        { name: 'EdWeek Jobs', url: 'https://www.edweek.org/jobs' },
-        { name: 'Glassdoor', url: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${kw}&locKeyword=${loc}` },
-        { name: 'SimplyHired', url: `https://www.simplyhired.com/search?q=${kw}&l=${loc}` },
-      ],
-      nonprofitBoards: [
-        { name: 'Idealist', url: `https://www.idealist.org/en/jobs?q=${kw}&type=JOB` },
-        { name: 'Foundation List', url: 'https://www.foundationlist.org/education-job-postings/' },
-        { name: 'ILA Career Center', url: 'https://careers.literacyworldwide.org/' },
-        { name: 'Nonprofit Talent', url: 'https://jobs.nonprofittalent.com/category/education' },
-      ],
-      localResources: [
-        { name: 'Grant County Schools Portal', url: 'https://grantcounty.tedk12.com/hire/index.aspx' },
-        { name: 'Marion Community Schools', url: 'https://www.marion.k12.in.us/apps/pages/index.jsp?uREC_ID=3890106&type=d&pREC_ID=2478909' },
-        { name: 'Indeed - Marion IN', url: 'https://www.indeed.com/q-teaching-l-marion,-in-jobs.html' },
-      ],
-      tutoringPlatforms: [
-        { name: 'Wyzant', url: 'https://www.wyzant.com/tutorsignupstart', note: 'Set your own rate, $30-80/hr' },
-        { name: 'BookNook', url: 'https://apply.booknook.com/online-tutoring-jobs', note: 'Reading/literacy specific, K-8' },
-        { name: 'Ignite Reading', url: 'https://ignite-reading.com/online-tutoring-jobs/', note: '$17.50-$20/hr, paid training' },
-        { name: 'Varsity Tutors', url: 'https://www.varsitytutors.com/tutoring-jobs', note: 'Steady student matching' },
-        { name: 'OpenLiteracy', url: 'https://www.openliteracy.com/jobs', note: 'K-6 reading sessions' },
-        { name: 'Hoot Reading', url: 'https://www.hootreading.com/', note: '$18-$20/hr, phonics focus' },
-        { name: 'Tutor.com', url: 'https://www.tutor.com/apply', note: 'Library/school partnerships' },
-        { name: 'Care.com', url: 'https://www.care.com/enroll-provider', note: 'In-person, local families' },
-        { name: 'Thumbtack', url: 'https://www.thumbtack.com/pro/', note: 'Local tutoring gigs' },
-      ],
-    });
+    setDirectLinks(buildLinks(keywords[0] || 'reading tutor', location));
   }, [keywords, location]);
-
-  const doSearch = useCallback(async () => {
-    setLoading(true);
-    setErrors([]);
-    const allResults: JobResult[] = [];
-    const searchErrors: string[] = [];
-
-    // Search Himalayas API (free, CORS-enabled, remote jobs)
-    if (includeRemote || remoteOnly) {
-      for (const kw of keywords.slice(0, 3)) {
-        try {
-          const resp = await fetch(`https://himalayas.app/jobs/api?limit=15&q=${encodeURIComponent(kw)}`);
-          if (resp.ok) {
-            const data = await resp.json();
-            for (const job of (data.jobs || [])) {
-              allResults.push({
-                title: job.title || '',
-                company: job.companyName || '',
-                location: 'Remote',
-                url: job.applicationLink || `https://himalayas.app/jobs/${job.slug}`,
-                source: 'Himalayas',
-                salary: job.salaryCurrency ? `${job.salaryCurrency} ${job.minSalary || ''}–${job.maxSalary || ''}` : '',
-                description: (job.excerpt || '').slice(0, 200),
-                remote: true,
-              });
-            }
-          }
-        } catch (e) {
-          searchErrors.push(`Himalayas: ${e}`);
-        }
-      }
-    }
-
-    // Deduplicate
-    const seen = new Set<string>();
-    const unique = allResults.filter(r => {
-      const key = r.url.replace(/\/$/, '').toLowerCase();
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-
-    setResults(remoteOnly ? unique.filter(r => r.remote) : unique);
-    setSearchedAt(new Date().toISOString());
-    setErrors(searchErrors);
-    setLoading(false);
-  }, [keywords, location, includeRemote, remoteOnly]);
-
-  const [bottomSheet, setBottomSheet] = useState<string | null>(null);
-  const sheetRef = useRef<HTMLDivElement>(null);
 
   const applyKeywordPreset = (preset: typeof KEYWORD_PRESETS[0]) => {
     setKeywords(preset.keywords);
@@ -189,20 +125,6 @@ export default function JobSearch() {
     if (kws.length > 0) setKeywords(kws);
   };
 
-  const trackJob = (job: JobResult, status: ApplicationStatus) => {
-    setTracked(prev => ({
-      ...prev,
-      [job.url]: {
-        url: job.url,
-        title: job.title,
-        company: job.company,
-        status,
-        date: new Date().toISOString().split('T')[0],
-        notes: '',
-      },
-    }));
-  };
-
   const untrackJob = (url: string) => {
     setTracked(prev => {
       const next = { ...prev };
@@ -212,34 +134,17 @@ export default function JobSearch() {
   };
 
   const updateTrackedNotes = (url: string, notes: string) => {
-    setTracked(prev => ({
-      ...prev,
-      [url]: { ...prev[url], notes },
-    }));
+    setTracked(prev => ({ ...prev, [url]: { ...prev[url], notes } }));
   };
 
   const updateTrackedStatus = (url: string, status: ApplicationStatus) => {
-    setTracked(prev => ({
-      ...prev,
-      [url]: { ...prev[url], status, date: new Date().toISOString().split('T')[0] },
-    }));
+    setTracked(prev => ({ ...prev, [url]: { ...prev[url], status, date: new Date().toISOString().split('T')[0] } }));
   };
 
-  // Group results by source
-  const groupedResults: Record<string, JobResult[]> = {};
-  const filtered = activeFilter === 'all' ? results
-    : activeFilter === 'remote' ? results.filter(r => r.remote)
-    : results.filter(r => r.source === activeFilter);
-
-  for (const r of filtered) {
-    (groupedResults[r.source] ||= []).push(r);
-  }
-
-  const sources = [...new Set(results.map(r => r.source))];
   const trackedJobs = Object.values(tracked);
 
   return (
-    <div className="pb-8 -mx-5 -mt-6">
+    <div className="pb-8">
       {/* Header */}
       <div className="bg-gradient-to-br from-blue-600 to-blue-800 text-white px-5 pt-6 pb-8">
         <h1 className="text-2xl font-bold">Job Search</h1>
@@ -283,13 +188,13 @@ export default function JobSearch() {
           <div>
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Keywords</label>
             <div className="flex items-center gap-2 mt-1">
-              <Search size={16} className="text-gray-400 shrink-0" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input
                 type="text"
                 value={keywordInput}
                 onChange={e => setKeywordInput(e.target.value)}
                 onBlur={updateKeywordsFromInput}
-                onKeyDown={e => e.key === 'Enter' && (updateKeywordsFromInput(), doSearch())}
+                onKeyDown={e => { if (e.key === 'Enter') updateKeywordsFromInput(); }}
                 className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="reading tutor, literacy coach..."
               />
@@ -311,46 +216,9 @@ export default function JobSearch() {
             </div>
           </div>
 
-          {/* Remote toggle */}
-          <div className="flex items-center gap-4 pt-1">
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={includeRemote}
-                onChange={e => { setIncludeRemote(e.target.checked); if (!e.target.checked) setRemoteOnly(false); }}
-                className="rounded accent-blue-600"
-              />
-              Include remote
-            </label>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={remoteOnly}
-                onChange={e => { setRemoteOnly(e.target.checked); if (e.target.checked) setIncludeRemote(true); }}
-                className="rounded accent-blue-600"
-              />
-              Remote only
-            </label>
-          </div>
-
-          {/* Search button */}
-          <button
-            onClick={() => { updateKeywordsFromInput(); doSearch(); }}
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <RefreshCw size={18} className="animate-spin" />
-                Searching {sources.length > 0 ? `(${results.length} found so far...)` : '...'}
-              </>
-            ) : (
-              <>
-                <Search size={18} />
-                Search Jobs
-              </>
-            )}
-          </button>
+          <p className="text-xs text-gray-400 text-center pt-1">
+            Change keywords or location, then tap a category below — links update automatically
+          </p>
         </div>
       </div>
 
@@ -378,7 +246,6 @@ export default function JobSearch() {
                         className="text-sm font-medium text-blue-600 hover:underline line-clamp-1">
                         {job.title}
                       </a>
-                      {job.company && <p className="text-xs text-gray-500">{job.company}</p>}
                     </div>
                     <button onClick={() => untrackJob(job.url)} className="text-gray-400 hover:text-red-500 shrink-0">
                       <X size={16} />
@@ -416,253 +283,85 @@ export default function JobSearch() {
         </div>
       )}
 
-      {/* Results */}
-      {(results.length > 0 || loading) && (
-        <div className="px-4 mt-4">
-          {/* Status bar */}
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-gray-800">
-              {loading ? 'Searching...' : `${filtered.length} Jobs Found`}
-            </h2>
-            {searchedAt && (
-              <span className="text-xs text-gray-400">
-                {new Date(searchedAt).toLocaleTimeString()}
-              </span>
-            )}
-          </div>
-
-          {/* Source filter pills */}
-          {sources.length > 1 && (
-            <div className="flex gap-1.5 overflow-x-auto pb-2 mb-3 no-scrollbar">
-              <button
-                onClick={() => setActiveFilter('all')}
-                className={`text-xs px-3 py-1.5 rounded-full whitespace-nowrap ${
-                  activeFilter === 'all' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'
-                }`}
-              >
-                All ({results.length})
-              </button>
-              {results.some(r => r.remote) && (
-                <button
-                  onClick={() => setActiveFilter('remote')}
-                  className={`text-xs px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1 ${
-                    activeFilter === 'remote' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  <Wifi size={12} /> Remote
-                </button>
-              )}
-              {sources.map(src => (
-                <button
-                  key={src}
-                  onClick={() => setActiveFilter(src)}
-                  className={`text-xs px-3 py-1.5 rounded-full whitespace-nowrap ${
-                    activeFilter === src ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  {src} ({results.filter(r => r.source === src).length})
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Job cards */}
-          <div className="space-y-2">
-            {filtered.map((job, i) => {
-              const isTracked = tracked[job.url];
-              return (
-                <div
-                  key={`${job.url}-${i}`}
-                  className={`bg-white rounded-xl border p-3.5 transition-all ${
-                    isTracked ? 'border-green-300 bg-green-50/30' : 'border-gray-200'
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1 min-w-0">
-                      <a
-                        href={job.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm font-semibold text-gray-900 hover:text-blue-600 line-clamp-2 flex items-start gap-1"
-                      >
-                        {job.title}
-                        <ExternalLink size={12} className="shrink-0 mt-1 text-gray-400" />
-                      </a>
-                      {job.company && (
-                        <p className="text-sm text-gray-600 mt-0.5">{job.company}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    {job.location && (
-                      <span className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                        <MapPin size={10} /> {job.location}
-                      </span>
-                    )}
-                    {job.remote && (
-                      <span className="inline-flex items-center gap-1 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-                        <Wifi size={10} /> Remote
-                      </span>
-                    )}
-                    {job.salary && (
-                      <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
-                        {job.salary}
-                      </span>
-                    )}
-                    <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
-                      {job.source}
-                    </span>
-                  </div>
-
-                  {job.description && (
-                    <p className="text-xs text-gray-500 mt-2 line-clamp-2">{job.description}</p>
-                  )}
-
-                  {/* Action buttons */}
-                  <div className="flex gap-2 mt-3">
-                    {isTracked ? (
-                      <button
-                        onClick={() => untrackJob(job.url)}
-                        className="flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-100 px-3 py-1.5 rounded-lg"
-                      >
-                        <BookmarkCheck size={14} />
-                        {isTracked.status === 'applied' ? 'Applied' :
-                         isTracked.status === 'interviewing' ? 'Interviewing' :
-                         isTracked.status === 'saved' ? 'Saved' : 'Tracked'}
-                      </button>
-                    ) : (
-                      <>
-                        <button
-                          onClick={() => trackJob(job, 'applied')}
-                          className="flex items-center gap-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors"
-                        >
-                          <CheckCircle2 size={14} />
-                          Applied
-                        </button>
-                        <button
-                          onClick={() => trackJob(job, 'saved')}
-                          className="flex items-center gap-1.5 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors"
-                        >
-                          <Bookmark size={14} />
-                          Save
-                        </button>
-                      </>
-                    )}
-                    <a
-                      href={job.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg transition-colors ml-auto"
-                    >
-                      <ExternalLink size={14} />
-                      View
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* Errors */}
-      {errors.length > 0 && (
-        <div className="px-4 mt-3">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-700">
-            <p className="font-medium mb-1">Some sources had issues:</p>
-            {errors.map((e, i) => <p key={i}>- {e}</p>)}
-          </div>
-        </div>
-      )}
-
       {/* Category Buttons */}
-      {directLinks && (
-        <div className="px-4 mt-6">
-          <h2 className="font-bold text-gray-800 mb-3">Browse by Category</h2>
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              onClick={() => setBottomSheet('jobBoards')}
-              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
-            >
-              <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
-                <Briefcase size={20} className="text-blue-600" />
-              </div>
-              <p className="text-sm font-semibold text-gray-900">Job Boards</p>
-              <p className="text-xs text-gray-500 mt-0.5">{directLinks.jobBoards.length} sites</p>
-            </button>
+      <div className="px-4 mt-6">
+        <h2 className="font-bold text-gray-800 mb-3">Browse by Category</h2>
+        <div className="grid grid-cols-2 gap-3">
+          <button
+            onClick={() => setBottomSheet('jobBoards')}
+            className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+          >
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-2">
+              <Briefcase size={20} className="text-blue-600" />
+            </div>
+            <p className="text-sm font-semibold text-gray-900">Job Boards</p>
+            <p className="text-xs text-gray-500 mt-0.5">{directLinks.jobBoards.length} sites</p>
+          </button>
 
-            <button
-              onClick={() => setBottomSheet('local')}
-              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
-            >
-              <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mb-2">
-                <Building2 size={20} className="text-green-600" />
-              </div>
-              <p className="text-sm font-semibold text-gray-900">Local - Grant County</p>
-              <p className="text-xs text-gray-500 mt-0.5">{directLinks.localResources.length} sites</p>
-            </button>
+          <button
+            onClick={() => setBottomSheet('local')}
+            className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+          >
+            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mb-2">
+              <Building2 size={20} className="text-green-600" />
+            </div>
+            <p className="text-sm font-semibold text-gray-900">Local - Grant County</p>
+            <p className="text-xs text-gray-500 mt-0.5">{directLinks.localResources.length} sites</p>
+          </button>
 
-            <button
-              onClick={() => setBottomSheet('nonprofit')}
-              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
-            >
-              <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-2">
-                <Heart size={20} className="text-purple-600" />
-              </div>
-              <p className="text-sm font-semibold text-gray-900">Nonprofit Boards</p>
-              <p className="text-xs text-gray-500 mt-0.5">{directLinks.nonprofitBoards.length} sites</p>
-            </button>
+          <button
+            onClick={() => setBottomSheet('nonprofit')}
+            className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+          >
+            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center mb-2">
+              <Heart size={20} className="text-purple-600" />
+            </div>
+            <p className="text-sm font-semibold text-gray-900">Nonprofit Boards</p>
+            <p className="text-xs text-gray-500 mt-0.5">{directLinks.nonprofitBoards.length} sites</p>
+          </button>
 
-            <button
-              onClick={() => setBottomSheet('tutoring')}
-              className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
-            >
-              <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-2">
-                <BookOpen size={20} className="text-orange-600" />
-              </div>
-              <p className="text-sm font-semibold text-gray-900">Tutoring Platforms</p>
-              <p className="text-xs text-gray-500 mt-0.5">Sign up & earn</p>
-            </button>
-          </div>
+          <button
+            onClick={() => setBottomSheet('tutoring')}
+            className="bg-white rounded-2xl border border-gray-200 p-4 text-left hover:shadow-md transition-shadow active:scale-[0.98]"
+          >
+            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-2">
+              <BookOpen size={20} className="text-orange-600" />
+            </div>
+            <p className="text-sm font-semibold text-gray-900">Tutoring Platforms</p>
+            <p className="text-xs text-gray-500 mt-0.5">Sign up & earn</p>
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Tips */}
       <div className="px-4 mt-6 mb-4">
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
           <h3 className="font-bold text-blue-900 text-sm">Quick Tips</h3>
           <ul className="mt-2 space-y-1.5 text-xs text-blue-800">
-            <li>- Try different keyword presets above to find different types of roles</li>
-            <li>- Change the city to nearby towns (Gas City, Muncie, Kokomo)</li>
-            <li>- Check "Remote only" for work-from-home tutoring jobs</li>
+            <li>- Change keywords above and all links update automatically</li>
+            <li>- Tap a city to switch location across all job boards at once</li>
             <li>- The Grant County Schools Portal has ALL local district jobs</li>
             <li>- Sign up on Wyzant + BookNook to start earning while you search</li>
-            <li>- Mark jobs as "Applied" to track your applications</li>
           </ul>
         </div>
       </div>
 
       {/* Bottom Sheet Overlay */}
-      {bottomSheet && directLinks && (
+      {bottomSheet && (
         <div
           className="fixed inset-0 z-50 flex items-end justify-center"
           onClick={(e) => { if (e.target === e.currentTarget) setBottomSheet(null); }}
         >
-          {/* Backdrop */}
           <div className="absolute inset-0 bg-black/40 animate-[fadeIn_0.2s_ease-out]" />
 
-          {/* Sheet */}
           <div
             ref={sheetRef}
             className="relative w-full max-w-lg bg-white rounded-t-3xl max-h-[85vh] flex flex-col animate-[slideUp_0.3s_ease-out]"
           >
-            {/* Handle */}
             <div className="flex justify-center pt-3 pb-1">
               <div className="w-10 h-1 bg-gray-300 rounded-full" />
             </div>
 
-            {/* Sheet Header */}
             <div className="flex items-center justify-between px-5 pb-3 border-b border-gray-100">
               <h2 className="text-lg font-bold text-gray-900">
                 {bottomSheet === 'jobBoards' && 'Job Boards'}
@@ -678,20 +377,16 @@ export default function JobSearch() {
               </button>
             </div>
 
-            {/* Sheet Content */}
             <div className="overflow-y-auto px-5 py-3 space-y-2">
               {bottomSheet === 'jobBoards' && directLinks.jobBoards.map(link => (
                 <SheetLink key={link.name} name={link.name} url={link.url} />
               ))}
-
               {bottomSheet === 'local' && directLinks.localResources.map(link => (
                 <SheetLink key={link.name} name={link.name} url={link.url} />
               ))}
-
               {bottomSheet === 'nonprofit' && directLinks.nonprofitBoards.map(link => (
                 <SheetLink key={link.name} name={link.name} url={link.url} />
               ))}
-
               {bottomSheet === 'tutoring' && directLinks.tutoringPlatforms.map(p => (
                 <a
                   key={p.name}
@@ -707,8 +402,6 @@ export default function JobSearch() {
                   <ExternalLink size={16} className="text-gray-400 shrink-0" />
                 </a>
               ))}
-
-              {/* Extra padding at bottom for safe area */}
               <div className="h-6" />
             </div>
           </div>
@@ -717,8 +410,6 @@ export default function JobSearch() {
     </div>
   );
 }
-
-// ─── Sub-components ─────────────────────────────────────────────────────────
 
 function SheetLink({ name, url }: { name: string; url: string }) {
   return (
