@@ -7,8 +7,8 @@
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "functions": {
-    "api/search.js": {
-      "maxDuration": 30
+    "api/jobs.js": {
+      "maxDuration": 15
     }
   }
 }

@@ -1,7 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
-import { MapPin, Briefcase, ExternalLink, ChevronDown, ChevronUp, CheckCircle2, X, Building2, Heart, BookOpen } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  MapPin, Briefcase, ExternalLink, ChevronDown, ChevronUp,
+  CheckCircle2, X, Building2, Heart, BookOpen, Search,
+} from 'lucide-react';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
+
+interface AdzunaJob {
+  id: string;
+  title: string;
+  company: { display_name: string };
+  location: { display_name: string };
+  salary_min?: number;
+  salary_max?: number;
+  description: string;
+  redirect_url: string;
+  created: string;
+}
 
 interface DirectLinks {
   jobBoards: { name: string; url: string }[];
@@ -55,6 +70,32 @@ function saveTracked(tracked: Record<string, TrackedJob>) {
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
+function buildAdzunaLocation(location: string): string | undefined {
+  if (location === 'Remote') return undefined;
+  return location.split(',')[0].trim();
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim();
+}
+
+function formatSalary(min?: number, max?: number): string | null {
+  if (!min && !max) return null;
+  const fmt = (n: number) => n >= 1000 ? `$${Math.round(n / 1000)}k` : `$${n}`;
+  if (min && max) return `${fmt(min)}–${fmt(max)}/yr`;
+  if (min) return `From ${fmt(min)}/yr`;
+  return null;
+}
+
+function postedAgo(created: string): string {
+  const days = Math.floor((Date.now() - new Date(created).getTime()) / 86400000);
+  if (days === 0) return 'Today';
+  if (days === 1) return '1 day ago';
+  if (days < 7) return `${days} days ago`;
+  if (days < 14) return '1 week ago';
+  return `${Math.floor(days / 7)} weeks ago`;
+}
+
 function buildLinks(keyword: string, location: string): DirectLinks {
   const kw = encodeURIComponent(keyword);
   const loc = encodeURIComponent(location);
@@ -95,7 +136,70 @@ function buildLinks(keyword: string, location: string): DirectLinks {
   };
 }
 
-// ─── Component ──────────────────────────────────────────────────────────────
+// ─── Sub-components ──────────────────────────────────────────────────────────
+
+function JobCard({ job, onSave }: { job: AdzunaJob; onSave: (job: AdzunaJob) => void }) {
+  const salary = formatSalary(job.salary_min, job.salary_max);
+  const description = stripHtml(job.description);
+
+  return (
+    <div className="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-gray-900 text-sm leading-snug">{job.title}</h3>
+          <p className="text-xs text-blue-600 mt-0.5 font-medium">{job.company.display_name}</p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1">
+            <span className="text-xs text-gray-400 flex items-center gap-1">
+              <MapPin size={11} />
+              {job.location.display_name}
+            </span>
+            {salary && (
+              <span className="text-xs text-green-600 font-medium">{salary}</span>
+            )}
+          </div>
+        </div>
+        <span className="text-xs text-gray-400 shrink-0 mt-0.5">{postedAgo(job.created)}</span>
+      </div>
+
+      <p className="text-xs text-gray-500 mt-2.5 leading-relaxed line-clamp-3">
+        {description}
+      </p>
+
+      <div className="flex items-center gap-2 mt-3">
+        <a
+          href={job.redirect_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 bg-blue-600 text-white text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-blue-700 active:bg-blue-800 transition-colors"
+        >
+          Apply <ExternalLink size={11} />
+        </a>
+        <button
+          onClick={() => onSave(job)}
+          className="inline-flex items-center gap-1 text-xs text-gray-500 font-medium px-3 py-1.5 rounded-full border border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SheetLink({ name, url }: { name: string; url: string }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-between bg-gray-50 rounded-xl p-3.5 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+    >
+      <span className="text-sm font-medium text-gray-900">{name}</span>
+      <ExternalLink size={16} className="text-gray-400 shrink-0" />
+    </a>
+  );
+}
+
+// ─── Main Component ──────────────────────────────────────────────────────────
 
 export default function JobSearch() {
   const [keywords, setKeywords] = useState(['reading tutor', 'literacy tutor', 'reading specialist']);
@@ -107,13 +211,47 @@ export default function JobSearch() {
   const [tracked, setTracked] = useState<Record<string, TrackedJob>>(loadTracked);
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  // Persist tracked jobs
+  // Job search state
+  const [jobs, setJobs] = useState<AdzunaJob[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [searchCount, setSearchCount] = useState<number | null>(null);
+
   useEffect(() => { saveTracked(tracked); }, [tracked]);
 
-  // Rebuild links when keywords or location change
   useEffect(() => {
     setDirectLinks(buildLinks(keywords[0] || 'reading tutor', location));
   }, [keywords, location]);
+
+  const doSearch = useCallback(async (kws: string[], loc: string) => {
+    setLoading(true);
+    setError(null);
+    setJobs([]);
+
+    const query = kws.join(' ');
+    const where = buildAdzunaLocation(loc);
+
+    const params = new URLSearchParams({ what: query });
+    if (where) params.set('where', where);
+
+    try {
+      const res = await fetch(`/api/jobs?${params}`);
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      setJobs(data.results || []);
+      setSearchCount(data.count ?? null);
+    } catch {
+      setError('Could not load jobs. Check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Search on mount
+  useEffect(() => {
+    doSearch(keywords, location);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const applyKeywordPreset = (preset: typeof KEYWORD_PRESETS[0]) => {
     setKeywords(preset.keywords);
@@ -123,6 +261,26 @@ export default function JobSearch() {
   const updateKeywordsFromInput = () => {
     const kws = keywordInput.split(',').map(k => k.trim()).filter(Boolean);
     if (kws.length > 0) setKeywords(kws);
+  };
+
+  const handleSearch = () => {
+    const kws = keywordInput.split(',').map(k => k.trim()).filter(Boolean);
+    const finalKws = kws.length > 0 ? kws : keywords;
+    setKeywords(finalKws);
+    doSearch(finalKws, location);
+  };
+
+  const saveJob = (job: AdzunaJob) => {
+    setTracked(prev => ({
+      ...prev,
+      [job.redirect_url]: {
+        url: job.redirect_url,
+        title: job.title,
+        status: 'saved',
+        date: new Date().toISOString().split('T')[0],
+        notes: '',
+      },
+    }));
   };
 
   const untrackJob = (url: string) => {
@@ -138,7 +296,10 @@ export default function JobSearch() {
   };
 
   const updateTrackedStatus = (url: string, status: ApplicationStatus) => {
-    setTracked(prev => ({ ...prev, [url]: { ...prev[url], status, date: new Date().toISOString().split('T')[0] } }));
+    setTracked(prev => ({
+      ...prev,
+      [url]: { ...prev[url], status, date: new Date().toISOString().split('T')[0] },
+    }));
   };
 
   const trackedJobs = Object.values(tracked);
@@ -188,13 +349,12 @@ export default function JobSearch() {
           <div>
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Keywords</label>
             <div className="flex items-center gap-2 mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <Search size={16} className="text-gray-400 shrink-0" />
               <input
                 type="text"
                 value={keywordInput}
                 onChange={e => setKeywordInput(e.target.value)}
-                onBlur={updateKeywordsFromInput}
-                onKeyDown={e => { if (e.key === 'Enter') updateKeywordsFromInput(); }}
+                onKeyDown={e => { if (e.key === 'Enter') handleSearch(); }}
                 className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="reading tutor, literacy coach..."
               />
@@ -216,15 +376,71 @@ export default function JobSearch() {
             </div>
           </div>
 
-          <p className="text-xs text-gray-400 text-center pt-1">
-            Change keywords or location, then tap a category below — links update automatically
-          </p>
+          {/* Search Button */}
+          <button
+            onClick={handleSearch}
+            disabled={loading}
+            className="w-full bg-blue-600 text-white font-semibold text-sm py-2.5 rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Searching...
+              </>
+            ) : (
+              <>
+                <Search size={16} />
+                Search Jobs
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Applied Jobs Tracker */}
+      {/* Job Results */}
+      <div className="px-4 mt-4">
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+            <p className="text-sm text-red-700">{error}</p>
+            <button
+              onClick={() => doSearch(keywords, location)}
+              className="mt-2 text-xs text-red-600 underline"
+            >
+              Try again
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && jobs.length > 0 && (
+          <>
+            <p className="text-xs text-gray-400 mb-3">
+              Showing {jobs.length} jobs
+              {searchCount && searchCount > jobs.length ? ` of ${searchCount.toLocaleString()} total` : ''}
+              {' '}near {location}
+            </p>
+            <div className="space-y-3">
+              {jobs.map(job => (
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  onSave={saveJob}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {!loading && !error && jobs.length === 0 && searchCount === 0 && (
+          <div className="text-center py-10 text-gray-400">
+            <Search size={32} className="mx-auto mb-2 opacity-40" />
+            <p className="text-sm">No jobs found. Try different keywords or a broader location.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Application Tracker */}
       {trackedJobs.length > 0 && (
-        <div className="px-4 mt-4">
+        <div className="px-4 mt-6">
           <button
             onClick={() => setShowTracked(!showTracked)}
             className="w-full flex items-center justify-between bg-green-50 border border-green-200 rounded-xl px-4 py-3"
@@ -242,8 +458,12 @@ export default function JobSearch() {
                 <div key={job.url} className="bg-white rounded-xl border p-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 min-w-0">
-                      <a href={job.url} target="_blank" rel="noopener noreferrer"
-                        className="text-sm font-medium text-blue-600 hover:underline line-clamp-1">
+                      <a
+                        href={job.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-medium text-blue-600 hover:underline line-clamp-1"
+                      >
                         {job.title}
                       </a>
                     </div>
@@ -283,9 +503,9 @@ export default function JobSearch() {
         </div>
       )}
 
-      {/* Category Buttons */}
+      {/* More Resources */}
       <div className="px-4 mt-6">
-        <h2 className="font-bold text-gray-800 mb-3">Browse by Category</h2>
+        <h2 className="font-bold text-gray-800 mb-3">More Resources</h2>
         <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => setBottomSheet('jobBoards')}
@@ -333,20 +553,7 @@ export default function JobSearch() {
         </div>
       </div>
 
-      {/* Tips */}
-      <div className="px-4 mt-6 mb-4">
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <h3 className="font-bold text-blue-900 text-sm">Quick Tips</h3>
-          <ul className="mt-2 space-y-1.5 text-xs text-blue-800">
-            <li>- Change keywords above and all links update automatically</li>
-            <li>- Tap a city to switch location across all job boards at once</li>
-            <li>- The Grant County Schools Portal has ALL local district jobs</li>
-            <li>- Sign up on Wyzant + BookNook to start earning while you search</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* Bottom Sheet Overlay */}
+      {/* Bottom Sheet */}
       {bottomSheet && (
         <div
           className="fixed inset-0 z-50 flex items-end justify-center"
@@ -408,19 +615,5 @@ export default function JobSearch() {
         </div>
       )}
     </div>
-  );
-}
-
-function SheetLink({ name, url }: { name: string; url: string }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-between bg-gray-50 rounded-xl p-3.5 hover:bg-gray-100 active:bg-gray-200 transition-colors"
-    >
-      <span className="text-sm font-medium text-gray-900">{name}</span>
-      <ExternalLink size={16} className="text-gray-400 shrink-0" />
-    </a>
   );
 }
