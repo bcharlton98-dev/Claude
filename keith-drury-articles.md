@@ -135,9 +135,15 @@ Full 10-chapter book online:
 - [Did Mother Teresa Go to Hell... or Heaven?](https://www.drurywriting.com/keith/mother.teresa.hell.html)
 - [Prayer of Jabez](http://www.drurywriting.com/keith/0Jabez.htm)
 - [I'm Tired of Being Young - Tomorrow I'm Gonna Start Being an Old Man](https://www.drurywriting.com/keith/old.man.html)
+- [The Sins of Old Age](https://www.drurywriting.com/keith/sins.of.old.age.html) - Temptations unique to old age (money, stinginess, despair)
+- [Resisting the Temptations of Old Age](http://www.drurywriting.com/keith/sins.of.old.age.resisting.htm) - Companion piece on defeating those temptations
 - [Christian Speakers & Artists Charging Huge Fees (Read My Mail)](https://www.drurywriting.com/keith/read.my.mail.Christian.speakers.html)
 - [How to Break Into College Teaching (Read My Mail)](https://www.drurywriting.com/keith/Read.My.Mail.break.into.college.teaching.html)
 - [College Professor Life (Read My Mail)](http://www.drurywriting.com/keith/Read.My.Mail.college.professor.htm)
+- [Answers to Your Questions](http://www.drurywriting.com/keith/answers.to.questions.1.htm)
+- [Advice](https://www.drurywriting.com/keith/advice)
+- [Spiritual Self-Study Assessment](http://www.drurywriting.com/keith/selfstud.htm) - Self-assessment tool for spiritual disciplines
+- [Common Ground Discussion Helps](http://www.drurywriting.com/keith/common.ground.discussion.helps.htm) - Leader's guide for studying the Apostles' Creed
 
 ---
 
@@ -178,6 +184,8 @@ Full 10-chapter book online:
 - [Book Blog / Reading Log](http://www.drurywriting.com/keith/Blog.book.htm) - Started June 2004
 - [Keith Drury's Family Page](https://www.drurywriting.com/keith/Keith.family.htm)
 - [Personal Links](https://www.drurywriting.com/keith/links)
+- [Recent Pretty Good Writing (Index)](http://www.drurywriting.com/keith/recent.pretty.good.writing.htm) - Index of essays including "Christians Take over America", "One Nation Under God?", "Parachurch or parasite?"
+- [Twitter/X Profile](https://x.com/keithdrury) - @keithdrury, Professor Emeritus, joined Oct 2008
 - [BIND_R](https://www.drurywriting.com/keith/BIND_R)
 - [fcc_r](https://www.drurywriting.com/keith/fcc_r)
 
