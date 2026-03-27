@@ -70,9 +70,13 @@ function saveTracked(tracked: Record<string, TrackedJob>) {
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
+const ADZUNA_APP_ID = '442502e4';
+const ADZUNA_APP_KEY = '50a2afd4d6ad64df30f16d7ccaecc188';
+
 function buildAdzunaLocation(location: string): string | undefined {
   if (location === 'Remote') return undefined;
-  return location.split(',')[0].trim();
+  // Small IN cities → search all of Indiana for better coverage
+  return 'Indiana';
 }
 
 function stripHtml(html: string): string {
@@ -228,14 +232,20 @@ export default function JobSearch() {
     setError(null);
     setJobs([]);
 
-    const query = kws.join(' ');
+    const query = kws[0]; // Adzuna uses AND — use primary keyword only
     const where = buildAdzunaLocation(loc);
 
-    const params = new URLSearchParams({ what: query });
+    const params = new URLSearchParams({
+      app_id: ADZUNA_APP_ID,
+      app_key: ADZUNA_APP_KEY,
+      results_per_page: '20',
+      what: query,
+      sort_by: 'date',
+    });
     if (where) params.set('where', where);
 
     try {
-      const res = await fetch(`/api/jobs?${params}`);
+      const res = await fetch(`https://api.adzuna.com/v1/api/jobs/us/search/1?${params}`);
       if (!res.ok) throw new Error('Request failed');
       const data = await res.json();
       setJobs(data.results || []);
