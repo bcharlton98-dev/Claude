@@ -1,156 +1,150 @@
-# From Fresh Text to Institutional Asset: A Growth Strategy for John Drury and IWU
+# From Fresh Text to Institutional Asset: A Strategic Case
 
-## Reverse-Engineering the Kate Bowler Model for Fresh Text
-
----
-
-## THE CURRENT STATE
-
-### What John Drury Has
-
-- **PhD, Princeton Theological Seminary** (Systematic Theology); A.A. Hodge Prize recipient
-- Professor of New Testament and Spiritual Formation, IWU School of Theology and Ministry
-- Called **"one of the two greatest young minds in the Wesleyan tradition"** by Dr. Cheryl Bridges Johns at the 2022 Wesleyan Theological Society meeting (Duke Divinity)
-- Author of *The Resurrected God: Karl Barth's Trinitarian Theology of Easter* (Pickwick)
-- IWU alumnus (B.A., summa cum laude) — he *is* the institution's story
-- Ordained minister in The Wesleyan Church; former solo pastor
-- Deep family roots in the Wesleyan movement (son of Keith Drury)
-
-### What Fresh Text Has
-
-- **380+ episodes** since ~2018–2019, released weekly (Mondays), ~1 hour each
-- Lectionary-based structure covering the Revised Common Lectionary's full cycle — a **built-in 12-year content roadmap** with no repeated texts
-- Collaborative close-reading format (scholar + pastor/preacher/theologian)
-- One of **very few podcasts operating from a Wesleyan theological perspective** in this format
-- Produced under **The Called Collective**, a ministry of IWU's School of Theology and Ministry
-- Already in the **top 5–10% of all podcasts globally** (per Called Collective's own reporting)
-- Available on Apple Podcasts, Spotify, Amazon, and other major platforms
-- Spreadsheet tracking every text covered — a content asset no competitor has
-
-### What IWU / Wesley Seminary Has
-
-- **Largest CCCU member institution** and largest private college in Indiana
-- Wesley Seminary: ATS-accredited through 2031, in good standing
-- Seminary enrollment: **455 FTE / ~534–700 headcount** (sources vary), **top 10% of ATS seminaries by size**
-- 1,000+ seminary graduates since founding in 2009
-- Programs: MDiv, MA in Ministry, Master of Practical Theology, DMin
-- Strong online/hybrid delivery model
-- The Called Collective network: 5 podcasts, a social app for teens called to ministry, spiritual formation tracks
+## For IWU School of Theology & Ministry and Wesley Seminary Leadership
 
 ---
 
-## THE KATE BOWLER MODEL: WHAT DUKE DID
+## WHY THIS MATTERS NOW
 
-Here's what made Bowler's platform an institutional asset, not just a personal brand:
+IWU just received **$10 million from Lilly Endowment** (VIA Journeys, Dec 2025) to deliver "personalized, applied theological education for pastors and lay leaders." Wesley Seminary has been on a Lilly trajectory since the $50K Phase 1 planning grant in 2021.
 
-| Element | What Duke Did | Fresh Text Equivalent Today |
-|---------|--------------|----------------------------|
-| **Institutional staffing** | Team of 8 (4 FT, 4 PT) with dedicated offices | Producer + occasional co-host + editor (volunteer/light staff) |
-| **Dedicated digital marketer** | Hailie Durrett, "Digital Marketer, Everything Happens Initiative" — on Duke's staff directory | None |
-| **Grant funding** | 5+ grants from Lilly Endowment, Duke Endowment, Templeton Foundation (2018–2027) | None known |
-| **Admissions integration** | Senior Director of Cross-Sector Initiatives works with both Everything Happens and admissions; Divcast (admissions podcast) bridges the two | Fresh Text lives under Called Collective; no formal admissions pipeline |
-| **Institutional branding** | "Everything Happens" is branded as a Duke Divinity initiative, not just Kate's show | Fresh Text credits IWU/Called Collective but is not positioned as an IWU flagship |
-| **Faculty course integration** | Bowler's courses mirror podcast themes ("Everything Happens: Themes in American Religion") | Drury's scholarship feeds the podcast but no formal course tie-in is marketed |
-| **External recognition** | Centennial trailblazer (#Duke100); Yale award; honorary doctorates | Wesleyan Theological Society recognition; not yet leveraged publicly by IWU |
-| **Media crossover** | NPR, Today Show, GMA, Washington Post, NYT, TED (9M views) | Niche lectionary/preaching audience; no mainstream media crossover |
-| **Downloads** | 18M+ total | Unknown publicly; top 5–10% globally suggests strong niche performance |
+Meanwhile, John Drury has been running Fresh Text for 7 years — 380+ episodes of applied theological education for pastors, delivered weekly, for free, to an audience already in the top 5–10% of all podcasts globally. **The podcast is already doing what the grant is funding. Nobody has connected the dots.**
 
 ---
 
-## THE GAP — AND WHY IT'S AN OPPORTUNITY
+## HOW THE BOWLER MODEL ACTUALLY WORKED
 
-Kate Bowler's path was catalyzed by a cancer diagnosis and a memoir that went viral. You can't replicate that, and you shouldn't try. But **the institutional infrastructure Duke built around her is entirely replicable** — and IWU has advantages Duke doesn't:
+Kate Bowler's rise at Duke wasn't a marketing campaign. It was a **grant-funding feedback loop**:
 
-1. **Fresh Text already exists and is proven.** Bowler launched her podcast in 2018 with institutional backing from day one. Fresh Text has been running for 7 years with minimal institutional investment and is already in the top 5–10% of podcasts. The ROI on incremental investment is potentially enormous.
+**Step 1: Scholar finds an audience (2018).** Bowler's cancer memoir goes viral. She launches the Everything Happens podcast. Duke didn't plan this — it happened because a gifted communicator had something to say and an audience showed up.
 
-2. **The Wesleyan lane is wide open.** There is no Kate Bowler equivalent in the Wesleyan tradition. The lectionary preaching space has Sermon Brainwave (Luther Seminary — Lutheran), Pulpit Fiction (mainline/progressive), and a handful of others. Fresh Text is the Wesleyan option. That's a denominational identity play no other school can make.
+**Step 2: Duke recognizes the asset and funds infrastructure (2018–2020).** Lilly Endowment awards a planning grant for the "Everything Happens Project." Duke Endowment funds "Equipping Pastors for the Digital Church." Now there's a team of 8, dedicated offices, a digital marketer on the school's payroll.
 
-3. **The audience is the pipeline.** Fresh Text listeners are *pastors and preachers* — people who are either already in ministry (DMin prospects) or preparing sermons weekly (MDiv/MA prospects, or people who might send their mentees to IWU). Bowler's audience is the general public; Drury's audience is the enrollment funnel itself.
+**Step 3: Infrastructure enables scale, scale enables more grants (2020–2027).** Lilly funds "Leadership Education Operations" through 2026. Templeton funds the Everything Happens Project for 2026–2027. Each grant creates the track record that justifies the next. The podcast hits 18M downloads. Bowler goes on NPR, GMA, TED (9M views).
 
-4. **IWU is the largest CCCU school.** It has the infrastructure, enrollment management capacity, and marketing apparatus to do what Duke did — it just hasn't pointed those resources at this asset yet.
+**Step 4: The institution benefits at every level.** Duke Divinity grows from 543 to 599 FTE during the podcast era — against the mainline enrollment trend. Duke features Bowler as a centennial trailblazer. Will Willimon tells the *Washington Post*: "Everywhere I go, people say to me, 'Do you know Kate Bowler?'" The school's admissions staff works directly with the Everything Happens Initiative.
 
-5. **Wesley Seminary needs differentiation.** In a market where all the largest seminaries are evangelical, and online/hybrid delivery is table stakes, Wesley Seminary needs a reason for a prospective student in Topeka or Tampa to choose Marion, Indiana. A nationally recognized faculty voice is that reason.
-
----
-
-## THE PLAYBOOK: 12 MOVES
-
-### Phase 1: Institutional Recognition (0–3 months, minimal cost)
-
-**1. Name it.** Position Fresh Text on IWU's website not just under Called Collective but as a **flagship resource of the School of Theology and Ministry**. Add it to the STM landing page, Wesley Seminary's site, and faculty profile pages. Right now, a prospective student visiting indwes.edu would have no idea this exists.
-
-**2. Integrate with admissions.** Add a single question to the seminary admissions intake form: *"How did you first hear about Wesley Seminary / IWU's School of Theology and Ministry?"* with "Fresh Text podcast" as an option. You cannot prove impact if you don't measure it. (This is the single most important recommendation in this document.)
-
-**3. Leverage the Drury story.** John is a summa cum laude IWU graduate who earned his PhD at Princeton and came back. That's a powerful institutional narrative — "our best go to the best and come home." Feature him the way Western Seminary features Tim Mackie: a transformation story, not just a faculty bio.
-
-**4. Cross-promote on Divcast equivalent.** If IWU/Wesley Seminary has any admissions content (webinars, emails, campus visit materials), mention Fresh Text as evidence of the caliber of faculty and the school's commitment to serving the local church. If there's no admissions podcast, consider one — Duke's Divcast launched in 2020 and costs almost nothing to produce.
-
-### Phase 2: Audience Growth (3–12 months, moderate investment)
-
-**5. Hire or assign a part-time digital marketer for Fresh Text / Called Collective.** Duke has Hailie Durrett. IWU needs someone whose job includes growing the podcast's audience, managing social media clips, SEO, newsletter, and cross-platform distribution. This could be a student worker, a GA, or a fractional hire — but someone needs to own growth.
-
-**6. Create derivative content from existing episodes.** 380+ episodes is a massive content library that's currently locked inside hour-long audio files. Extract:
-   - 2–3 minute sermon-starter video clips for Instagram/YouTube Shorts/TikTok (pastors share these)
-   - A weekly email newsletter with the episode's key insight + the lectionary text + a link
-   - A searchable archive organized by Scripture passage (the spreadsheet already exists — make it public and linkable)
-   - Seasonal landing pages: "Advent with Fresh Text," "Lent with Fresh Text," "Easter with Fresh Text" — these are high-search-volume moments
-
-**7. Pursue strategic guest appearances.** Bring on guests who have their own audiences and will cross-promote: Scot McKnight, NT Wright, Esau McCaulley, Tish Harrison Warren, Fleming Rutledge, Will Willimon. Every guest with 10K+ followers who shares the episode expands the top of the funnel. Bowler's guest list (Nicholas Kristof, Charles Spencer) was a growth engine.
-
-**8. Submit for awards and recognition.** Bowler won a Christopher Award and the Yale Distinction in Theological Education Award. Nominate Drury for the Wesleyan Theological Society's awards, Christianity Today's book awards (when he publishes), and podcast industry recognition. The Called Collective's claim that Fresh Text is "top 5–10% globally" should be verified, documented, and publicized.
-
-### Phase 3: Institutional Investment (12–24 months, requires leadership buy-in)
-
-**9. Pursue grant funding.** The Lilly Endowment funded Bowler's project under "Leadership Education" and "Equipping Pastors for the Digital Church." Fresh Text is *literally* equipping pastors for the local church through digital media — it's a natural fit for:
-   - **Lilly Endowment** Pathways for Tomorrow initiative (IWU's Wesleyan Church connection is an asset here)
-   - **The Duke Endowment** (less likely — Duke-specific)
-   - **John Templeton Foundation** (funds projects at the intersection of scholarship and public engagement)
-   - **Kern Family Foundation** (funds pastoral formation — IWU already has the Kern Pastoral Ministries program)
-   - **M.J. Murdock Charitable Trust** (funds Pacific Northwest and faith-based education)
-
-A $100K–$300K grant could fund 2–3 years of a part-time producer, a digital marketer, equipment upgrades, and a small travel budget for live events.
-
-**10. Create a "Fresh Text Live" event.** Bowler does live podcast tapings and speaking events. A "Fresh Text Live" preaching workshop — John and a guest doing a live close reading, then workshopping sermon ideas with an audience of pastors — could tour Wesleyan district conferences, pastor gatherings, or partner churches. This is also a Wesley Seminary recruitment event disguised as a preaching resource.
-
-**11. Build the bridge to a book.** Bowler's books and podcast are symbiotic — each feeds the other. Drury's *Resurrected God* is academic. A trade-accessible book — something like *Fresh Text: A Pastor-Scholar's Guide to Preaching the Lectionary* or *Reading Scripture Together: What Preachers and Scholars Can Learn from Each Other* — would give him a mainstream platform. The 380+ episodes are the research. The book is the packaging.
-
-**12. Make John the face of Wesleyan theological education.** IWU selected him for a reason. The Wesleyan Theological Society recognized him for a reason. In a tradition that lacks a single public intellectual with broad name recognition (there is no Wesleyan equivalent of Tim Keller, NT Wright, or Kate Bowler), John Drury could be that person — if the institution invests in him the way Duke invested in Bowler.
+**The key insight: Bowler didn't get famous and then get grants. She got a small grant, built infrastructure, grew the audience, and used the track record to get bigger grants.** The loop is: audience → small grant → infrastructure → bigger audience → bigger grant.
 
 ---
 
-## WHAT SUCCESS LOOKS LIKE
+## WHERE JOHN DRURY IS IN THIS SEQUENCE
 
-### In 1 year:
-- Fresh Text is featured on IWU and Wesley Seminary websites as a flagship resource
-- Admissions intake survey tracks podcast as a discovery channel
-- Newsletter launched; social media clips generating 5K+ monthly impressions
-- 1–2 strategic high-profile guest episodes released
+John is at **Step 1, completed** — with elements of Step 2 already in place that Bowler didn't have at the same stage:
 
-### In 3 years:
-- Fresh Text downloads have doubled or tripled from current baseline
-- Grant funding secured ($100K+) for digital content production
-- Drury has published or contracted a trade-accessible book
-- Wesley Seminary can report what percentage of incoming students encountered Fresh Text before applying
-- "Fresh Text Live" has been piloted at 2–3 events
+| | Bowler (2018, Step 1) | Drury (2026, Step 1 complete) |
+|---|---|---|
+| Episodes produced | ~20 (Season 1) | **380+** |
+| Institutional home | Duke Divinity (no dedicated staff yet) | IWU STM + Called Collective (5-podcast network) |
+| Grant funding for podcast | None yet | None yet — **but IWU just got $10M from Lilly for adjacent work** |
+| Audience composition | General public (grief, meaning) | **Pastors and preachers** (the enrollment funnel itself) |
+| Denominational channel | None (mainline broadly) | **~1,500 Wesleyan churches, 24 districts, 268K weekly worshippers** |
+| Academic credentials | PhD Duke; untenured at time of diagnosis | PhD Princeton (A.A. Hodge Prize); called "one of the two greatest young minds in the Wesleyan tradition" |
+| Catalyzing event | Stage IV cancer → viral memoir | No viral moment — but doesn't need one (see below) |
 
-### In 5 years:
-- John Drury is recognized as the leading public voice in Wesleyan theological education
-- Fresh Text is to the Wesleyan tradition what Sermon Brainwave is to Lutherans — the default resource
-- IWU's School of Theology and Ministry and Wesley Seminary can demonstrably link digital content to enrollment pipeline
-- The model is documented and publishable — IWU becomes the case study that doesn't yet exist in theological education
+**The critical difference:** Bowler needed a viral moment because her audience is the general public — you need a reason for millions of strangers to care. Drury doesn't need virality because his audience is **a defined professional community** (pastors who preach weekly) within **a defined denominational network** (The Wesleyan Church + broader holiness/Methodist traditions). This is a distribution problem, not a discovery problem. The audience already exists and already needs what Fresh Text provides. They just don't all know about it yet.
 
 ---
 
-## THE BOTTOM LINE
+## THE REAL LEVERAGE POINTS
 
-Kate Bowler didn't become Kate Bowler because Duke threw money at a podcast. She became Kate Bowler because she was a gifted scholar-communicator who found an audience — and then Duke recognized what it had and built infrastructure around it.
+### 1. The $10M VIA Journeys Grant Is the Trigger
 
-**IWU already has the gifted scholar-communicator. It already has the podcast with 380+ episodes and a proven audience. It already has the institutional platform (largest CCCU school, ATS-accredited seminary, Called Collective network).**
+VIA Journeys funds "personalized, applied theological education for pastors and lay leaders across a wide range of ministry settings" — spanning Wesleyan Holiness, Methodist, Nazarene, Pentecostal, Evangelical, and interdenominational traditions across five sectors.
 
-What it doesn't yet have is the institutional decision to treat Fresh Text as a strategic asset rather than a faculty side project. That decision is the gap between where John Drury is today and where Kate Bowler is at Duke.
+Fresh Text is already a form of applied theological education for pastors. The question for IWU leadership is simple: **Is the podcast part of the VIA Journeys ecosystem, or does it remain a separate volunteer project?**
 
-The first step costs nothing: add a question to the admissions form. The second step costs almost nothing: put Fresh Text on the seminary website. Everything after that is a matter of ambition.
+If it's inside VIA Journeys:
+- It gains infrastructure (staff, marketing, measurement) funded by the grant
+- It becomes a documented deliverable in Lilly reporting ("X pastors served weekly through digital content")
+- It provides Lilly with a proof point they love: a pre-existing, proven initiative that the grant is *scaling*, not inventing from scratch
+- It connects Fresh Text to the partner denominations in the VIA network — exposing it to Nazarene, Free Methodist, and other Wesleyan-holiness pastors who are natural listeners
+
+If it stays outside VIA Journeys:
+- Nothing changes. Fresh Text continues as a faculty project. The $10M flows elsewhere.
+
+**This is the single highest-leverage decision available right now. It costs nothing. It requires a conversation between John, the VIA Journeys project director, and the Dean.**
+
+### 2. The Wesleyan Church Is a Distribution Channel, Not Just a Denomination
+
+The Wesleyan Church has ~1,500 North American congregations across 24 districts. Each district has a superintendent. Each superintendent communicates regularly with pastors. If Fresh Text were recommended through district channels — not mandated, just mentioned as a resource — the addressable audience multiplies overnight.
+
+Compare: Luther Seminary's Sermon Brainwave is functionally the ELCA's lectionary podcast. It's not officially endorsed, but it's produced by ELCA's flagship seminary and used by ELCA pastors as a default. **Fresh Text could be the Wesleyan Church's Sermon Brainwave** — the default preaching companion for Wesleyan pastors. No other institution can claim that position.
+
+The mechanism:
+- IWU is the denomination's flagship university
+- Wesley Seminary is the denomination's seminary
+- Fresh Text is produced by STM faculty under the Called Collective
+- John is an ordained Wesleyan minister, IWU alumnus, and son of Keith Drury
+
+The alignment is total. The only thing missing is an intentional push through denominational channels.
+
+### 3. The Lectionary Structure Is a Unique Strategic Asset
+
+Fresh Text follows the Revised Common Lectionary, used by tens of thousands of churches across UMC, ELCA, PCUSA, Episcopal, Disciples, and other mainline traditions. This means:
+
+**a) The addressable market extends far beyond The Wesleyan Church.** Any pastor who preaches the lectionary is a potential listener — and many non-lectionary pastors use it for Advent, Lent, and Easter. The total addressable audience is enormous.
+
+**b) The 380-episode archive is a searchable library.** With the existing spreadsheet tracking every text covered, this could become a **searchable homiletical database** — type in a Scripture reference, get a 60-minute collaborative close reading. No competitor has this. Sermon Brainwave has years of back episodes, but Fresh Text's systematic coverage of the full RCL cycle is distinctive.
+
+**c) The 12-year non-repeating cycle is a sustainability moat.** Most podcasts burn out. Fresh Text has a built-in content roadmap that never runs dry and never repeats. That's a fundable proposition — a grant-maker can see that this isn't a 2-year experiment, it's an ongoing resource.
+
+### 4. The Audience IS the Enrollment Pipeline
+
+Bowler's 18M downloads come from the general public. Very few of those listeners will ever consider seminary. Fresh Text listeners are:
+- **Pastors preparing sermons** → DMin candidates (Wesley Seminary's DMin is online, 39 months)
+- **Seminary students supplementing coursework** → Already enrolled or considering enrollment
+- **Lay leaders and aspiring preachers** → MDiv, MA in Ministry, MPTh candidates
+- **Non-Wesleyan pastors discovering Wesleyan theology** → Cross-denominational recruitment
+
+This is a more valuable audience per listener than Bowler's. One Fresh Text listener who enrolls in a DMin is worth more to Wesley Seminary's enrollment than 10,000 general-public podcast downloads.
+
+**What's needed:** Measurement. Add "Fresh Text podcast" as a discovery-channel option on every Wesley Seminary and STM admissions form. Without this, you're flying blind — and you can't report impact to Lilly or anyone else.
 
 ---
 
-*Prepared March 2026. Companion document to "Podcasting & Enrollment at Seminaries, Divinity Schools, Bible Colleges, and Christian Universities: Research Brief."*
+## THE BOWLER SEQUENCE, ADAPTED FOR DRURY
+
+### Now (Spring 2026):
+- **Connect Fresh Text to VIA Journeys.** One conversation. Position the podcast as a digital delivery channel for applied pastoral education — which it already is.
+- **Add podcast to admissions intake forms.** One form field. Start measuring.
+- **Verify and document the "top 5–10%" claim.** Pull actual download numbers from Spotify for Creators / hosting platform. If Fresh Text is getting 400+ downloads per episode in the first 7 days, that's top 10%. If 1,000+, that's top 5%. Document it.
+
+### Summer–Fall 2026:
+- **Assign a digital content person** (even 10 hours/week) to cut sermon-starter clips, run a newsletter, and build a searchable Scripture archive from existing episodes. This could be a Called Collective student worker.
+- **Push through Wesleyan Church district channels.** Get Fresh Text mentioned in district superintendent communications. One email to 24 superintendents.
+- **Pitch a Lilly supplemental or Kern Foundation grant** specifically for "Scaling Digital Pastoral Formation through Fresh Text" — framed as a component of or complement to VIA Journeys. The ask: $75K–$150K over 2 years for a part-time producer/marketer, equipment, and a searchable archive build-out.
+
+### 2027:
+- **Launch "Fresh Text Live"** at Wesleyan district conferences or pastor retreats — a live close reading + sermon workshop. This is simultaneously content, community, and recruitment.
+- **Begin developing a trade-accessible book.** Not an academic monograph. Something like: *Reading Together: How Preachers and Scholars Open Scripture* — drawing on 7 years of collaborative close readings. The 380+ episodes are the research.
+- **Report first year of admissions tracking data.** If even 5–10% of incoming Wesley Seminary students report encountering Fresh Text, that's a publishable finding and a compelling data point for future grants.
+
+### 2028–2029:
+- **Fresh Text is the recognized Wesleyan preaching resource** — recommended by districts, featured at General Conference, cited by pastors across the holiness tradition.
+- **John Drury has a trade book** and is speaking at events beyond the Wesleyan bubble — Evangelism Commission (IWU + Wheaton + CCCU), Festival of Homiletics, Christianity Today events.
+- **IWU publishes the case study** that doesn't yet exist in theological education: documented evidence linking a faculty podcast to enrollment and pastoral formation outcomes. This positions IWU as an innovator in Lilly's eyes for the next grant cycle.
+
+---
+
+## WHAT JOHN DOESN'T NEED TO BECOME
+
+John doesn't need to become Kate Bowler. Bowler is a public intellectual speaking to millions about suffering and meaning. John is a pastor-scholar speaking to thousands of preachers about Scripture. **These are different vocations with different scales, and that's fine.**
+
+The goal isn't 18 million downloads. The goal is:
+- Every Wesleyan pastor knows Fresh Text exists
+- A measurable percentage of Wesley Seminary students encountered it before enrolling
+- IWU can document the podcast's role in pastoral formation for funders
+- John is recognized as the leading voice in Wesleyan theological education for the local church
+
+That's achievable without virality, without a cancer memoir, without NPR. It requires **institutional intention** — the same thing Duke provided Bowler, scaled to IWU's context.
+
+---
+
+## THE ONE-SENTENCE VERSION
+
+IWU has a $10M Lilly grant for applied pastoral education, a 380-episode podcast that's already doing applied pastoral education, and a denomination of 1,500 churches whose pastors need exactly this resource — the strategy is to connect them.
+
+---
+
+*Prepared March 2026. Companion to "Podcasting & Enrollment at Seminaries, Divinity Schools, Bible Colleges, and Christian Universities: Research Brief."*
