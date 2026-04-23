@@ -6,6 +6,7 @@ import CodeBadge from '../components/CodeBadge';
 import { useCodesTree, useExcerptsForCode } from '../store/selectors';
 import { useAppState } from '../store/AppStore';
 import { exportExcerptsAsCsv, downloadCsv } from '../lib/export';
+import { isElectron, getElectronAPI } from '../lib/electronAPI';
 
 export default function Analysis() {
   const state = useAppState();
@@ -15,7 +16,13 @@ export default function Analysis() {
   function handleExport() {
     const csv = exportExcerptsAsCsv(state);
     const date = new Date().toISOString().slice(0, 10);
-    downloadCsv(csv, `qualcode-export-${date}.csv`);
+    const filename = `qualcode-export-${date}.csv`;
+
+    if (isElectron()) {
+      getElectronAPI().exportCsv({ csv, defaultName: filename });
+    } else {
+      downloadCsv(csv, filename);
+    }
   }
 
   return (
