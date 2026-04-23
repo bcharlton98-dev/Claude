@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search as SearchIcon, ExternalLink } from 'lucide-react';
 import { useAppState } from '../store/AppStore';
-import { searchAll } from '../lib/search';
+import { searchAll, MAX_SEARCH_RESULTS } from '../lib/search';
 
 export default function Search() {
   const state = useAppState();
@@ -32,7 +32,7 @@ export default function Search() {
       {query.trim() && (
         <p className="text-sm text-warm-400 mb-4">
           {results.length} result{results.length !== 1 ? 's' : ''}
-          {results.length === 50 && ' (max)'}
+          {results.length === MAX_SEARCH_RESULTS && ' (max)'}
         </p>
       )}
 
@@ -40,24 +40,30 @@ export default function Search() {
         {results.map((r, i) => (
           <Link
             key={`${r.id}-${r.kind}-${i}`}
-            to={r.kind === 'transcript'
-              ? `/transcripts/${r.transcriptId}`
-              : `/transcripts/${r.transcriptId}?excerpt=${r.id}`
+            to={r.kind === 'code'
+              ? `/codebook`
+              : r.kind === 'transcript'
+                ? `/transcripts/${r.transcriptId}`
+                : `/transcripts/${r.transcriptId}?excerpt=${r.id}`
             }
             className="block bg-white rounded-xl border border-warm-100 px-5 py-4 card-shadow card-hover"
           >
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-semibold text-warm-700">{r.transcriptTitle}</span>
+              <span className="text-sm font-semibold text-warm-700">
+                {r.kind === 'code' ? `Code: ${r.snippet}` : r.transcriptTitle}
+              </span>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-warm-400 capitalize">
-                  {r.kind === 'transcript' ? 'text' : r.kind === 'transcript-memo' ? 'memo' : 'excerpt memo'}
+                  {r.kind === 'transcript' ? 'text' : r.kind === 'transcript-memo' ? 'memo' : r.kind === 'code' ? 'code' : 'excerpt memo'}
                 </span>
                 <ExternalLink size={12} className="text-warm-400" />
               </div>
             </div>
-            <p className="text-sm text-warm-500">
-              <HighlightedSnippet snippet={r.snippet} query={query} />
-            </p>
+            {r.kind !== 'code' && (
+              <p className="text-sm text-warm-500">
+                <HighlightedSnippet snippet={r.snippet} query={query} />
+              </p>
+            )}
           </Link>
         ))}
       </div>

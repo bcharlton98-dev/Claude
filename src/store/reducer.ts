@@ -1,7 +1,19 @@
-import type { AppState } from '../types';
+import type { AppState, Code, ID } from '../types';
 import type { Action } from './actions';
 import { newId } from '../lib/ids';
 import { seed } from '../lib/seed';
+
+function wouldCreateCycle(codes: Record<ID, Code>, codeId: ID, newParentId: ID): boolean {
+  let current: ID | null = newParentId;
+  const visited = new Set<string>();
+  while (current) {
+    if (current === codeId) return true;
+    if (visited.has(current)) return false;
+    visited.add(current);
+    current = codes[current]?.parentId ?? null;
+  }
+  return false;
+}
 
 export function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -93,11 +105,16 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'code/update': {
       const c = state.codes[action.payload.id];
       if (!c) return state;
+      const patch = action.payload.patch;
+      if (patch.parentId !== undefined) {
+        if (patch.parentId === c.id) return state;
+        if (patch.parentId && wouldCreateCycle(state.codes, c.id, patch.parentId)) return state;
+      }
       return {
         ...state,
         codes: {
           ...state.codes,
-          [c.id]: { ...c, ...action.payload.patch },
+          [c.id]: { ...c, ...patch },
         },
       };
     }
@@ -131,6 +148,8 @@ export function reducer(state: AppState, action: Action): AppState {
     }
 
     case 'excerpt/create': {
+      if (action.payload.start >= action.payload.end) return state;
+      if (action.payload.codeIds.length === 0) return state;
       const id = newId();
       return {
         ...state,
@@ -195,8 +214,15 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, excerpts: rest };
     }
 
-    case 'state/hydrate':
-      return action.payload;
+    case 'state/hydrate': {
+      const p = action.payload;
+      return {
+        transcripts: (typeof p.transcripts === 'object' && p.transcripts) ? p.transcripts : {},
+        codes: (typeof p.codes === 'object' && p.codes) ? p.codes : {},
+        excerpts: (typeof p.excerpts === 'object' && p.excerpts) ? p.excerpts : {},
+        schemaVersion: 1,
+      };
+    }
 
     case 'state/resetToSeed':
       return seed();

@@ -40,6 +40,7 @@ export function saveState(state: AppState): void {
 }
 
 export function saveStateNow(state: AppState, projectPath?: string): Promise<{ success: boolean; path?: string }> {
+  if (saveTimeout) { clearTimeout(saveTimeout); saveTimeout = null; }
   if (isElectron()) {
     return getElectronAPI().saveProject({ projectPath, state });
   }

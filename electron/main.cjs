@@ -1,11 +1,24 @@
-const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu, session } = require('electron');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs/promises');
+const fsSync = require('fs');
 
 let mainWindow;
 let currentProjectPath = null;
 
 function createWindow() {
+  // Content Security Policy
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'"
+        ],
+      },
+    });
+  });
+
   mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
@@ -29,6 +42,19 @@ function createWindow() {
 }
 
 function buildMenu() {
+  const isDev = !!process.env.VITE_DEV_SERVER_URL;
+
+  const viewSubmenu = [
+    { role: 'reload' },
+    { type: 'separator' },
+    { role: 'zoomIn' },
+    { role: 'zoomOut' },
+    { role: 'resetZoom' },
+  ];
+  if (isDev) {
+    viewSubmenu.splice(1, 0, { role: 'toggleDevTools' });
+  }
+
   const template = [
     {
       label: 'File',
@@ -75,17 +101,7 @@ function buildMenu() {
         { role: 'selectAll' },
       ],
     },
-    {
-      label: 'View',
-      submenu: [
-        { role: 'reload' },
-        { role: 'toggleDevTools' },
-        { type: 'separator' },
-        { role: 'zoomIn' },
-        { role: 'zoomOut' },
-        { role: 'resetZoom' },
-      ],
-    },
+    { label: 'View', submenu: viewSubmenu },
   ];
 
   if (process.platform === 'darwin') {
@@ -106,30 +122,63 @@ function buildMenu() {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
+// Path validation — only allow paths under Documents
+function isPathAllowed(requestedPath) {
+  const documentsDir = app.getPath('documents');
+  const resolved = path.resolve(requestedPath);
+  return resolved.startsWith(documentsDir + path.sep) || resolved === documentsDir;
+}
+
+function sanitizeFilename(name) {
+  return path.basename(name).replace(/[<>:"/\\|?*]/g, '_').replace(/\.\./g, '_').slice(0, 100);
+}
+
+function validateState(state) {
+  return (
+    state &&
+    typeof state === 'object' &&
+    state.schemaVersion === 1 &&
+    typeof state.transcripts === 'object' && state.transcripts !== null &&
+    typeof state.codes === 'object' && state.codes !== null &&
+    typeof state.excerpts === 'object' && state.excerpts !== null
+  );
+}
+
 async function handleOpenProject() {
   const result = await dialog.showOpenDialog(mainWindow, {
-    title: 'Open QualCode Project',
-    filters: [{ name: 'QualCode Project', extensions: ['qualcode'] }],
+    title: 'Open QualCode Project Folder',
     properties: ['openDirectory'],
   });
 
   if (!result.canceled && result.filePaths.length > 0) {
     const projectDir = result.filePaths[0];
-    const projectFile = path.join(projectDir, 'project.json');
 
-    if (!fs.existsSync(projectFile)) {
-      dialog.showErrorBox('Invalid Project', 'No project.json found in the selected folder.');
+    if (!isPathAllowed(projectDir)) {
+      dialog.showErrorBox('Access Denied', 'Projects must be inside your Documents folder.');
       return;
     }
 
+    const projectFile = path.join(projectDir, 'project.json');
+
     try {
-      const raw = fs.readFileSync(projectFile, 'utf-8');
+      await fs.access(projectFile);
+      const raw = await fs.readFile(projectFile, 'utf-8');
       const state = JSON.parse(raw);
+
+      if (!validateState(state)) {
+        dialog.showErrorBox('Invalid Project', 'The project file is corrupted or has an unsupported format.');
+        return;
+      }
+
       currentProjectPath = projectDir;
       updateTitle();
       mainWindow.webContents.send('project:loaded', { state, path: projectDir });
     } catch (e) {
-      dialog.showErrorBox('Error', `Failed to read project: ${e.message}`);
+      if (e.code === 'ENOENT') {
+        dialog.showErrorBox('Invalid Project', 'No project.json found in the selected folder.');
+      } else {
+        dialog.showErrorBox('Error', `Failed to read project: ${e.message}`);
+      }
     }
   }
 }
@@ -141,7 +190,12 @@ async function handleSaveAs() {
   });
 
   if (!result.canceled && result.filePaths.length > 0) {
-    currentProjectPath = result.filePaths[0];
+    const targetPath = result.filePaths[0];
+    if (!isPathAllowed(targetPath)) {
+      dialog.showErrorBox('Access Denied', 'Projects must be saved inside your Documents folder.');
+      return;
+    }
+    currentProjectPath = targetPath;
     updateTitle();
     mainWindow.webContents.send('project:save-as', currentProjectPath);
   }
@@ -156,25 +210,31 @@ function updateTitle() {
 
 ipcMain.handle('fs:save-project', async (_event, { projectPath, state }) => {
   try {
-    const dir = projectPath || currentProjectPath || getDefaultProjectPath();
-    fs.mkdirSync(dir, { recursive: true });
-    fs.mkdirSync(path.join(dir, 'transcripts'), { recursive: true });
-    fs.mkdirSync(path.join(dir, 'exports'), { recursive: true });
+    if (typeof projectPath === 'string' && !isPathAllowed(projectPath)) {
+      return { success: false, error: 'Path not allowed. Projects must be in Documents.' };
+    }
+    if (!validateState(state)) {
+      return { success: false, error: 'Invalid state object.' };
+    }
 
-    // Save main project file
-    fs.writeFileSync(
+    const dir = projectPath || currentProjectPath || getDefaultProjectPath();
+    await fs.mkdir(dir, { recursive: true });
+    await fs.mkdir(path.join(dir, 'transcripts'), { recursive: true });
+    await fs.mkdir(path.join(dir, 'exports'), { recursive: true });
+
+    await fs.writeFile(
       path.join(dir, 'project.json'),
       JSON.stringify(state, null, 2),
       'utf-8',
     );
 
-    // Save each transcript as a readable .txt file
     if (state.transcripts) {
       for (const t of Object.values(state.transcripts)) {
-        const safeName = t.title.replace(/[<>:"/\\|?*]/g, '_').slice(0, 100);
-        fs.writeFileSync(
-          path.join(dir, 'transcripts', `${safeName}.txt`),
-          t.text,
+        const safeName = sanitizeFilename(t.title || 'untitled');
+        const filename = `${safeName}_${t.id.slice(0, 8)}.txt`;
+        await fs.writeFile(
+          path.join(dir, 'transcripts', filename),
+          t.text || '',
           'utf-8',
         );
       }
@@ -193,15 +253,26 @@ ipcMain.handle('fs:save-project', async (_event, { projectPath, state }) => {
 
 ipcMain.handle('fs:load-project', async (_event, projectPath) => {
   try {
+    if (typeof projectPath === 'string' && !isPathAllowed(projectPath)) {
+      return { success: false, error: 'Path not allowed.' };
+    }
+
     const dir = projectPath || getDefaultProjectPath();
     const projectFile = path.join(dir, 'project.json');
 
-    if (!fs.existsSync(projectFile)) {
+    try {
+      await fs.access(projectFile);
+    } catch {
       return { success: true, state: null };
     }
 
-    const raw = fs.readFileSync(projectFile, 'utf-8');
+    const raw = await fs.readFile(projectFile, 'utf-8');
     const state = JSON.parse(raw);
+
+    if (!validateState(state)) {
+      return { success: false, error: 'Project file is corrupted.' };
+    }
+
     currentProjectPath = dir;
     updateTitle();
     return { success: true, state };
@@ -211,21 +282,26 @@ ipcMain.handle('fs:load-project', async (_event, projectPath) => {
 });
 
 ipcMain.handle('fs:export-csv', async (_event, { csv, defaultName }) => {
+  if (typeof csv !== 'string' || typeof defaultName !== 'string') {
+    return { success: false, error: 'Invalid parameters.' };
+  }
+
+  const safeName = sanitizeFilename(defaultName);
+
   const result = await dialog.showSaveDialog(mainWindow, {
     title: 'Export CSV',
-    defaultPath: defaultName,
+    defaultPath: safeName,
     filters: [{ name: 'CSV', extensions: ['csv'] }],
   });
 
   if (!result.canceled && result.filePath) {
     try {
-      fs.writeFileSync(result.filePath, csv, 'utf-8');
+      await fs.writeFile(result.filePath, csv, 'utf-8');
 
-      // Also save to project exports folder if we have a project
       if (currentProjectPath) {
         const exportsDir = path.join(currentProjectPath, 'exports');
-        fs.mkdirSync(exportsDir, { recursive: true });
-        fs.writeFileSync(path.join(exportsDir, defaultName), csv, 'utf-8');
+        await fs.mkdir(exportsDir, { recursive: true });
+        await fs.writeFile(path.join(exportsDir, safeName), csv, 'utf-8');
       }
 
       return { success: true, path: result.filePath };

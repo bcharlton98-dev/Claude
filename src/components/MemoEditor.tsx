@@ -14,6 +14,10 @@ export default function MemoEditor({ value, onChange, placeholder = 'Add a memo.
     setLocal(value);
   }, [value]);
 
+  useEffect(() => {
+    return () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); };
+  }, []);
+
   function handleChange(newVal: string) {
     setLocal(newVal);
     if (timeoutRef.current) clearTimeout(timeoutRef.current);

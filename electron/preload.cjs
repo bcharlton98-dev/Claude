@@ -6,7 +6,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   exportCsv: (data) => ipcRenderer.invoke('fs:export-csv', data),
   getDefaultPath: () => ipcRenderer.invoke('fs:get-default-path'),
 
-  // Menu events from main process
   onMenuNewProject: (callback) => {
     ipcRenderer.on('menu:new-project', callback);
     return () => ipcRenderer.removeListener('menu:new-project', callback);
@@ -20,11 +19,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return () => ipcRenderer.removeListener('menu:export-csv', callback);
   },
   onProjectLoaded: (callback) => {
-    ipcRenderer.on('project:loaded', (_event, data) => callback(data));
-    return () => ipcRenderer.removeListener('project:loaded', callback);
+    const handler = (_event, data) => callback(data);
+    ipcRenderer.on('project:loaded', handler);
+    return () => ipcRenderer.removeListener('project:loaded', handler);
   },
   onProjectSaveAs: (callback) => {
-    ipcRenderer.on('project:save-as', (_event, path) => callback(path));
-    return () => ipcRenderer.removeListener('project:save-as', callback);
+    const handler = (_event, p) => callback(p);
+    ipcRenderer.on('project:save-as', handler);
+    return () => ipcRenderer.removeListener('project:save-as', handler);
   },
 });

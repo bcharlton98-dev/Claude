@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, FileText, Upload, X, Filter, Tag } from 'lucide-react';
 import { useAppState, useDispatch } from '../store/AppStore';
@@ -104,10 +104,23 @@ export default function TranscriptsList() {
     );
   }
 
-  const excerptCounts = (id: string) =>
-    Object.values(state.excerpts).filter(e => e.transcriptId === id).length;
+  const excerptCountMap = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const e of Object.values(state.excerpts)) {
+      counts.set(e.transcriptId, (counts.get(e.transcriptId) ?? 0) + 1);
+    }
+    return counts;
+  }, [state.excerpts]);
 
-  const totalTranscripts = Object.values(state.transcripts).length;
+  const totalTranscripts = Object.keys(state.transcripts).length;
+
+  // Escape to close modal
+  useEffect(() => {
+    if (!showModal) return;
+    function handleKey(e: KeyboardEvent) { if (e.key === 'Escape') resetModal(); }
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [showModal]);
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -197,13 +210,13 @@ export default function TranscriptsList() {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold text-warm-800 truncate">{t.title}</h3>
                   <p className="text-xs text-warm-400 mt-1">
-                    {excerptCounts(t.id)} excerpt{excerptCounts(t.id) !== 1 ? 's' : ''}
+                    {excerptCountMap.get(t.id) ?? 0} excerpt{(excerptCountMap.get(t.id) ?? 0) !== 1 ? 's' : ''}
                     {' · '}
                     {new Date(t.updatedAt).toLocaleDateString()}
                   </p>
                   {(t.tags ?? []).length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
-                      {t.tags.map(tag => (
+                      {(t.tags ?? []).map(tag => (
                         <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-warm-100 text-warm-600 text-xs">
                           <Tag size={10} />
                           {tag}

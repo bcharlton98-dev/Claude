@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import CodePicker from './CodePicker';
 import { useDispatch } from '../store/AppStore';
@@ -16,6 +16,24 @@ interface Props {
 export default function SelectionPopover({ transcriptId, start, end, selectedText, position, onClose }: Props) {
   const dispatch = useDispatch();
   const [selectedCodes, setSelectedCodes] = useState<ID[]>([]);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose();
+    }
+    function handleClickOutside(e: MouseEvent) {
+      if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   function handleToggle(codeId: ID) {
     setSelectedCodes(prev =>
@@ -32,14 +50,18 @@ export default function SelectionPopover({ transcriptId, start, end, selectedTex
     onClose();
   }
 
+  const left = Math.min(position.x, window.innerWidth - 300);
+  const top = Math.min(position.y + 8, window.innerHeight - 350);
+
   return (
     <div
+      ref={popoverRef}
       className="fixed z-50 bg-white rounded-xl shadow-lg border border-warm-200 w-72 card-elevated"
-      style={{ left: Math.min(position.x, window.innerWidth - 300), top: position.y + 8 }}
+      style={{ left, top }}
     >
       <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-warm-100">
         <h3 className="text-sm font-semibold text-warm-800">Code Selection</h3>
-        <button onClick={onClose} className="text-warm-400 hover:text-warm-600">
+        <button onClick={onClose} className="text-warm-400 hover:text-warm-600" aria-label="Close">
           <X size={16} />
         </button>
       </div>

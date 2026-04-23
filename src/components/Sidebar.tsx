@@ -15,7 +15,7 @@ export default function Sidebar() {
         <h1 className="text-lg font-bold tracking-tight">QualCode</h1>
         <p className="text-xs text-warm-400 mt-0.5">Qualitative Coding</p>
       </div>
-      <nav className="flex-1 py-3">
+      <nav className="flex-1 py-3" aria-label="Main navigation">
         {links.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}

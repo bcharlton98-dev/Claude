@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, useState, type Dispatch, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, useState, type Dispatch, type ReactNode } from 'react';
 import type { AppState } from '../types';
 import type { Action } from './actions';
 import { reducer } from './reducer';
@@ -21,8 +21,9 @@ export function useDispatch() {
 export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, null, loadState);
   const [ready, setReady] = useState(!isElectron());
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
-  // Async hydration for Electron
   useEffect(() => {
     if (isElectron()) {
       loadStateAsync().then(loaded => {
@@ -32,14 +33,13 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Auto-save on state change (after hydration)
   useEffect(() => {
     if (ready) {
       saveState(state);
     }
   }, [state, ready]);
 
-  // Electron menu event listeners
+  // Register Electron menu listeners once, using stateRef to avoid stale closures
   useEffect(() => {
     if (!isElectron()) return;
     const api = getElectronAPI();
@@ -49,10 +49,10 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         dispatch({ type: 'state/hydrate', payload: seed() });
       }),
       api.onMenuSave(() => {
-        saveStateNow(state);
+        saveStateNow(stateRef.current);
       }),
       api.onMenuExportCsv(() => {
-        const csv = exportExcerptsAsCsv(state);
+        const csv = exportExcerptsAsCsv(stateRef.current);
         const date = new Date().toISOString().slice(0, 10);
         api.exportCsv({ csv, defaultName: `qualcode-export-${date}.csv` });
       }),
@@ -60,12 +60,12 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
         dispatch({ type: 'state/hydrate', payload: data.state });
       }),
       api.onProjectSaveAs((projectPath) => {
-        saveStateNow(state, projectPath);
+        saveStateNow(stateRef.current, projectPath);
       }),
     ];
 
     return () => cleanups.forEach(fn => fn());
-  });
+  }, []);
 
   if (!ready) {
     return (

@@ -58,16 +58,20 @@ function CodeTreeItem({
   return (
     <li>
       <div
+        role="button"
+        tabIndex={0}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm transition-colors group ${
           isSelected ? 'bg-forest-100 text-forest-700' : 'hover:bg-warm-100 text-warm-700'
         }`}
         style={{ paddingLeft: `${12 + depth * 20}px` }}
         onClick={() => onSelect?.(node.code.id)}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect?.(node.code.id); } }}
       >
         {hasChildren ? (
           <button
             onClick={(e) => { e.stopPropagation(); setExpanded(!expanded); }}
             className="p-0.5 hover:bg-warm-200 rounded shrink-0"
+            aria-label={expanded ? 'Collapse' : 'Expand'}
           >
             {expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           </button>
@@ -85,6 +89,7 @@ function CodeTreeItem({
               <button
                 onClick={(e) => { e.stopPropagation(); onEdit(node.code.id); }}
                 className="text-xs text-warm-500 hover:text-forest-600 px-1"
+                aria-label={`Edit ${node.code.name}`}
               >
                 Edit
               </button>
@@ -93,6 +98,7 @@ function CodeTreeItem({
               <button
                 onClick={(e) => { e.stopPropagation(); onDelete(node.code.id); }}
                 className="text-xs text-warm-500 hover:text-rose-500 px-1"
+                aria-label={`Delete ${node.code.name}`}
               >
                 Del
               </button>
