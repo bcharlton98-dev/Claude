@@ -1,9 +1,10 @@
 import type { AppState, Code, CodeColorKey, ID } from '../types';
 
 export type Action =
-  | { type: 'transcript/create'; payload: { title: string; text: string } }
+  | { type: 'transcript/create'; payload: { title: string; text: string; tags?: string[] } }
   | { type: 'transcript/rename'; payload: { id: ID; title: string } }
   | { type: 'transcript/setMemo'; payload: { id: ID; memo: string } }
+  | { type: 'transcript/setTags'; payload: { id: ID; tags: string[] } }
   | { type: 'transcript/delete'; payload: { id: ID } }
   | { type: 'code/create'; payload: { name: string; color: CodeColorKey; parentId: ID | null } }
   | { type: 'code/update'; payload: { id: ID; patch: Partial<Pick<Code, 'name' | 'color' | 'parentId' | 'memo'>> } }

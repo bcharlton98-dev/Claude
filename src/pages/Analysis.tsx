@@ -1,19 +1,37 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Download } from 'lucide-react';
 import CodeTree from '../components/CodeTree';
 import CodeBadge from '../components/CodeBadge';
 import { useCodesTree, useExcerptsForCode } from '../store/selectors';
 import { useAppState } from '../store/AppStore';
+import { exportExcerptsAsCsv, downloadCsv } from '../lib/export';
 
 export default function Analysis() {
+  const state = useAppState();
   const tree = useCodesTree();
   const [selectedCodeId, setSelectedCodeId] = useState<string | null>(null);
+
+  function handleExport() {
+    const csv = exportExcerptsAsCsv(state);
+    const date = new Date().toISOString().slice(0, 10);
+    downloadCsv(csv, `qualcode-export-${date}.csv`);
+  }
 
   return (
     <div className="flex h-screen">
       <div className="w-72 border-r border-warm-200 bg-white overflow-y-auto p-4 shrink-0">
-        <h2 className="text-sm font-semibold text-warm-700 mb-3 px-2">Codes</h2>
+        <div className="flex items-center justify-between mb-3 px-2">
+          <h2 className="text-sm font-semibold text-warm-700">Codes</h2>
+          <button
+            onClick={handleExport}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-forest-600 bg-forest-50 rounded-lg hover:bg-forest-100 transition-colors"
+            title="Export all excerpts as CSV for Airtable"
+          >
+            <Download size={12} />
+            CSV
+          </button>
+        </div>
         <CodeTree
           nodes={tree}
           selectedId={selectedCodeId}

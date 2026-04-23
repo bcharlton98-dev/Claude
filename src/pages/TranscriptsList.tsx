@@ -1,63 +1,95 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, FileText, Upload, X } from 'lucide-react';
+import { Plus, FileText, Upload, X, Filter, Tag } from 'lucide-react';
 import { useAppState, useDispatch } from '../store/AppStore';
+import { useAllTags } from '../store/selectors';
 
-type ImportTab = 'paste' | 'txt' | 'docx';
+type ImportTab = 'paste' | 'upload';
 
 export default function TranscriptsList() {
   const state = useAppState();
   const dispatch = useDispatch();
+  const allTags = useAllTags();
   const [showModal, setShowModal] = useState(false);
   const [tab, setTab] = useState<ImportTab>('paste');
   const [title, setTitle] = useState('');
   const [pasteContent, setPasteContent] = useState('');
+  const [newTags, setNewTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState('');
+  const [filterTags, setFilterTags] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
 
-  const transcripts = Object.values(state.transcripts).sort(
+  let transcripts = Object.values(state.transcripts).sort(
     (a, b) => b.updatedAt - a.updatedAt,
   );
+
+  if (filterTags.length > 0) {
+    transcripts = transcripts.filter(t =>
+      filterTags.every(ft => (t.tags ?? []).includes(ft)),
+    );
+  }
 
   function resetModal() {
     setShowModal(false);
     setTitle('');
     setPasteContent('');
+    setNewTags([]);
+    setTagInput('');
     setTab('paste');
     setLoading(false);
+    setUploadProgress('');
   }
 
-  function createTranscript(text: string) {
-    if (!title.trim() || !text.trim()) return;
-    dispatch({ type: 'transcript/create', payload: { title: title.trim(), text: text.trim() } });
-    resetModal();
+  function addTag(tag: string) {
+    const trimmed = tag.trim();
+    if (trimmed && !newTags.includes(trimmed)) {
+      setNewTags([...newTags, trimmed]);
+    }
+    setTagInput('');
+  }
+
+  function createTranscript(titleStr: string, text: string, tags: string[]) {
+    if (!titleStr.trim() || !text.trim()) return;
+    dispatch({ type: 'transcript/create', payload: { title: titleStr.trim(), text: text.trim(), tags } });
   }
 
   function handlePasteSubmit() {
-    createTranscript(pasteContent);
+    createTranscript(title, pasteContent, newTags);
+    resetModal();
   }
 
-  async function handleFileUpload(file: File, type: 'txt' | 'docx') {
+  async function handleBulkUpload(files: FileList) {
     setLoading(true);
-    try {
-      let text: string;
-      if (type === 'txt') {
-        text = await file.text();
-      } else {
-        const mammoth = await import('mammoth');
-        const buf = await file.arrayBuffer();
-        const result = await mammoth.extractRawText({ arrayBuffer: buf });
-        text = result.value;
+    const fileArray = Array.from(files);
+    let processed = 0;
+
+    for (const file of fileArray) {
+      try {
+        setUploadProgress(`Processing ${processed + 1} of ${fileArray.length}: ${file.name}`);
+        let text: string;
+        const isDocx = file.name.toLowerCase().endsWith('.docx');
+
+        if (isDocx) {
+          const mammoth = await import('mammoth');
+          const buf = await file.arrayBuffer();
+          const result = await mammoth.extractRawText({ arrayBuffer: buf });
+          text = result.value;
+        } else {
+          text = await file.text();
+        }
+
+        const name = file.name.replace(/\.(txt|docx)$/i, '');
+        createTranscript(name, text, [...newTags]);
+        processed++;
+      } catch (e) {
+        console.error(`Failed to parse ${file.name}:`, e);
       }
-      if (!title.trim()) {
-        setTitle(file.name.replace(/\.(txt|docx)$/i, ''));
-      }
-      createTranscript(text);
-    } catch (e) {
-      console.error('Failed to parse file:', e);
-      alert('Failed to parse file. Please try a different format.');
-    } finally {
-      setLoading(false);
     }
+
+    setUploadProgress(`Done! Imported ${processed} of ${fileArray.length} files.`);
+    setTimeout(resetModal, 1200);
   }
 
   function handleDelete(id: string, name: string) {
@@ -66,30 +98,92 @@ export default function TranscriptsList() {
     }
   }
 
+  function toggleFilterTag(tag: string) {
+    setFilterTags(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag],
+    );
+  }
+
   const excerptCounts = (id: string) =>
     Object.values(state.excerpts).filter(e => e.transcriptId === id).length;
 
+  const totalTranscripts = Object.values(state.transcripts).length;
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-warm-800">Transcripts</h1>
-          <p className="text-sm text-warm-500 mt-1">{transcripts.length} document{transcripts.length !== 1 ? 's' : ''}</p>
+          <p className="text-sm text-warm-500 mt-1">
+            {filterTags.length > 0
+              ? `${transcripts.length} of ${totalTranscripts} (filtered)`
+              : `${transcripts.length} document${transcripts.length !== 1 ? 's' : ''}`}
+          </p>
         </div>
-        <button
-          onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-forest-500 text-white text-sm font-medium rounded-lg hover:bg-forest-600 transition-colors btn-press"
-        >
-          <Plus size={16} />
-          New Transcript
-        </button>
+        <div className="flex gap-2">
+          {allTags.length > 0 && (
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors btn-press ${
+                filterTags.length > 0
+                  ? 'bg-ember-100 text-ember-600 border border-ember-300'
+                  : 'bg-white text-warm-600 border border-warm-200 hover:bg-warm-100'
+              }`}
+            >
+              <Filter size={16} />
+              Filter{filterTags.length > 0 ? ` (${filterTags.length})` : ''}
+            </button>
+          )}
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex items-center gap-2 px-4 py-2.5 bg-forest-500 text-white text-sm font-medium rounded-lg hover:bg-forest-600 transition-colors btn-press"
+          >
+            <Plus size={16} />
+            Add Reports
+          </button>
+        </div>
       </div>
+
+      {showFilters && allTags.length > 0 && (
+        <div className="mb-6 bg-white rounded-xl border border-warm-100 card-shadow p-4">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs font-semibold text-warm-500 uppercase tracking-wide">Filter by tag</p>
+            {filterTags.length > 0 && (
+              <button
+                onClick={() => setFilterTags([])}
+                className="text-xs text-ember-600 hover:text-ember-700 font-medium"
+              >
+                Clear all
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {allTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => toggleFilterTag(tag)}
+                className={`px-3 py-1.5 text-sm rounded-full font-medium transition-colors ${
+                  filterTags.includes(tag)
+                    ? 'bg-forest-500 text-white'
+                    : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {transcripts.length === 0 ? (
         <div className="text-center py-16">
           <FileText size={48} className="mx-auto text-warm-300 mb-4" />
-          <p className="text-warm-500 text-lg">No transcripts yet</p>
-          <p className="text-warm-400 text-sm mt-1">Add one to get started with coding</p>
+          <p className="text-warm-500 text-lg">
+            {filterTags.length > 0 ? 'No transcripts match your filters' : 'No transcripts yet'}
+          </p>
+          <p className="text-warm-400 text-sm mt-1">
+            {filterTags.length > 0 ? 'Try removing some filters' : 'Add reports to get started with coding'}
+          </p>
         </div>
       ) : (
         <div className="grid gap-3">
@@ -99,7 +193,7 @@ export default function TranscriptsList() {
               to={`/transcripts/${t.id}`}
               className="block bg-white rounded-xl px-5 py-4 card-shadow card-hover border border-warm-100"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between">
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold text-warm-800 truncate">{t.title}</h3>
                   <p className="text-xs text-warm-400 mt-1">
@@ -107,6 +201,16 @@ export default function TranscriptsList() {
                     {' · '}
                     {new Date(t.updatedAt).toLocaleDateString()}
                   </p>
+                  {(t.tags ?? []).length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {t.tags.map(tag => (
+                        <span key={tag} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-warm-100 text-warm-600 text-xs">
+                          <Tag size={10} />
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button
                   onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDelete(t.id, t.title); }}
@@ -116,9 +220,6 @@ export default function TranscriptsList() {
                   <X size={16} />
                 </button>
               </div>
-              <p className="text-sm text-warm-500 mt-2 line-clamp-2">
-                {t.text.slice(0, 200)}
-              </p>
             </Link>
           ))}
         </div>
@@ -128,87 +229,111 @@ export default function TranscriptsList() {
         <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center p-4" onClick={resetModal}>
           <div className="bg-white rounded-2xl w-full max-w-lg card-elevated" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-4 border-b border-warm-100">
-              <h2 className="text-lg font-semibold text-warm-800">New Transcript</h2>
+              <h2 className="text-lg font-semibold text-warm-800">Add Reports</h2>
               <button onClick={resetModal} className="text-warm-400 hover:text-warm-600">
                 <X size={20} />
               </button>
             </div>
 
             <div className="px-6 py-4 space-y-4">
+              {/* Tags section — shared across both tabs */}
               <div>
-                <label className="block text-sm font-medium text-warm-700 mb-1">Title</label>
-                <input
-                  type="text"
-                  value={title}
-                  onChange={e => setTitle(e.target.value)}
-                  placeholder="Interview with..."
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
-                  autoFocus
-                />
-              </div>
-
-              <div>
-                <div className="flex gap-1 mb-3">
-                  {(['paste', 'txt', 'docx'] as ImportTab[]).map(t => (
-                    <button
-                      key={t}
-                      onClick={() => setTab(t)}
-                      className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                        tab === t
-                          ? 'bg-forest-100 text-forest-700'
-                          : 'text-warm-500 hover:bg-warm-100'
-                      }`}
-                    >
-                      {t === 'paste' ? 'Paste Text' : t === 'txt' ? 'Upload .txt' : 'Upload .docx'}
-                    </button>
+                <label className="block text-sm font-medium text-warm-700 mb-1">
+                  Tags <span className="font-normal text-warm-400">(demographics, categories)</span>
+                </label>
+                <div className="flex flex-wrap gap-1.5 mb-2">
+                  {newTags.map(tag => (
+                    <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-forest-100 text-forest-700 text-xs font-medium">
+                      {tag}
+                      <button onClick={() => setNewTags(newTags.filter(t => t !== tag))} className="hover:text-rose-500">&times;</button>
+                    </span>
                   ))}
                 </div>
+                <div className="flex gap-2">
+                  <input
+                    value={tagInput}
+                    onChange={e => setTagInput(e.target.value)}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput); } }}
+                    placeholder="e.g. HBCU, Year 2, STEM..."
+                    className="flex-1 border border-warm-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
+                    list="existing-tags"
+                  />
+                  <datalist id="existing-tags">
+                    {allTags.filter(t => !newTags.includes(t)).map(t => (
+                      <option key={t} value={t} />
+                    ))}
+                  </datalist>
+                  <button
+                    onClick={() => addTag(tagInput)}
+                    disabled={!tagInput.trim()}
+                    className="px-3 py-1.5 bg-warm-100 text-warm-600 text-sm rounded-lg hover:bg-warm-200 disabled:opacity-40 transition-colors"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
 
-                {tab === 'paste' && (
+              {/* Tab switcher */}
+              <div className="flex gap-1">
+                {(['paste', 'upload'] as ImportTab[]).map(t => (
+                  <button
+                    key={t}
+                    onClick={() => setTab(t)}
+                    className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
+                      tab === t
+                        ? 'bg-forest-100 text-forest-700'
+                        : 'text-warm-500 hover:bg-warm-100'
+                    }`}
+                  >
+                    {t === 'paste' ? 'Paste Text' : 'Upload Files'}
+                  </button>
+                ))}
+              </div>
+
+              {tab === 'paste' && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-warm-700 mb-1">Title</label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={e => setTitle(e.target.value)}
+                      placeholder="Report title..."
+                      className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
+                    />
+                  </div>
                   <textarea
                     value={pasteContent}
                     onChange={e => setPasteContent(e.target.value)}
-                    placeholder="Paste your transcript text here..."
-                    rows={10}
+                    placeholder="Paste report text here..."
+                    rows={8}
                     className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400 resize-y"
                   />
-                )}
+                </>
+              )}
 
-                {tab === 'txt' && (
-                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-forest-50/30 transition-colors">
-                    <Upload size={24} className="text-warm-400 mb-2" />
-                    <span className="text-sm text-warm-500">Click to upload a .txt file</span>
-                    <input
-                      type="file"
-                      accept=".txt,text/plain"
-                      className="hidden"
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'txt');
-                      }}
-                    />
-                  </label>
-                )}
-
-                {tab === 'docx' && (
-                  <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-forest-50/30 transition-colors">
-                    <Upload size={24} className="text-warm-400 mb-2" />
-                    <span className="text-sm text-warm-500">
-                      {loading ? 'Parsing...' : 'Click to upload a .docx file'}
-                    </span>
-                    <input
-                      type="file"
-                      accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      className="hidden"
-                      disabled={loading}
-                      onChange={e => {
-                        const file = e.target.files?.[0];
-                        if (file) handleFileUpload(file, 'docx');
-                      }}
-                    />
-                  </label>
-                )}
-              </div>
+              {tab === 'upload' && (
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-forest-50/30 transition-colors">
+                  <Upload size={24} className="text-warm-400 mb-2" />
+                  <span className="text-sm text-warm-500 font-medium">
+                    {loading ? uploadProgress : 'Click to select files (.txt or .docx)'}
+                  </span>
+                  <span className="text-xs text-warm-400 mt-1">
+                    Select multiple files for bulk import
+                  </span>
+                  <input
+                    type="file"
+                    accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    multiple
+                    className="hidden"
+                    disabled={loading}
+                    onChange={e => {
+                      const files = e.target.files;
+                      if (files && files.length > 0) handleBulkUpload(files);
+                    }}
+                  />
+                </label>
+              )}
             </div>
 
             {tab === 'paste' && (

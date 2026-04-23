@@ -68,6 +68,17 @@ export function useExcerptCountForCode(codeId: ID): number {
   );
 }
 
+export function useAllTags(): string[] {
+  const state = useAppState();
+  return useMemo(() => {
+    const tagSet = new Set<string>();
+    for (const t of Object.values(state.transcripts)) {
+      for (const tag of (t.tags ?? [])) tagSet.add(tag);
+    }
+    return Array.from(tagSet).sort((a, b) => a.localeCompare(b));
+  }, [state.transcripts]);
+}
+
 export function useExcerptsForCode(codeId: ID): Excerpt[] {
   const state = useAppState();
   return useMemo(

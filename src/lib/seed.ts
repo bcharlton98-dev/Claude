@@ -28,6 +28,7 @@ Interviewer: Looking back, is there anything you'd do differently?
 
 Participant: I wish I'd started sooner. I spent so long hesitating, weighing pros and cons, that I lost time I could have spent learning and growing in my new field. The fear of regret kept me stuck, which is ironic because now my only regret is not moving faster.`,
     memo: '',
+    tags: ['Sample', 'Career Change'],
     createdAt: now,
     updatedAt: now,
   };

@@ -5,6 +5,7 @@ export interface Transcript {
   title: string;
   text: string;
   memo: string;
+  tags: string[];
   createdAt: number;
   updatedAt: number;
 }

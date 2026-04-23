@@ -17,6 +17,7 @@ export function reducer(state: AppState, action: Action): AppState {
             title: action.payload.title,
             text: action.payload.text,
             memo: '',
+            tags: action.payload.tags ?? [],
             createdAt: now,
             updatedAt: now,
           },
@@ -44,6 +45,18 @@ export function reducer(state: AppState, action: Action): AppState {
         transcripts: {
           ...state.transcripts,
           [t.id]: { ...t, memo: action.payload.memo, updatedAt: Date.now() },
+        },
+      };
+    }
+
+    case 'transcript/setTags': {
+      const t = state.transcripts[action.payload.id];
+      if (!t) return state;
+      return {
+        ...state,
+        transcripts: {
+          ...state.transcripts,
+          [t.id]: { ...t, tags: action.payload.tags, updatedAt: Date.now() },
         },
       };
     }

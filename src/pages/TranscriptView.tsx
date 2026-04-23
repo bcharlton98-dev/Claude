@@ -1,9 +1,9 @@
 import { useParams, useSearchParams, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Tag } from 'lucide-react';
 import TranscriptReader from '../components/TranscriptReader';
 import MemoEditor from '../components/MemoEditor';
 import CodeBadge from '../components/CodeBadge';
-import { useTranscript, useExcerptsForTranscript } from '../store/selectors';
+import { useTranscript, useExcerptsForTranscript, useAllTags } from '../store/selectors';
 import { useAppState, useDispatch } from '../store/AppStore';
 import { useState } from 'react';
 
@@ -15,8 +15,10 @@ export default function TranscriptView() {
   const excerpts = useExcerptsForTranscript(id!);
   const dispatch = useDispatch();
   const state = useAppState();
+  const allTags = useAllTags();
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState('');
+  const [tagInput, setTagInput] = useState('');
 
   if (!transcript) {
     return (
@@ -41,6 +43,18 @@ export default function TranscriptView() {
     setIsEditing(false);
   }
 
+  function addTag(tag: string) {
+    const trimmed = tag.trim();
+    if (trimmed && !(transcript!.tags ?? []).includes(trimmed)) {
+      dispatch({ type: 'transcript/setTags', payload: { id: transcript!.id, tags: [...(transcript!.tags ?? []), trimmed] } });
+    }
+    setTagInput('');
+  }
+
+  function removeTag(tag: string) {
+    dispatch({ type: 'transcript/setTags', payload: { id: transcript!.id, tags: (transcript!.tags ?? []).filter(t => t !== tag) } });
+  }
+
   return (
     <div className="flex h-screen">
       <div className="flex-1 overflow-y-auto p-8">
@@ -53,7 +67,7 @@ export default function TranscriptView() {
         </Link>
 
         {isEditing ? (
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-4">
             <input
               value={editTitle}
               onChange={e => setEditTitle(e.target.value)}
@@ -65,13 +79,39 @@ export default function TranscriptView() {
           </div>
         ) : (
           <h1
-            className="text-2xl font-bold text-warm-800 mb-6 cursor-pointer hover:text-forest-700 transition-colors"
+            className="text-2xl font-bold text-warm-800 mb-2 cursor-pointer hover:text-forest-700 transition-colors"
             onClick={startEditing}
             title="Click to rename"
           >
             {transcript.title}
           </h1>
         )}
+
+        {/* Tags bar */}
+        <div className="flex items-center gap-2 flex-wrap mb-6">
+          {(transcript.tags ?? []).map(tag => (
+            <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-forest-100 text-forest-700 text-xs font-medium">
+              <Tag size={10} />
+              {tag}
+              <button onClick={() => removeTag(tag)} className="ml-0.5 hover:text-rose-500">&times;</button>
+            </span>
+          ))}
+          <div className="inline-flex">
+            <input
+              value={tagInput}
+              onChange={e => setTagInput(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput); } }}
+              placeholder="+ tag"
+              className="w-20 text-xs border border-warm-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-forest-300 focus:w-32 transition-all"
+              list="tag-suggestions"
+            />
+            <datalist id="tag-suggestions">
+              {allTags.filter(t => !(transcript.tags ?? []).includes(t)).map(t => (
+                <option key={t} value={t} />
+              ))}
+            </datalist>
+          </div>
+        </div>
 
         <TranscriptReader
           transcriptId={transcript.id}
