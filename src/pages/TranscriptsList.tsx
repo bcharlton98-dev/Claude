@@ -109,14 +109,27 @@ export default function TranscriptsList() {
           text = result.value;
         } else if (lowerName.endsWith('.pdf')) {
           const pdfjsLib = await import('pdfjs-dist');
-          pdfjsLib.GlobalWorkerOptions.workerSrc = '';
-          const buf = await file.arrayBuffer();
-          const pdf = await pdfjsLib.getDocument({ data: buf, useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true }).promise;
+          if ('GlobalWorkerOptions' in pdfjsLib) {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+          }
+          const buf = new Uint8Array(await file.arrayBuffer());
+          const loadingTask = pdfjsLib.getDocument({
+            data: buf,
+            useWorkerFetch: false,
+            isEvalSupported: false,
+            useSystemFonts: true,
+            disableAutoFetch: true,
+            disableStream: true,
+          });
+          const pdf = await loadingTask.promise;
           const pages: string[] = [];
           for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
-            pages.push(content.items.map((item: any) => ('str' in item ? item.str : '')).join(' '));
+            const pageText = content.items
+              .map((item: Record<string, unknown>) => (typeof item.str === 'string' ? item.str : ''))
+              .join(' ');
+            pages.push(pageText);
           }
           text = pages.join('\n\n');
         } else {
@@ -127,12 +140,19 @@ export default function TranscriptsList() {
         createTranscript(name, text, [...newTags]);
         processed++;
       } catch (e) {
-        console.error(`Failed to parse ${file.name}:`, e);
+        const errMsg = e instanceof Error ? e.message : 'Unknown error';
+        setUploadProgress(`Error with ${file.name}: ${errMsg}`);
+        await new Promise(r => setTimeout(r, 2000));
       }
     }
 
-    setUploadProgress(`Done! Imported ${processed} of ${fileArray.length} files.`);
-    setTimeout(resetModal, 1200);
+    if (processed > 0) {
+      setUploadProgress(`Done! Imported ${processed} of ${fileArray.length} files.`);
+      setTimeout(resetModal, 1500);
+    } else {
+      setUploadProgress(`Failed to import any files. Check the file format.`);
+      setLoading(false);
+    }
   }
 
   function handleDelete(id: string, name: string) {

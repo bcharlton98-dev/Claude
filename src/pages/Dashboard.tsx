@@ -40,16 +40,17 @@ export function getProjectStorageKey(projectId: string) {
 
 interface Props {
   onOpenProject: (projectId: string) => void;
+  skipAutoOpen?: boolean;
 }
 
-export default function Dashboard({ onOpenProject }: Props) {
+export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
   const [projects, setProjects] = useState<ProjectMeta[]>(loadProjectsIndex);
   const [showCreate, setShowCreate] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  // Auto-open last project on first load
   useEffect(() => {
+    if (skipAutoOpen) return;
     const lastId = getLastProjectId();
     if (lastId && projects.some(p => p.id === lastId)) {
       onOpenProject(lastId);

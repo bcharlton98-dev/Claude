@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppStoreProvider } from './store/AppStore';
 import AppShell from './components/AppShell';
@@ -15,11 +15,13 @@ import { setCurrentProjectId } from './lib/storage';
 
 export default function App() {
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const hasBeenInProject = useRef(false);
 
   const handleOpenProject = useCallback((projectId: string) => {
     setCurrentProjectId(projectId);
     setLastProjectId(projectId);
     setActiveProjectId(projectId);
+    hasBeenInProject.current = true;
   }, []);
 
   const handleBackToDashboard = useCallback(() => {
@@ -28,7 +30,7 @@ export default function App() {
   }, []);
 
   if (!activeProjectId) {
-    return <Dashboard onOpenProject={handleOpenProject} />;
+    return <Dashboard onOpenProject={handleOpenProject} skipAutoOpen={hasBeenInProject.current} />;
   }
 
   return (
