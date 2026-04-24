@@ -113,7 +113,7 @@ export default function TranscriptReader({ transcriptId, text, excerpts, focusEx
     <div className="relative">
       <div
         ref={containerRef}
-        className="text-sm leading-7 text-warm-700 whitespace-pre-wrap font-[inherit] select-text"
+        className="text-[15px] leading-8 text-warm-700 whitespace-pre-wrap font-reading select-text"
         onMouseUp={handleMouseUp}
       >
         {segments.map((seg) => {

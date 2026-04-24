@@ -1,7 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter, BrowserRouter } from 'react-router-dom'
-import '@fontsource-variable/plus-jakarta-sans'
+import '@fontsource-variable/onest'
+import '@fontsource-variable/lora'
 import './index.css'
 import App from './App'
 

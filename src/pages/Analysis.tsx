@@ -100,7 +100,7 @@ function AnalysisPanel({ codeId }: { codeId: string }) {
                     Open <ExternalLink size={12} />
                   </Link>
                 </div>
-                <p className="text-sm text-warm-600 leading-relaxed">
+                <p className="text-sm text-warm-600 leading-relaxed font-reading">
                   {ex.start > 60 && <span className="text-warm-400">...</span>}
                   <span className="text-warm-400">{contextBefore}</span>
                   <mark className="bg-gold-200 text-warm-800 rounded px-0.5">{excerptText}</mark>

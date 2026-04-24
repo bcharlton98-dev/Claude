@@ -36,7 +36,8 @@
     }
   },
   "dependencies": {
-    "@fontsource-variable/plus-jakarta-sans": "^5.2.8",
+    "@fontsource-variable/lora": "^5.2.8",
+    "@fontsource-variable/onest": "^5.2.11",
     "@heroicons/react": "^2.2.0",
     "lucide-react": "^1.0.1",
     "mammoth": "^1.12.0",

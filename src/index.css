@@ -72,10 +72,14 @@
 
 body {
   margin: 0;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Onest Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #F7F2EB;
   color: #352D24;
   -webkit-font-smoothing: antialiased;
+}
+
+.font-reading {
+  font-family: 'Lora Variable', Georgia, 'Times New Roman', serif;
 }
 
 * { box-sizing: border-box; }

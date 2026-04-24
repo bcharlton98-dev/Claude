@@ -156,7 +156,7 @@ export default function Framework() {
                         ) : isExpanded ? (
                           <div className="space-y-2">
                             {excerpts.map((ex, i) => (
-                              <p key={i} className="text-xs leading-relaxed border-l-2 border-warm-200 pl-2">
+                              <p key={i} className="text-xs leading-relaxed border-l-2 border-warm-200 pl-2 font-reading">
                                 "{ex.text}"
                               </p>
                             ))}
