@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { FileText, BookOpen, BarChart3, Search, Grid3X3, GitBranch, Layers } from 'lucide-react';
+import { FileText, BookOpen, BarChart3, Search, Grid3X3, GitBranch, Layers, Home } from 'lucide-react';
 
 const links = [
   { to: '/transcripts', label: 'Transcripts', icon: FileText },
@@ -11,13 +11,26 @@ const links = [
   { to: '/search', label: 'Search', icon: Search },
 ];
 
-export default function Sidebar() {
+interface Props {
+  onBackToDashboard?: () => void;
+}
+
+export default function Sidebar({ onBackToDashboard }: Props) {
   return (
     <aside className="w-56 bg-warm-800 text-cream-100 flex flex-col min-h-screen shrink-0">
       <div className="px-5 py-5 border-b border-warm-700">
         <h1 className="text-lg font-bold tracking-tight">QualCode</h1>
         <p className="text-xs text-warm-400 mt-0.5">Qualitative Coding</p>
       </div>
+      {onBackToDashboard && (
+        <button
+          onClick={onBackToDashboard}
+          className="flex items-center gap-3 px-5 py-2.5 text-sm text-warm-300 hover:bg-warm-700/50 hover:text-cream-100 transition-colors border-b border-warm-700"
+        >
+          <Home size={18} />
+          All Projects
+        </button>
+      )}
       <nav className="flex-1 py-3" aria-label="Main navigation">
         {links.map(({ to, label, icon: Icon }) => (
           <NavLink

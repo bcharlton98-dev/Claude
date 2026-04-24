@@ -1,6 +1,8 @@
+import { useState, useCallback } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppStoreProvider } from './store/AppStore';
 import AppShell from './components/AppShell';
+import Dashboard from './pages/Dashboard';
 import TranscriptsList from './pages/TranscriptsList';
 import TranscriptView from './pages/TranscriptView';
 import Codebook from './pages/Codebook';
@@ -9,12 +11,29 @@ import Matrix from './pages/Matrix';
 import CoOccurrence from './pages/CoOccurrence';
 import Framework from './pages/Framework';
 import Search from './pages/Search';
+import { setCurrentProjectId } from './lib/storage';
 
 export default function App() {
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+
+  const handleOpenProject = useCallback((projectId: string) => {
+    setCurrentProjectId(projectId);
+    setActiveProjectId(projectId);
+  }, []);
+
+  const handleBackToDashboard = useCallback(() => {
+    setCurrentProjectId(null);
+    setActiveProjectId(null);
+  }, []);
+
+  if (!activeProjectId) {
+    return <Dashboard onOpenProject={handleOpenProject} />;
+  }
+
   return (
-    <AppStoreProvider>
+    <AppStoreProvider key={activeProjectId} onBackToDashboard={handleBackToDashboard}>
       <Routes>
-        <Route element={<AppShell />}>
+        <Route element={<AppShell onBackToDashboard={handleBackToDashboard} />}>
           <Route path="/" element={<Navigate to="/transcripts" replace />} />
           <Route path="/transcripts" element={<TranscriptsList />} />
           <Route path="/transcripts/:id" element={<TranscriptView />} />

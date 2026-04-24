@@ -1,10 +1,23 @@
 import type { AppState } from '../types';
 import { seed } from './seed';
 import { isElectron, getElectronAPI } from './electronAPI';
+import { getProjectStorageKey } from '../pages/Dashboard';
 
-const STORAGE_KEY = 'qual-coding-v1';
+let currentProjectId: string | null = null;
 
-// Synchronous initial load — returns seed in Electron (real data loaded async)
+export function setCurrentProjectId(id: string | null) {
+  currentProjectId = id;
+}
+
+export function getCurrentProjectId() {
+  return currentProjectId;
+}
+
+function getStorageKey(): string {
+  if (currentProjectId) return getProjectStorageKey(currentProjectId);
+  return 'qual-coding-v1';
+}
+
 export function loadState(): AppState {
   if (isElectron()) {
     return seed();
@@ -12,7 +25,6 @@ export function loadState(): AppState {
   return browserLoad();
 }
 
-// Async load — used by Electron to read from disk
 export async function loadStateAsync(): Promise<AppState> {
   if (isElectron()) {
     const result = await getElectronAPI().loadProject();
@@ -36,6 +48,7 @@ export function saveState(state: AppState): void {
     } else {
       browserSave(state);
     }
+    updateProjectTimestamp();
   }, 300);
 }
 
@@ -45,12 +58,13 @@ export function saveStateNow(state: AppState, projectPath?: string): Promise<{ s
     return getElectronAPI().saveProject({ projectPath, state });
   }
   browserSave(state);
+  updateProjectTimestamp();
   return Promise.resolve({ success: true });
 }
 
 function browserLoad(): AppState {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(getStorageKey());
     if (!raw) return seed();
     const parsed = JSON.parse(raw);
     if (parsed.schemaVersion !== 1) return seed();
@@ -62,8 +76,21 @@ function browserLoad(): AppState {
 
 function browserSave(state: AppState): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(getStorageKey(), JSON.stringify(state));
   } catch (e) {
     console.error('Failed to save state to localStorage:', e);
   }
+}
+
+function updateProjectTimestamp() {
+  if (!currentProjectId) return;
+  try {
+    const raw = localStorage.getItem('qualcode-projects-index');
+    if (!raw) return;
+    const projects = JSON.parse(raw);
+    const updated = projects.map((p: { id: string; updatedAt: number }) =>
+      p.id === currentProjectId ? { ...p, updatedAt: Date.now() } : p,
+    );
+    localStorage.setItem('qualcode-projects-index', JSON.stringify(updated));
+  } catch {}
 }

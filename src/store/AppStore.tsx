@@ -18,7 +18,7 @@ export function useDispatch() {
   return useContext(DispatchCtx);
 }
 
-export function AppStoreProvider({ children }: { children: ReactNode }) {
+export function AppStoreProvider({ children, onBackToDashboard: _ }: { children: ReactNode; onBackToDashboard?: () => void }) {
   const [state, dispatch] = useReducer(reducer, null, loadState);
   const [ready, setReady] = useState(!isElectron());
   const stateRef = useRef(state);
