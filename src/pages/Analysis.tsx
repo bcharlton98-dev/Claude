@@ -32,7 +32,7 @@ export default function Analysis() {
           <h2 className="text-sm font-semibold text-warm-700">Codes</h2>
           <button
             onClick={handleExport}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-violet-600 bg-violet-50 rounded-lg hover:bg-violet-100 transition-colors"
             title="Export all excerpts as CSV for Airtable"
           >
             <Download size={12} />
@@ -95,7 +95,7 @@ function AnalysisPanel({ codeId }: { codeId: string }) {
                   <span className="text-sm font-semibold text-warm-700">{transcript.title}</span>
                   <Link
                     to={`/transcripts/${transcript.id}?excerpt=${ex.id}`}
-                    className="text-xs text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+                    className="text-xs text-violet-600 hover:text-violet-700 flex items-center gap-1"
                   >
                     Open <ExternalLink size={12} />
                   </Link>

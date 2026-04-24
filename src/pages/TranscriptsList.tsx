@@ -109,19 +109,8 @@ export default function TranscriptsList() {
           text = result.value;
         } else if (lowerName.endsWith('.pdf')) {
           const pdfjsLib = await import('pdfjs-dist');
-          if ('GlobalWorkerOptions' in pdfjsLib) {
-            pdfjsLib.GlobalWorkerOptions.workerSrc = '';
-          }
           const buf = new Uint8Array(await file.arrayBuffer());
-          const loadingTask = pdfjsLib.getDocument({
-            data: buf,
-            useWorkerFetch: false,
-            isEvalSupported: false,
-            useSystemFonts: true,
-            disableAutoFetch: true,
-            disableStream: true,
-          });
-          const pdf = await loadingTask.promise;
+          const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
           const pages: string[] = [];
           for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
@@ -210,7 +199,7 @@ export default function TranscriptsList() {
           </button>
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors btn-press"
+            className="flex items-center gap-2 px-4 py-2.5 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 transition-colors btn-press"
           >
             <Plus size={16} />
             Add Reports
@@ -242,7 +231,7 @@ export default function TranscriptsList() {
                     key={c}
                     onClick={() => setFilterCohort(filterCohort === c ? '' : c)}
                     className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
-                      filterCohort === c ? 'bg-indigo-600 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                      filterCohort === c ? 'bg-violet-600 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
                     }`}
                   >{c}</button>
                 ))}
@@ -287,7 +276,7 @@ export default function TranscriptsList() {
                     key={tag}
                     onClick={() => toggleFilterTag(tag)}
                     className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
-                      filterTags.includes(tag) ? 'bg-indigo-600 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                      filterTags.includes(tag) ? 'bg-violet-600 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
                     }`}
                   >{tag}</button>
                 ))}
@@ -365,7 +354,7 @@ export default function TranscriptsList() {
                 </label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {newTags.map(tag => (
-                    <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-medium">
+                    <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 text-xs font-medium">
                       {tag}
                       <button onClick={() => setNewTags(newTags.filter(t => t !== tag))} className="hover:text-rose-500">&times;</button>
                     </span>
@@ -377,7 +366,7 @@ export default function TranscriptsList() {
                     onChange={e => setTagInput(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput); } }}
                     placeholder="e.g. HBCU, Year 2, STEM..."
-                    className="flex-1 border border-warm-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
+                    className="flex-1 border border-warm-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400"
                     list="existing-tags"
                   />
                   <datalist id="existing-tags">
@@ -403,7 +392,7 @@ export default function TranscriptsList() {
                     onClick={() => setTab(t)}
                     className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
                       tab === t
-                        ? 'bg-indigo-100 text-indigo-700'
+                        ? 'bg-violet-100 text-violet-700'
                         : 'text-warm-500 hover:bg-warm-100'
                     }`}
                   >
@@ -421,7 +410,7 @@ export default function TranscriptsList() {
                       value={title}
                       onChange={e => setTitle(e.target.value)}
                       placeholder="Report title..."
-                      className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
+                      className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400"
                     />
                   </div>
                   <textarea
@@ -429,13 +418,13 @@ export default function TranscriptsList() {
                     onChange={e => setPasteContent(e.target.value)}
                     placeholder="Paste report text here..."
                     rows={8}
-                    className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 resize-y"
+                    className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 resize-y"
                   />
                 </>
               )}
 
               {tab === 'upload' && (
-                <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-indigo-50/30 transition-colors">
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-violet-50/30 transition-colors">
                   <Upload size={24} className="text-warm-400 mb-2" />
                   <span className="text-sm text-warm-500 font-medium">
                     {loading ? uploadProgress : 'Click to select files (.pdf, .docx, or .txt)'}
@@ -463,7 +452,7 @@ export default function TranscriptsList() {
                 <button
                   onClick={handlePasteSubmit}
                   disabled={!title.trim() || !pasteContent.trim()}
-                  className="w-full py-2.5 px-4 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
+                  className="w-full py-2.5 px-4 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
                 >
                   Create Transcript
                 </button>

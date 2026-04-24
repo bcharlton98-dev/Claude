@@ -127,7 +127,7 @@ export default function Codebook() {
           </button>
           <button
             onClick={startCreate}
-            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors btn-press"
+            className="flex items-center gap-2 px-4 py-2.5 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 transition-colors btn-press"
           >
             <Plus size={16} />
             New Code
@@ -169,7 +169,7 @@ export default function Codebook() {
                 }
               }}
               placeholder="New field name..."
-              className="flex-1 text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="flex-1 text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-violet-300"
             />
             <button
               onClick={() => {
@@ -179,7 +179,7 @@ export default function Codebook() {
                 }
               }}
               disabled={!newDescriptorKey.trim()}
-              className="px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 disabled:opacity-40 transition-colors"
+              className="px-3 py-1.5 bg-violet-600 text-white text-sm rounded-lg hover:bg-violet-700 disabled:opacity-40 transition-colors"
             >
               Add
             </button>
@@ -212,7 +212,7 @@ export default function Codebook() {
                 }
               }}
               placeholder="Template name..."
-              className="flex-1 text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+              className="flex-1 text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-violet-300"
             />
             <button
               onClick={() => {
@@ -222,7 +222,7 @@ export default function Codebook() {
                 }
               }}
               disabled={!templateName.trim() || allCodes.length === 0}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 disabled:opacity-40 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 text-white text-sm rounded-lg hover:bg-violet-700 disabled:opacity-40 transition-colors"
             >
               <Save size={14} />
               Save Current
@@ -247,7 +247,7 @@ export default function Codebook() {
                           dispatch({ type: 'template/apply', payload: { templateId: t.id } });
                         }
                       }}
-                      className="text-xs text-indigo-600 hover:text-indigo-700 font-medium px-2 py-1"
+                      className="text-xs text-violet-600 hover:text-violet-700 font-medium px-2 py-1"
                     >
                       Apply
                     </button>
@@ -290,7 +290,7 @@ export default function Codebook() {
                   onChange={e => setFormName(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') handleSave(); }}
                   placeholder="Code name"
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
+                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400"
                   autoFocus
                 />
               </div>
@@ -305,7 +305,7 @@ export default function Codebook() {
                         key={c}
                         onClick={() => setFormColor(c)}
                         className={`w-7 h-7 rounded-full ${cc.dot} transition-all ${
-                          formColor === c ? 'ring-2 ring-offset-2 ring-indigo-400 scale-110' : 'hover:scale-110'
+                          formColor === c ? 'ring-2 ring-offset-2 ring-violet-400 scale-110' : 'hover:scale-110'
                         }`}
                         title={c}
                       />
@@ -319,7 +319,7 @@ export default function Codebook() {
                 <select
                   value={formParent ?? ''}
                   onChange={e => setFormParent(e.target.value || null)}
-                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 bg-white"
+                  className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 bg-white"
                 >
                   <option value="">-- None (root) --</option>
                   {parentOptions.map(c => (
@@ -343,7 +343,7 @@ export default function Codebook() {
                 <button
                   onClick={handleSave}
                   disabled={!formName.trim()}
-                  className="flex-1 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
+                  className="flex-1 py-2 bg-violet-600 text-white text-sm font-medium rounded-lg hover:bg-violet-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
                 >
                   {editingId ? 'Update' : 'Create'}
                 </button>

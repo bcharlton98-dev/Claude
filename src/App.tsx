@@ -11,6 +11,7 @@ import Matrix from './pages/Matrix';
 import CoOccurrence from './pages/CoOccurrence';
 import Framework from './pages/Framework';
 import Search from './pages/Search';
+import ProjectHome from './pages/ProjectHome';
 import { setCurrentProjectId } from './lib/storage';
 
 export default function App() {
@@ -37,7 +38,8 @@ export default function App() {
     <AppStoreProvider key={activeProjectId} onBackToDashboard={handleBackToDashboard}>
       <Routes>
         <Route element={<AppShell onBackToDashboard={handleBackToDashboard} />}>
-          <Route path="/" element={<Navigate to="/transcripts" replace />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<ProjectHome />} />
           <Route path="/transcripts" element={<TranscriptsList />} />
           <Route path="/transcripts/:id" element={<TranscriptView />} />
           <Route path="/codebook" element={<Codebook />} />

@@ -132,7 +132,7 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
             ].map(({ label, value, icon: Icon }) => (
               <div key={label} className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center">
-                  <Icon size={18} className="text-indigo-400" />
+                  <Icon size={18} className="text-violet-400" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold tabular-nums">{value}</p>
@@ -150,7 +150,7 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
           <h2 className="text-xl font-semibold text-slate-800">Projects</h2>
           <button
             onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 transition-colors btn-press"
+            className="flex items-center gap-2 px-5 py-2.5 bg-violet-600 text-white text-sm font-medium rounded-xl hover:bg-violet-700 transition-colors btn-press"
           >
             <Plus size={16} />
             New Project
@@ -166,20 +166,20 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
                 onChange={e => setName(e.target.value)}
                 onKeyDown={e => { if (e.key === 'Enter') handleCreate(); if (e.key === 'Escape') setShowCreate(false); }}
                 placeholder="Project name (e.g. HBCU Grant Analysis 2026)"
-                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
+                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400"
                 autoFocus
               />
               <input
                 value={description}
                 onChange={e => setDescription(e.target.value)}
                 placeholder="Brief description..."
-                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
+                className="w-full border border-slate-200 rounded-xl px-4 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400"
               />
               <div className="flex gap-2 pt-1">
                 <button
                   onClick={handleCreate}
                   disabled={!name.trim()}
-                  className="px-5 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-xl hover:bg-indigo-700 disabled:opacity-40 transition-colors btn-press"
+                  className="px-5 py-2.5 bg-violet-600 text-white text-sm font-medium rounded-xl hover:bg-violet-700 disabled:opacity-40 transition-colors btn-press"
                 >
                   Create
                 </button>
@@ -206,18 +206,18 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
                 <div
                   key={project.id}
                   className={`bg-white rounded-xl border px-6 py-5 cursor-pointer group card-hover ${
-                    isRecent ? 'border-indigo-300 ring-1 ring-indigo-200' : 'border-slate-200'
+                    isRecent ? 'border-violet-300 ring-1 ring-violet-200' : 'border-slate-200'
                   }`}
                   onClick={() => onOpenProject(project.id)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                        <h3 className="text-lg font-semibold text-slate-800 group-hover:text-violet-600 transition-colors">
                           {project.name}
                         </h3>
                         {isRecent && (
-                          <span className="flex items-center gap-1 text-xs text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-full">
+                          <span className="flex items-center gap-1 text-xs text-violet-500 bg-violet-50 px-2 py-0.5 rounded-full">
                             <Clock size={10} /> Recent
                           </span>
                         )}
