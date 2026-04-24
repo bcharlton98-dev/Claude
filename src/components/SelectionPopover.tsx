@@ -77,7 +77,7 @@ export default function SelectionPopover({ transcriptId, start, end, selectedTex
         <button
           onClick={handleCreate}
           disabled={selectedCodes.length === 0}
-          className="w-full py-2 px-4 bg-forest-500 text-white text-sm font-medium rounded-lg hover:bg-forest-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
+          className="w-full py-2 px-4 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
         >
           Apply {selectedCodes.length > 0 ? `(${selectedCodes.length})` : ''}
         </button>

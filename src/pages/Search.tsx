@@ -24,7 +24,7 @@ export default function Search() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           placeholder="Search transcripts and memos..."
-          className="w-full border border-warm-200 rounded-xl pl-10 pr-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
+          className="w-full border border-warm-200 rounded-xl pl-10 pr-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
           autoFocus
         />
       </div>

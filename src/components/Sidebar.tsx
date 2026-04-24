@@ -17,30 +17,30 @@ interface Props {
 
 export default function Sidebar({ onBackToDashboard }: Props) {
   return (
-    <aside className="w-56 bg-warm-800 text-cream-100 flex flex-col min-h-screen shrink-0">
-      <div className="px-5 py-5 border-b border-warm-700">
-        <h1 className="text-lg font-bold tracking-tight">Plenior</h1>
-        <p className="text-xs text-warm-400 mt-0.5">The fuller sense</p>
+    <aside className="w-60 bg-slate-900 text-slate-200 flex flex-col min-h-screen shrink-0">
+      <div className="px-6 py-6 border-b border-slate-800">
+        <h1 className="text-xl font-bold tracking-tight text-white">Plenior</h1>
+        <p className="text-xs text-slate-500 mt-1 italic font-reading">The fuller sense</p>
       </div>
       {onBackToDashboard && (
         <button
           onClick={onBackToDashboard}
-          className="flex items-center gap-3 px-5 py-2.5 text-sm text-warm-300 hover:bg-warm-700/50 hover:text-cream-100 transition-colors border-b border-warm-700"
+          className="flex items-center gap-3 px-6 py-3 text-sm text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-b border-slate-800"
         >
           <Home size={18} />
           All Projects
         </button>
       )}
-      <nav className="flex-1 py-3" aria-label="Main navigation">
+      <nav className="flex-1 py-4" aria-label="Main navigation">
         {links.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-5 py-2.5 text-sm transition-colors ${
+              `flex items-center gap-3 px-6 py-3 text-[15px] transition-colors ${
                 isActive
-                  ? 'bg-warm-700 text-cream-50 font-medium'
-                  : 'text-warm-300 hover:bg-warm-700/50 hover:text-cream-100'
+                  ? 'bg-indigo-600/20 text-indigo-300 font-semibold border-r-2 border-indigo-400'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
               }`
             }
           >

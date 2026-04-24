@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { AppStoreProvider } from './store/AppStore';
 import AppShell from './components/AppShell';
-import Dashboard from './pages/Dashboard';
+import Dashboard, { setLastProjectId } from './pages/Dashboard';
 import TranscriptsList from './pages/TranscriptsList';
 import TranscriptView from './pages/TranscriptView';
 import Codebook from './pages/Codebook';
@@ -18,6 +18,7 @@ export default function App() {
 
   const handleOpenProject = useCallback((projectId: string) => {
     setCurrentProjectId(projectId);
+    setLastProjectId(projectId);
     setActiveProjectId(projectId);
   }, []);
 

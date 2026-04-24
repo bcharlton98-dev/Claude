@@ -100,18 +100,30 @@ export default function TranscriptsList() {
       try {
         setUploadProgress(`Processing ${processed + 1} of ${fileArray.length}: ${file.name}`);
         let text: string;
-        const isDocx = file.name.toLowerCase().endsWith('.docx');
+        const lowerName = file.name.toLowerCase();
 
-        if (isDocx) {
+        if (lowerName.endsWith('.docx')) {
           const mammoth = await import('mammoth');
           const buf = await file.arrayBuffer();
           const result = await mammoth.extractRawText({ arrayBuffer: buf });
           text = result.value;
+        } else if (lowerName.endsWith('.pdf')) {
+          const pdfjsLib = await import('pdfjs-dist');
+          pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+          const buf = await file.arrayBuffer();
+          const pdf = await pdfjsLib.getDocument({ data: buf, useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true }).promise;
+          const pages: string[] = [];
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const content = await page.getTextContent();
+            pages.push(content.items.map((item: any) => ('str' in item ? item.str : '')).join(' '));
+          }
+          text = pages.join('\n\n');
         } else {
           text = await file.text();
         }
 
-        const name = file.name.replace(/\.(txt|docx)$/i, '');
+        const name = file.name.replace(/\.(txt|docx|pdf)$/i, '');
         createTranscript(name, text, [...newTags]);
         processed++;
       } catch (e) {
@@ -178,7 +190,7 @@ export default function TranscriptsList() {
           </button>
           <button
             onClick={() => setShowModal(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-forest-500 text-white text-sm font-medium rounded-lg hover:bg-forest-600 transition-colors btn-press"
+            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors btn-press"
           >
             <Plus size={16} />
             Add Reports
@@ -210,7 +222,7 @@ export default function TranscriptsList() {
                     key={c}
                     onClick={() => setFilterCohort(filterCohort === c ? '' : c)}
                     className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
-                      filterCohort === c ? 'bg-forest-500 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                      filterCohort === c ? 'bg-indigo-600 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
                     }`}
                   >{c}</button>
                 ))}
@@ -255,7 +267,7 @@ export default function TranscriptsList() {
                     key={tag}
                     onClick={() => toggleFilterTag(tag)}
                     className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
-                      filterTags.includes(tag) ? 'bg-forest-500 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                      filterTags.includes(tag) ? 'bg-indigo-600 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
                     }`}
                   >{tag}</button>
                 ))}
@@ -333,7 +345,7 @@ export default function TranscriptsList() {
                 </label>
                 <div className="flex flex-wrap gap-1.5 mb-2">
                   {newTags.map(tag => (
-                    <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-forest-100 text-forest-700 text-xs font-medium">
+                    <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-medium">
                       {tag}
                       <button onClick={() => setNewTags(newTags.filter(t => t !== tag))} className="hover:text-rose-500">&times;</button>
                     </span>
@@ -345,7 +357,7 @@ export default function TranscriptsList() {
                     onChange={e => setTagInput(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput); } }}
                     placeholder="e.g. HBCU, Year 2, STEM..."
-                    className="flex-1 border border-warm-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
+                    className="flex-1 border border-warm-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
                     list="existing-tags"
                   />
                   <datalist id="existing-tags">
@@ -371,7 +383,7 @@ export default function TranscriptsList() {
                     onClick={() => setTab(t)}
                     className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
                       tab === t
-                        ? 'bg-forest-100 text-forest-700'
+                        ? 'bg-indigo-100 text-indigo-700'
                         : 'text-warm-500 hover:bg-warm-100'
                     }`}
                   >
@@ -389,7 +401,7 @@ export default function TranscriptsList() {
                       value={title}
                       onChange={e => setTitle(e.target.value)}
                       placeholder="Report title..."
-                      className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
+                      className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400"
                     />
                   </div>
                   <textarea
@@ -397,23 +409,23 @@ export default function TranscriptsList() {
                     onChange={e => setPasteContent(e.target.value)}
                     placeholder="Paste report text here..."
                     rows={8}
-                    className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400 resize-y"
+                    className="w-full border border-warm-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 resize-y"
                   />
                 </>
               )}
 
               {tab === 'upload' && (
-                <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-forest-50/30 transition-colors">
+                <label className="flex flex-col items-center justify-center border-2 border-dashed border-warm-200 rounded-xl py-10 cursor-pointer hover:border-forest-400 hover:bg-indigo-50/30 transition-colors">
                   <Upload size={24} className="text-warm-400 mb-2" />
                   <span className="text-sm text-warm-500 font-medium">
-                    {loading ? uploadProgress : 'Click to select files (.txt or .docx)'}
+                    {loading ? uploadProgress : 'Click to select files (.pdf, .docx, or .txt)'}
                   </span>
                   <span className="text-xs text-warm-400 mt-1">
                     Select multiple files for bulk import
                   </span>
                   <input
                     type="file"
-                    accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    accept=".txt,.docx,.pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf"
                     multiple
                     className="hidden"
                     disabled={loading}
@@ -431,7 +443,7 @@ export default function TranscriptsList() {
                 <button
                   onClick={handlePasteSubmit}
                   disabled={!title.trim() || !pasteContent.trim()}
-                  className="w-full py-2.5 px-4 bg-forest-500 text-white text-sm font-medium rounded-lg hover:bg-forest-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
+                  className="w-full py-2.5 px-4 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors btn-press"
                 >
                   Create Transcript
                 </button>

@@ -90,7 +90,7 @@ export default function ExcerptPopover({ excerptId, position, onClose }: Props) 
           </div>
           <button
             onClick={() => setShowPicker(!showPicker)}
-            className="text-xs text-forest-600 hover:text-forest-700 mt-2 font-medium"
+            className="text-xs text-indigo-600 hover:text-indigo-700 mt-2 font-medium"
           >
             {showPicker ? 'Hide codes' : '+ Add/remove codes'}
           </button>
