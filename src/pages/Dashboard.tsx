@@ -10,7 +10,7 @@ export interface ProjectMeta {
   updatedAt: number;
 }
 
-const PROJECTS_INDEX_KEY = 'qualcode-projects-index';
+const PROJECTS_INDEX_KEY = 'plenior-projects-index';
 
 function loadProjectsIndex(): ProjectMeta[] {
   try {
@@ -26,7 +26,7 @@ function saveProjectsIndex(projects: ProjectMeta[]) {
 }
 
 export function getProjectStorageKey(projectId: string) {
-  return `qualcode-project-${projectId}`;
+  return `plenior-project-${projectId}`;
 }
 
 interface Props {
@@ -89,8 +89,8 @@ export default function Dashboard({ onOpenProject }: Props) {
     <div className="min-h-screen bg-cream-50">
       <div className="max-w-4xl mx-auto px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-warm-800 tracking-tight">QualCode</h1>
-          <p className="text-warm-500 mt-2">Qualitative Data Analysis</p>
+          <h1 className="text-4xl font-bold text-warm-800 tracking-tight">Plenior</h1>
+          <p className="text-warm-500 mt-2 italic font-reading">Every story carries more than it knows.</p>
         </div>
 
         <div className="flex items-center justify-between mb-8">

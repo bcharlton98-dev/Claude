@@ -24,7 +24,7 @@ function createWindow() {
     height: 900,
     minWidth: 900,
     minHeight: 600,
-    title: 'QualCode',
+    title: 'Plenior',
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
@@ -146,7 +146,7 @@ function validateState(state) {
 
 async function handleOpenProject() {
   const result = await dialog.showOpenDialog(mainWindow, {
-    title: 'Open QualCode Project Folder',
+    title: 'Open Plenior Project Folder',
     properties: ['openDirectory'],
   });
 
@@ -203,7 +203,7 @@ async function handleSaveAs() {
 
 function updateTitle() {
   const name = currentProjectPath ? path.basename(currentProjectPath) : 'Untitled';
-  mainWindow.setTitle(`QualCode — ${name}`);
+  mainWindow.setTitle(`Plenior — ${name}`);
 }
 
 // IPC handlers
@@ -317,7 +317,7 @@ ipcMain.handle('fs:get-default-path', () => {
 });
 
 function getDefaultProjectPath() {
-  return path.join(app.getPath('documents'), 'QualCode Projects', 'Default');
+  return path.join(app.getPath('documents'), 'Plenior Projects', 'Default');
 }
 
 app.whenReady().then(createWindow);

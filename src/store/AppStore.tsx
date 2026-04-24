@@ -54,7 +54,7 @@ export function AppStoreProvider({ children, onBackToDashboard: _ }: { children:
       api.onMenuExportCsv(() => {
         const csv = exportExcerptsAsCsv(stateRef.current);
         const date = new Date().toISOString().slice(0, 10);
-        api.exportCsv({ csv, defaultName: `qualcode-export-${date}.csv` });
+        api.exportCsv({ csv, defaultName: `plenior-export-${date}.csv` });
       }),
       api.onProjectLoaded((data) => {
         dispatch({ type: 'state/hydrate', payload: data.state });

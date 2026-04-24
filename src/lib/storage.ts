@@ -15,7 +15,7 @@ export function getCurrentProjectId() {
 
 function getStorageKey(): string {
   if (currentProjectId) return getProjectStorageKey(currentProjectId);
-  return 'qual-coding-v1';
+  return 'plenior-v1';
 }
 
 export function loadState(): AppState {
@@ -85,12 +85,12 @@ function browserSave(state: AppState): void {
 function updateProjectTimestamp() {
   if (!currentProjectId) return;
   try {
-    const raw = localStorage.getItem('qualcode-projects-index');
+    const raw = localStorage.getItem('plenior-projects-index');
     if (!raw) return;
     const projects = JSON.parse(raw);
     const updated = projects.map((p: { id: string; updatedAt: number }) =>
       p.id === currentProjectId ? { ...p, updatedAt: Date.now() } : p,
     );
-    localStorage.setItem('qualcode-projects-index', JSON.stringify(updated));
+    localStorage.setItem('plenior-projects-index', JSON.stringify(updated));
   } catch {}
 }

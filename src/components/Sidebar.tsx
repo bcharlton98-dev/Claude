@@ -19,8 +19,8 @@ export default function Sidebar({ onBackToDashboard }: Props) {
   return (
     <aside className="w-56 bg-warm-800 text-cream-100 flex flex-col min-h-screen shrink-0">
       <div className="px-5 py-5 border-b border-warm-700">
-        <h1 className="text-lg font-bold tracking-tight">QualCode</h1>
-        <p className="text-xs text-warm-400 mt-0.5">Qualitative Coding</p>
+        <h1 className="text-lg font-bold tracking-tight">Plenior</h1>
+        <p className="text-xs text-warm-400 mt-0.5">The fuller sense</p>
       </div>
       {onBackToDashboard && (
         <button

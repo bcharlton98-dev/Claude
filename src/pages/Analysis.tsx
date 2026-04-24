@@ -16,7 +16,7 @@ export default function Analysis() {
   function handleExport() {
     const csv = exportExcerptsAsCsv(state);
     const date = new Date().toISOString().slice(0, 10);
-    const filename = `qualcode-export-${date}.csv`;
+    const filename = `plenior-export-${date}.csv`;
 
     if (isElectron()) {
       getElectronAPI().exportCsv({ csv, defaultName: filename });
