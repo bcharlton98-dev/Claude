@@ -30,6 +30,8 @@ export function reducer(state: AppState, action: Action): AppState {
             text: action.payload.text,
             memo: '',
             tags: action.payload.tags ?? [],
+            descriptors: action.payload.descriptors ?? [],
+            cohort: action.payload.cohort ?? '',
             createdAt: now,
             updatedAt: now,
           },
@@ -69,6 +71,30 @@ export function reducer(state: AppState, action: Action): AppState {
         transcripts: {
           ...state.transcripts,
           [t.id]: { ...t, tags: action.payload.tags, updatedAt: Date.now() },
+        },
+      };
+    }
+
+    case 'transcript/setDescriptors': {
+      const t = state.transcripts[action.payload.id];
+      if (!t) return state;
+      return {
+        ...state,
+        transcripts: {
+          ...state.transcripts,
+          [t.id]: { ...t, descriptors: action.payload.descriptors, updatedAt: Date.now() },
+        },
+      };
+    }
+
+    case 'transcript/setCohort': {
+      const t = state.transcripts[action.payload.id];
+      if (!t) return state;
+      return {
+        ...state,
+        transcripts: {
+          ...state.transcripts,
+          [t.id]: { ...t, cohort: action.payload.cohort, updatedAt: Date.now() },
         },
       };
     }
@@ -214,12 +240,76 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, excerpts: rest };
     }
 
+    case 'schema/addDescriptorKey': {
+      const key = action.payload.key.trim();
+      if (!key || (state.descriptorSchema ?? []).includes(key)) return state;
+      return { ...state, descriptorSchema: [...(state.descriptorSchema ?? []), key] };
+    }
+
+    case 'schema/removeDescriptorKey': {
+      return {
+        ...state,
+        descriptorSchema: (state.descriptorSchema ?? []).filter(k => k !== action.payload.key),
+      };
+    }
+
+    case 'template/save': {
+      const id = newId();
+      const codes = Object.values(state.codes).map(c => ({
+        id: c.id,
+        name: c.name,
+        color: c.color,
+        parentId: c.parentId,
+        memo: c.memo,
+      }));
+      return {
+        ...state,
+        codebookTemplates: {
+          ...(state.codebookTemplates ?? {}),
+          [id]: { id, name: action.payload.name, codes, createdAt: Date.now() },
+        },
+      };
+    }
+
+    case 'template/apply': {
+      const template = (state.codebookTemplates ?? {})[action.payload.templateId];
+      if (!template) return state;
+      const newCodes: Record<ID, Code> = {};
+      for (const tc of template.codes) {
+        const id = newId();
+        newCodes[id] = { ...tc, id, createdAt: Date.now() };
+      }
+      // Remap parentIds
+      const oldToNew = new Map<string, string>();
+      template.codes.forEach((tc, i) => {
+        oldToNew.set(tc.id, Object.keys(newCodes)[i]);
+      });
+      for (const code of Object.values(newCodes)) {
+        if (code.parentId && oldToNew.has(code.parentId)) {
+          code.parentId = oldToNew.get(code.parentId)!;
+        } else {
+          code.parentId = null;
+        }
+      }
+      return {
+        ...state,
+        codes: { ...state.codes, ...newCodes },
+      };
+    }
+
+    case 'template/delete': {
+      const { [action.payload.id]: _, ...rest } = (state.codebookTemplates ?? {});
+      return { ...state, codebookTemplates: rest };
+    }
+
     case 'state/hydrate': {
       const p = action.payload;
       return {
         transcripts: (typeof p.transcripts === 'object' && p.transcripts) ? p.transcripts : {},
         codes: (typeof p.codes === 'object' && p.codes) ? p.codes : {},
         excerpts: (typeof p.excerpts === 'object' && p.excerpts) ? p.excerpts : {},
+        codebookTemplates: (typeof p.codebookTemplates === 'object' && p.codebookTemplates) ? p.codebookTemplates : {},
+        descriptorSchema: Array.isArray(p.descriptorSchema) ? p.descriptorSchema : [],
         schemaVersion: 1,
       };
     }

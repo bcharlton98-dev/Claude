@@ -19,7 +19,29 @@ export default function TranscriptsList() {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
   const [filterTags, setFilterTags] = useState<string[]>([]);
+  const [filterDescKey, setFilterDescKey] = useState('');
+  const [filterDescValue, setFilterDescValue] = useState('');
+  const [filterCohort, setFilterCohort] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+
+  const descriptorKeys = state.descriptorSchema ?? [];
+  const cohorts = useMemo(() => {
+    const set = new Set<string>();
+    for (const t of Object.values(state.transcripts)) {
+      if (t.cohort) set.add(t.cohort);
+    }
+    return Array.from(set).sort();
+  }, [state.transcripts]);
+
+  const descriptorValues = useMemo(() => {
+    if (!filterDescKey) return [];
+    const set = new Set<string>();
+    for (const t of Object.values(state.transcripts)) {
+      const d = (t.descriptors ?? []).find(dd => dd.key === filterDescKey);
+      if (d?.value) set.add(d.value);
+    }
+    return Array.from(set).sort();
+  }, [state.transcripts, filterDescKey]);
 
   let transcripts = Object.values(state.transcripts).sort(
     (a, b) => b.updatedAt - a.updatedAt,
@@ -29,6 +51,15 @@ export default function TranscriptsList() {
     transcripts = transcripts.filter(t =>
       filterTags.every(ft => (t.tags ?? []).includes(ft)),
     );
+  }
+  if (filterCohort) {
+    transcripts = transcripts.filter(t => (t.cohort ?? '') === filterCohort);
+  }
+  if (filterDescKey && filterDescValue) {
+    transcripts = transcripts.filter(t => {
+      const d = (t.descriptors ?? []).find(dd => dd.key === filterDescKey);
+      return d?.value === filterDescValue;
+    });
   }
 
   function resetModal() {
@@ -128,25 +159,23 @@ export default function TranscriptsList() {
         <div>
           <h1 className="text-2xl font-bold text-warm-800">Transcripts</h1>
           <p className="text-sm text-warm-500 mt-1">
-            {filterTags.length > 0
+            {(filterTags.length > 0 || filterCohort || (filterDescKey && filterDescValue))
               ? `${transcripts.length} of ${totalTranscripts} (filtered)`
               : `${transcripts.length} document${transcripts.length !== 1 ? 's' : ''}`}
           </p>
         </div>
         <div className="flex gap-2">
-          {allTags.length > 0 && (
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors btn-press ${
-                filterTags.length > 0
-                  ? 'bg-ember-100 text-ember-600 border border-ember-300'
-                  : 'bg-white text-warm-600 border border-warm-200 hover:bg-warm-100'
-              }`}
-            >
-              <Filter size={16} />
-              Filter{filterTags.length > 0 ? ` (${filterTags.length})` : ''}
-            </button>
-          )}
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg transition-colors btn-press ${
+              (filterTags.length > 0 || filterCohort || filterDescValue)
+                ? 'bg-ember-100 text-ember-600 border border-ember-300'
+                : 'bg-white text-warm-600 border border-warm-200 hover:bg-warm-100'
+            }`}
+          >
+            <Filter size={16} />
+            Filters
+          </button>
           <button
             onClick={() => setShowModal(true)}
             className="flex items-center gap-2 px-4 py-2.5 bg-forest-500 text-white text-sm font-medium rounded-lg hover:bg-forest-600 transition-colors btn-press"
@@ -157,34 +186,82 @@ export default function TranscriptsList() {
         </div>
       </div>
 
-      {showFilters && allTags.length > 0 && (
-        <div className="mb-6 bg-white rounded-xl border border-warm-100 card-shadow p-4">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-semibold text-warm-500 uppercase tracking-wide">Filter by tag</p>
-            {filterTags.length > 0 && (
+      {showFilters && (
+        <div className="mb-6 bg-white rounded-xl border border-warm-100 card-shadow p-4 space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs font-semibold text-warm-500 uppercase tracking-wide">Filters</p>
+            {(filterTags.length > 0 || filterCohort || filterDescValue) && (
               <button
-                onClick={() => setFilterTags([])}
+                onClick={() => { setFilterTags([]); setFilterCohort(''); setFilterDescKey(''); setFilterDescValue(''); }}
                 className="text-xs text-ember-600 hover:text-ember-700 font-medium"
               >
                 Clear all
               </button>
             )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {allTags.map(tag => (
-              <button
-                key={tag}
-                onClick={() => toggleFilterTag(tag)}
-                className={`px-3 py-1.5 text-sm rounded-full font-medium transition-colors ${
-                  filterTags.includes(tag)
-                    ? 'bg-forest-500 text-white'
-                    : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
+
+          {/* Cohort filter */}
+          {cohorts.length > 0 && (
+            <div>
+              <p className="text-xs text-warm-500 mb-1.5">Cohort</p>
+              <div className="flex flex-wrap gap-1.5">
+                {cohorts.map(c => (
+                  <button
+                    key={c}
+                    onClick={() => setFilterCohort(filterCohort === c ? '' : c)}
+                    className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
+                      filterCohort === c ? 'bg-forest-500 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                    }`}
+                  >{c}</button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Descriptor filter */}
+          {descriptorKeys.length > 0 && (
+            <div>
+              <p className="text-xs text-warm-500 mb-1.5">Descriptors</p>
+              <div className="flex gap-2">
+                <select
+                  value={filterDescKey}
+                  onChange={e => { setFilterDescKey(e.target.value); setFilterDescValue(''); }}
+                  className="text-xs border border-warm-200 rounded-lg px-2 py-1.5 bg-white"
+                >
+                  <option value="">Field...</option>
+                  {descriptorKeys.map(k => <option key={k} value={k}>{k}</option>)}
+                </select>
+                {filterDescKey && (
+                  <select
+                    value={filterDescValue}
+                    onChange={e => setFilterDescValue(e.target.value)}
+                    className="text-xs border border-warm-200 rounded-lg px-2 py-1.5 bg-white"
+                  >
+                    <option value="">All</option>
+                    {descriptorValues.map(v => <option key={v} value={v}>{v}</option>)}
+                  </select>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Tag filter */}
+          {allTags.length > 0 && (
+            <div>
+              <p className="text-xs text-warm-500 mb-1.5">Tags</p>
+              <div className="flex flex-wrap gap-1.5">
+                {allTags.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleFilterTag(tag)}
+                    className={`px-3 py-1 text-xs rounded-full font-medium transition-colors ${
+                      filterTags.includes(tag) ? 'bg-forest-500 text-white' : 'bg-warm-100 text-warm-600 hover:bg-warm-200'
+                    }`}
+                  >{tag}</button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 

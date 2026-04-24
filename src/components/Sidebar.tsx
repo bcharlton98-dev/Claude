@@ -1,10 +1,13 @@
 import { NavLink } from 'react-router-dom';
-import { FileText, BookOpen, BarChart3, Search } from 'lucide-react';
+import { FileText, BookOpen, BarChart3, Search, Grid3X3, GitBranch, Layers } from 'lucide-react';
 
 const links = [
   { to: '/transcripts', label: 'Transcripts', icon: FileText },
   { to: '/codebook', label: 'Codebook', icon: BookOpen },
   { to: '/analysis', label: 'Analysis', icon: BarChart3 },
+  { to: '/matrix', label: 'Matrix', icon: Grid3X3 },
+  { to: '/co-occurrence', label: 'Co-Occurrence', icon: GitBranch },
+  { to: '/framework', label: 'Framework', icon: Layers },
   { to: '/search', label: 'Search', icon: Search },
 ];
 

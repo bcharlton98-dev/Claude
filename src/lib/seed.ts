@@ -29,6 +29,12 @@ Interviewer: Looking back, is there anything you'd do differently?
 Participant: I wish I'd started sooner. I spent so long hesitating, weighing pros and cons, that I lost time I could have spent learning and growing in my new field. The fear of regret kept me stuck, which is ironic because now my only regret is not moving faster.`,
     memo: '',
     tags: ['Sample', 'Career Change'],
+    descriptors: [
+      { key: 'Institution Type', value: 'University' },
+      { key: 'Region', value: 'Northeast' },
+      { key: 'Grant Program', value: 'Career Development' },
+    ],
+    cohort: 'Year 1',
     createdAt: now,
     updatedAt: now,
   };
@@ -111,6 +117,8 @@ Participant: I wish I'd started sooner. I spent so long hesitating, weighing pro
     transcripts: { [transcript.id]: transcript },
     codes: Object.fromEntries(codes.map(c => [c.id, c])),
     excerpts: Object.fromEntries(excerpts.map(e => [e.id, e])),
+    codebookTemplates: {},
+    descriptorSchema: ['Institution Type', 'Region', 'Grant Program'],
     schemaVersion: 1,
   };
 }

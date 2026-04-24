@@ -1,11 +1,18 @@
 export type ID = string;
 
+export interface DescriptorField {
+  key: string;
+  value: string;
+}
+
 export interface Transcript {
   id: ID;
   title: string;
   text: string;
   memo: string;
   tags: string[];
+  descriptors: DescriptorField[];
+  cohort: string;
   createdAt: number;
   updatedAt: number;
 }
@@ -29,10 +36,19 @@ export interface Excerpt {
   createdAt: number;
 }
 
+export interface CodebookTemplate {
+  id: ID;
+  name: string;
+  codes: Omit<Code, 'createdAt'>[];
+  createdAt: number;
+}
+
 export interface AppState {
   transcripts: Record<ID, Transcript>;
   codes: Record<ID, Code>;
   excerpts: Record<ID, Excerpt>;
+  codebookTemplates: Record<ID, CodebookTemplate>;
+  descriptorSchema: string[];
   schemaVersion: 1;
 }
 

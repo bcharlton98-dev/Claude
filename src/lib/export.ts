@@ -8,9 +8,13 @@ function escapeCsv(value: string): string {
 }
 
 export function exportExcerptsAsCsv(state: AppState): string {
+  const descriptorKeys = state.descriptorSchema ?? [];
+
   const headers = [
     'Transcript',
+    'Cohort',
     'Transcript Tags',
+    ...descriptorKeys,
     'Excerpt Text',
     'Codes',
     'Code Path',
@@ -28,6 +32,12 @@ export function exportExcerptsAsCsv(state: AppState): string {
 
     const excerptText = transcript.text.slice(excerpt.start, excerpt.end);
     const tags = (transcript.tags ?? []).join('; ');
+    const descriptors = transcript.descriptors ?? [];
+
+    const descriptorValues = descriptorKeys.map(key => {
+      const d = descriptors.find(dd => dd.key === key);
+      return d?.value ?? '';
+    });
 
     const codeNames = excerpt.codeIds
       .map(cid => state.codes[cid]?.name ?? '')
@@ -41,7 +51,9 @@ export function exportExcerptsAsCsv(state: AppState): string {
 
     const row = [
       escapeCsv(transcript.title),
+      escapeCsv(transcript.cohort ?? ''),
       escapeCsv(tags),
+      ...descriptorValues.map(escapeCsv),
       escapeCsv(excerptText),
       escapeCsv(codeNames),
       escapeCsv(codePaths),

@@ -122,8 +122,57 @@ export default function TranscriptView() {
       </div>
 
       <aside className="w-80 border-l border-warm-200 bg-white overflow-y-auto p-5 shrink-0">
-        <div className="mb-6">
-          <h2 className="text-sm font-semibold text-warm-700 mb-2">Transcript Memo</h2>
+        {/* Cohort */}
+        <div className="mb-5">
+          <h2 className="text-sm font-semibold text-warm-700 mb-1.5">Cohort</h2>
+          <input
+            value={transcript.cohort ?? ''}
+            onChange={e => dispatch({ type: 'transcript/setCohort', payload: { id: transcript.id, cohort: e.target.value } })}
+            placeholder="e.g. Year 1, 2024 Cycle..."
+            className="w-full text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-forest-300 focus:border-forest-400"
+            list="cohort-suggestions"
+          />
+          <datalist id="cohort-suggestions">
+            {Array.from(new Set(Object.values(state.transcripts).map(t => t.cohort).filter(Boolean))).map(c => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+        </div>
+
+        {/* Descriptors */}
+        {(state.descriptorSchema ?? []).length > 0 && (
+          <div className="mb-5">
+            <h2 className="text-sm font-semibold text-warm-700 mb-2">Descriptors</h2>
+            <div className="space-y-2">
+              {(state.descriptorSchema ?? []).map(key => {
+                const desc = (transcript.descriptors ?? []).find(d => d.key === key);
+                return (
+                  <div key={key}>
+                    <label className="block text-xs text-warm-500 mb-0.5">{key}</label>
+                    <input
+                      value={desc?.value ?? ''}
+                      onChange={e => {
+                        const newDescriptors = [...(transcript.descriptors ?? [])];
+                        const idx = newDescriptors.findIndex(d => d.key === key);
+                        if (idx >= 0) {
+                          newDescriptors[idx] = { key, value: e.target.value };
+                        } else {
+                          newDescriptors.push({ key, value: e.target.value });
+                        }
+                        dispatch({ type: 'transcript/setDescriptors', payload: { id: transcript.id, descriptors: newDescriptors } });
+                      }}
+                      placeholder={`Enter ${key.toLowerCase()}...`}
+                      className="w-full text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-forest-300"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        <div className="mb-5">
+          <h2 className="text-sm font-semibold text-warm-700 mb-2">Memo</h2>
           <MemoEditor
             value={transcript.memo}
             onChange={(memo) => dispatch({ type: 'transcript/setMemo', payload: { id: transcript.id, memo } })}
