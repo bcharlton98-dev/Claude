@@ -1,14 +1,15 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import TopBar from './TopBar';
 
 interface Props {
   onBackToDashboard?: () => void;
+  projectName?: string;
 }
 
-export default function AppShell({ onBackToDashboard }: Props) {
+export default function AppShell({ onBackToDashboard, projectName }: Props) {
   return (
-    <div className="flex min-h-screen bg-cream-50">
-      <Sidebar onBackToDashboard={onBackToDashboard} />
+    <div className="flex flex-col min-h-screen bg-slate-50">
+      <TopBar onBackToDashboard={onBackToDashboard} projectName={projectName} />
       <main className="flex-1 overflow-auto">
         <Outlet />
       </main>

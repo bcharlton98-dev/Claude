@@ -121,10 +121,28 @@ export default function TranscriptView() {
         />
       </div>
 
-      <aside className="w-80 border-l border-warm-200 bg-white overflow-y-auto p-5 shrink-0">
+      <aside className="w-80 border-l border-slate-200 bg-white overflow-y-auto shrink-0">
+        {/* Document Info header */}
+        <div className="bg-navy-600 text-white px-4 py-2">
+          <h2 className="text-xs font-semibold tracking-wide uppercase">Document Info</h2>
+        </div>
+        <div className="px-4 py-3 border-b border-slate-100">
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <span className="text-slate-400">Excerpts</span>
+              <p className="font-semibold text-slate-700">{excerpts.length}</p>
+            </div>
+            <div>
+              <span className="text-slate-400">Added</span>
+              <p className="font-semibold text-slate-700">{new Date(transcript.createdAt).toLocaleDateString()}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-4 py-3 space-y-4">
         {/* Cohort */}
-        <div className="mb-5">
-          <h2 className="text-sm font-semibold text-warm-700 mb-1.5">Cohort</h2>
+        <div>
+          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Cohort</h2>
           <input
             value={transcript.cohort ?? ''}
             onChange={e => dispatch({ type: 'transcript/setCohort', payload: { id: transcript.id, cohort: e.target.value } })}
@@ -141,8 +159,8 @@ export default function TranscriptView() {
 
         {/* Descriptors */}
         {(state.descriptorSchema ?? []).length > 0 && (
-          <div className="mb-5">
-            <h2 className="text-sm font-semibold text-warm-700 mb-2">Descriptors</h2>
+          <div>
+            <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Descriptors</h2>
             <div className="space-y-2">
               {(state.descriptorSchema ?? []).map(key => {
                 const desc = (transcript.descriptors ?? []).find(d => d.key === key);
@@ -171,8 +189,8 @@ export default function TranscriptView() {
           </div>
         )}
 
-        <div className="mb-5">
-          <h2 className="text-sm font-semibold text-warm-700 mb-2">Memo</h2>
+        <div>
+          <h2 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Memo</h2>
           <MemoEditor
             value={transcript.memo}
             onChange={(memo) => dispatch({ type: 'transcript/setMemo', payload: { id: transcript.id, memo } })}
@@ -180,10 +198,14 @@ export default function TranscriptView() {
           />
         </div>
 
+        </div>
+
+        {/* Codes header */}
+        <div className="bg-navy-600 text-white px-4 py-2">
+          <h2 className="text-xs font-semibold tracking-wide uppercase">Excerpts ({excerpts.length})</h2>
+        </div>
+        <div className="px-4 py-3">
         <div>
-          <h2 className="text-sm font-semibold text-warm-700 mb-3">
-            Excerpts ({excerpts.length})
-          </h2>
           {excerpts.length === 0 ? (
             <p className="text-xs text-warm-400 italic">
               Select text in the transcript and apply codes to create excerpts.
@@ -210,6 +232,7 @@ export default function TranscriptView() {
               ))}
             </div>
           )}
+        </div>
         </div>
       </aside>
     </div>

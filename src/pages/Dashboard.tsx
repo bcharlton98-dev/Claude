@@ -39,7 +39,7 @@ export function getProjectStorageKey(projectId: string) {
 }
 
 interface Props {
-  onOpenProject: (projectId: string) => void;
+  onOpenProject: (projectId: string, projectName?: string) => void;
   skipAutoOpen?: boolean;
 }
 
@@ -52,8 +52,9 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
   useEffect(() => {
     if (skipAutoOpen) return;
     const lastId = getLastProjectId();
-    if (lastId && projects.some(p => p.id === lastId)) {
-      onOpenProject(lastId);
+    const lastProject = projects.find(p => p.id === lastId);
+    if (lastProject) {
+      onOpenProject(lastProject.id, lastProject.name);
     }
   }, []);
 
@@ -88,7 +89,7 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
     setName('');
     setDescription('');
     setShowCreate(false);
-    onOpenProject(project.id);
+    onOpenProject(project.id, project.name);
   }
 
   function handleDelete(id: string, projectName: string) {
@@ -208,7 +209,7 @@ export default function Dashboard({ onOpenProject, skipAutoOpen }: Props) {
                   className={`bg-white rounded-xl border px-6 py-5 cursor-pointer group card-hover ${
                     isRecent ? 'border-navy-300 ring-1 ring-navy-200' : 'border-slate-200'
                   }`}
-                  onClick={() => onOpenProject(project.id)}
+                  onClick={() => onOpenProject(project.id, project.name)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
