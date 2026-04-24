@@ -34,7 +34,7 @@ export default function MemoEditor({ value, onChange, placeholder = 'Add a memo.
       }}
       placeholder={placeholder}
       rows={3}
-      className="w-full text-sm border border-warm-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400 resize-y placeholder:text-warm-400"
+      className="w-full text-sm border border-warm-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400 resize-y placeholder:text-warm-400"
     />
   );
 }

@@ -61,7 +61,7 @@ function CodeTreeItem({
         role="button"
         tabIndex={0}
         className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer text-sm transition-colors group ${
-          isSelected ? 'bg-violet-100 text-violet-700' : 'hover:bg-warm-100 text-warm-700'
+          isSelected ? 'bg-navy-100 text-navy-700' : 'hover:bg-warm-100 text-warm-700'
         }`}
         style={{ paddingLeft: `${12 + depth * 20}px` }}
         onClick={() => onSelect?.(node.code.id)}
@@ -88,7 +88,7 @@ function CodeTreeItem({
             {onEdit && (
               <button
                 onClick={(e) => { e.stopPropagation(); onEdit(node.code.id); }}
-                className="text-xs text-warm-500 hover:text-violet-600 px-1"
+                className="text-xs text-warm-500 hover:text-navy-600 px-1"
                 aria-label={`Edit ${node.code.name}`}
               >
                 Edit

@@ -24,7 +24,7 @@ export default function TranscriptView() {
     return (
       <div className="p-8">
         <p className="text-warm-500">Transcript not found.</p>
-        <Link to="/transcripts" className="text-violet-600 hover:underline text-sm mt-2 inline-block">
+        <Link to="/transcripts" className="text-navy-600 hover:underline text-sm mt-2 inline-block">
           Back to transcripts
         </Link>
       </div>
@@ -60,7 +60,7 @@ export default function TranscriptView() {
       <div className="flex-1 overflow-y-auto p-8">
         <Link
           to="/transcripts"
-          className="inline-flex items-center gap-1.5 text-sm text-warm-500 hover:text-violet-600 mb-4"
+          className="inline-flex items-center gap-1.5 text-sm text-warm-500 hover:text-navy-600 mb-4"
         >
           <ArrowLeft size={14} />
           Back
@@ -72,14 +72,14 @@ export default function TranscriptView() {
               value={editTitle}
               onChange={e => setEditTitle(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') saveTitle(); if (e.key === 'Escape') setIsEditing(false); }}
-              className="text-2xl font-bold text-warm-800 border border-warm-200 rounded-lg px-2 py-1 flex-1 focus:outline-none focus:ring-2 focus:ring-violet-300"
+              className="text-2xl font-bold text-warm-800 border border-warm-200 rounded-lg px-2 py-1 flex-1 focus:outline-none focus:ring-2 focus:ring-navy-300"
               autoFocus
             />
-            <button onClick={saveTitle} className="text-sm text-violet-600 font-medium px-3 py-1">Save</button>
+            <button onClick={saveTitle} className="text-sm text-navy-600 font-medium px-3 py-1">Save</button>
           </div>
         ) : (
           <h1
-            className="text-2xl font-bold text-warm-800 mb-2 cursor-pointer hover:text-violet-700 transition-colors"
+            className="text-2xl font-bold text-warm-800 mb-2 cursor-pointer hover:text-navy-700 transition-colors"
             onClick={startEditing}
             title="Click to rename"
           >
@@ -90,7 +90,7 @@ export default function TranscriptView() {
         {/* Tags bar */}
         <div className="flex items-center gap-2 flex-wrap mb-6">
           {(transcript.tags ?? []).map(tag => (
-            <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-violet-100 text-violet-700 text-xs font-medium">
+            <span key={tag} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-navy-100 text-navy-700 text-xs font-medium">
               <Tag size={10} />
               {tag}
               <button onClick={() => removeTag(tag)} className="ml-0.5 hover:text-rose-500">&times;</button>
@@ -102,7 +102,7 @@ export default function TranscriptView() {
               onChange={e => setTagInput(e.target.value)}
               onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(tagInput); } }}
               placeholder="+ tag"
-              className="w-20 text-xs border border-warm-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-violet-300 focus:w-32 transition-all"
+              className="w-20 text-xs border border-warm-200 rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-navy-300 focus:w-32 transition-all"
               list="tag-suggestions"
             />
             <datalist id="tag-suggestions">
@@ -129,7 +129,7 @@ export default function TranscriptView() {
             value={transcript.cohort ?? ''}
             onChange={e => dispatch({ type: 'transcript/setCohort', payload: { id: transcript.id, cohort: e.target.value } })}
             placeholder="e.g. Year 1, 2024 Cycle..."
-            className="w-full text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-400"
+            className="w-full text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-navy-300 focus:border-navy-400"
             list="cohort-suggestions"
           />
           <datalist id="cohort-suggestions">
@@ -162,7 +162,7 @@ export default function TranscriptView() {
                         dispatch({ type: 'transcript/setDescriptors', payload: { id: transcript.id, descriptors: newDescriptors } });
                       }}
                       placeholder={`Enter ${key.toLowerCase()}...`}
-                      className="w-full text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-violet-300"
+                      className="w-full text-sm border border-warm-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-navy-300"
                     />
                   </div>
                 );

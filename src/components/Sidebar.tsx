@@ -35,7 +35,7 @@ function NavSection({ label, links }: { label?: string; links: { to: string; lab
           className={({ isActive }) =>
             `flex items-center gap-3 mx-2 px-4 py-2 text-[13px] rounded-lg transition-colors ${
               isActive
-                ? 'bg-violet-600 text-white font-medium shadow-sm'
+                ? 'bg-navy-600 text-white font-medium shadow-sm'
                 : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
             }`
           }
@@ -50,8 +50,8 @@ function NavSection({ label, links }: { label?: string; links: { to: string; lab
 
 export default function Sidebar({ onBackToDashboard }: Props) {
   return (
-    <aside className="w-56 bg-slate-900 text-slate-200 flex flex-col min-h-screen shrink-0">
-      <div className="px-5 py-4 border-b border-slate-800">
+    <aside className="w-56 bg-[#0F1419] text-slate-300 flex flex-col min-h-screen shrink-0">
+      <div className="px-5 py-4 border-b border-slate-800/50">
         <h1 className="text-lg font-bold tracking-tight text-white">Plenior</h1>
         <p className="text-[10px] text-slate-500 mt-0.5 italic font-reading tracking-wide">The fuller sense</p>
       </div>

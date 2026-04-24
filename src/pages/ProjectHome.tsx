@@ -65,7 +65,7 @@ export default function ProjectHome() {
       {/* Stats bar */}
       <div className="grid grid-cols-4 gap-4 mb-6">
         {[
-          { label: 'Transcripts', value: transcripts.length, icon: FileText, to: '/transcripts', color: 'text-violet-600 bg-violet-50' },
+          { label: 'Transcripts', value: transcripts.length, icon: FileText, to: '/transcripts', color: 'text-navy-600 bg-navy-50' },
           { label: 'Codes', value: codes.length, icon: BookOpen, to: '/codebook', color: 'text-emerald-600 bg-emerald-50' },
           { label: 'Excerpts', value: excerpts.length, icon: BarChart3, to: '/analysis', color: 'text-amber-600 bg-amber-50' },
           { label: 'Code Applications', value: Object.values(codeFrequencies).reduce((a, b) => a + b, 0), icon: Grid3X3, to: '/matrix', color: 'text-rose-600 bg-rose-50' },
@@ -88,7 +88,7 @@ export default function ProjectHome() {
         <div className="col-span-2 bg-white rounded-xl border border-slate-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-slate-800">Code Frequency</h2>
-            <Link to="/analysis" className="text-xs text-violet-600 hover:text-violet-700">View all</Link>
+            <Link to="/analysis" className="text-xs text-navy-600 hover:text-navy-700">View all</Link>
           </div>
           {topCodes.length === 0 ? (
             <p className="text-sm text-slate-400 py-8 text-center">Start coding transcripts to see frequency data</p>
@@ -102,7 +102,7 @@ export default function ProjectHome() {
                     <span className={`w-2.5 h-2.5 rounded-full ${cc.dot} shrink-0`} />
                     <span className="text-sm text-slate-700 w-32 truncate">{code.name}</span>
                     <div className="flex-1 bg-slate-100 rounded-full h-2 overflow-hidden">
-                      <div className="h-full rounded-full bg-violet-400 transition-all" style={{ width: `${pct}%` }} />
+                      <div className="h-full rounded-full bg-navy-400 transition-all" style={{ width: `${pct}%` }} />
                     </div>
                     <span className="text-xs text-slate-500 tabular-nums w-8 text-right">{count}</span>
                   </div>
@@ -139,7 +139,7 @@ export default function ProjectHome() {
         <div className="bg-white rounded-xl border border-slate-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-slate-800">Recent Transcripts</h2>
-            <Link to="/transcripts" className="text-xs text-violet-600 hover:text-violet-700">View all</Link>
+            <Link to="/transcripts" className="text-xs text-navy-600 hover:text-navy-700">View all</Link>
           </div>
           {recentTranscripts.length === 0 ? (
             <p className="text-sm text-slate-400 py-4 text-center">No transcripts yet</p>
@@ -166,7 +166,7 @@ export default function ProjectHome() {
         <div className="bg-white rounded-xl border border-slate-200 p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-semibold text-slate-800">Recent Excerpts</h2>
-            <Link to="/analysis" className="text-xs text-violet-600 hover:text-violet-700">View all</Link>
+            <Link to="/analysis" className="text-xs text-navy-600 hover:text-navy-700">View all</Link>
           </div>
           {recentExcerpts.length === 0 ? (
             <p className="text-sm text-slate-400 py-4 text-center">No excerpts coded yet</p>

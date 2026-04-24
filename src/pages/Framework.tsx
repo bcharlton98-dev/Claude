@@ -136,7 +136,7 @@ export default function Framework() {
               {transcripts.map(t => (
                 <tr key={t.id} className="align-top">
                   <td className="px-3 py-2 border-b border-r border-warm-100 font-medium text-warm-700 sticky left-0 bg-white">
-                    <Link to={`/transcripts/${t.id}`} className="hover:text-violet-600 transition-colors">
+                    <Link to={`/transcripts/${t.id}`} className="hover:text-navy-600 transition-colors">
                       {t.title}
                     </Link>
                     {t.cohort && <span className="block text-xs text-warm-400 mt-0.5">{t.cohort}</span>}

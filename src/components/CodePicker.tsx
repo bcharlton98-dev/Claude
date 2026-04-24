@@ -46,13 +46,13 @@ export default function CodePicker({ selectedIds, onToggle }: Props) {
               if (e.key === 'Escape') { setShowInput(false); setNewCodeName(''); }
             }}
             placeholder="New code name..."
-            className="flex-1 text-xs border border-warm-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-violet-300"
+            className="flex-1 text-xs border border-warm-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-navy-300"
             autoFocus
           />
           <button
             onClick={handleCreateCode}
             disabled={!newCodeName.trim()}
-            className="px-2 py-1.5 bg-violet-600 text-white text-xs rounded-lg hover:bg-violet-700 disabled:opacity-40 transition-colors"
+            className="px-2 py-1.5 bg-navy-600 text-white text-xs rounded-lg hover:bg-navy-700 disabled:opacity-40 transition-colors"
           >
             Add
           </button>
@@ -60,7 +60,7 @@ export default function CodePicker({ selectedIds, onToggle }: Props) {
       ) : (
         <button
           onClick={() => setShowInput(true)}
-          className="flex items-center gap-1 mt-2 text-xs text-violet-600 hover:text-violet-700 font-medium"
+          className="flex items-center gap-1 mt-2 text-xs text-navy-600 hover:text-navy-700 font-medium"
         >
           <Plus size={12} />
           Create new code
@@ -94,7 +94,7 @@ function CodePickerNode({
           type="checkbox"
           checked={checked}
           onChange={() => onToggle(node.code.id)}
-          className="accent-violet-600"
+          className="accent-navy-600"
         />
         <span className={`w-3 h-3 rounded-full ${cc.dot} shrink-0`} />
         <span className="text-warm-800">{node.code.name}</span>
