@@ -108,14 +108,12 @@ export default function TranscriptsList() {
           const result = await mammoth.extractRawText({ arrayBuffer: buf });
           text = result.value;
         } else if (lowerName.endsWith('.pdf')) {
-          const pdfjsLib = await import('pdfjs-dist');
-          pdfjsLib.GlobalWorkerOptions.workerSrc = '';
+          const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
           const buf = new Uint8Array(await file.arrayBuffer());
           const pdf = await pdfjsLib.getDocument({
             data: buf,
-            useWorkerFetch: false,
-            isEvalSupported: false,
             disableAutoFetch: true,
+            isEvalSupported: false,
           }).promise;
           const pages: string[] = [];
           setUploadProgress(`Processing ${processed + 1} of ${fileArray.length}: ${file.name} (${pdf.numPages} pages)`);
