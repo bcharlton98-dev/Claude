@@ -109,8 +109,7 @@ export default function TranscriptsList() {
           text = result.value;
         } else if (lowerName.endsWith('.pdf')) {
           const pdfjsLib = await import('pdfjs-dist');
-          const pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.min.mjs');
-          pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+          pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
           const buf = new Uint8Array(await file.arrayBuffer());
           const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
           const pages: string[] = [];
