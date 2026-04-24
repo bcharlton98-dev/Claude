@@ -109,19 +109,31 @@ export default function TranscriptsList() {
           text = result.value;
         } else if (lowerName.endsWith('.pdf')) {
           const pdfjsLib = await import('pdfjs-dist');
-          pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
+          pdfjsLib.GlobalWorkerOptions.workerSrc = '';
           const buf = new Uint8Array(await file.arrayBuffer());
-          const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+          const pdf = await pdfjsLib.getDocument({
+            data: buf,
+            useWorkerFetch: false,
+            isEvalSupported: false,
+            disableAutoFetch: true,
+          }).promise;
           const pages: string[] = [];
+          setUploadProgress(`Processing ${processed + 1} of ${fileArray.length}: ${file.name} (${pdf.numPages} pages)`);
           for (let i = 1; i <= pdf.numPages; i++) {
             const page = await pdf.getPage(i);
             const content = await page.getTextContent();
             const pageText = content.items
-              .map((item: Record<string, unknown>) => (typeof item.str === 'string' ? item.str : ''))
+              .filter((item: Record<string, unknown>) => typeof item.str === 'string')
+              .map((item: Record<string, unknown>) => item.str as string)
               .join(' ');
-            pages.push(pageText);
+            if (pageText.trim()) pages.push(pageText);
           }
           text = pages.join('\n\n');
+          if (!text.trim()) {
+            setUploadProgress(`Warning: ${file.name} appears to be scanned/image-based. No text could be extracted.`);
+            await new Promise(r => setTimeout(r, 2500));
+            continue;
+          }
         } else {
           text = await file.text();
         }
