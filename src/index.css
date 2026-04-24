@@ -1,268 +1,172 @@
 @import "tailwindcss";
 
 @theme {
-  /*
-   * Brand colors derived from WalkQuest logo:
-   * - Forest green (dark mountain + text): #2D5E3B base
-   * - Olive green (light mountain): #7E8E4E base
-   * - Ember orange (flame accent): #D4884D base
-   * - Gold (sparkle): #D4A050 base
-   * - Cream (background): #F0E6D6 base
-   */
+  --color-indigo-50: #eef2ff;
+  --color-indigo-100: #e0e7ff;
+  --color-indigo-200: #c7d2fe;
+  --color-indigo-300: #a5b4fc;
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-700: #4338ca;
 
-  /* ── Forest — primary brand, from logo text + dark mountain ── */
-  --color-forest-50: #eef3ef;
-  --color-forest-100: #d5e2d8;
-  --color-forest-200: #b0c7b5;
-  --color-forest-300: #7fa389;
-  --color-forest-400: #4f7d58;
-  --color-forest-500: #2D5E3B;
-  --color-forest-600: #244D30;
-  --color-forest-700: #1B3B24;
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
 
-  /* ── Olive — secondary green, from logo light mountain ── */
-  --color-olive-50: #f4f5ed;
-  --color-olive-100: #e4e8d5;
-  --color-olive-200: #c9d1ab;
-  --color-olive-300: #a4b47a;
-  --color-olive-400: #7E8E4E;
-  --color-olive-500: #677640;
-  --color-olive-600: #4F5B31;
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-600: #059669;
 
-  /* ── Ember — warm accent, from logo flame/droplet ── */
-  --color-ember-50: #fef5ee;
-  --color-ember-100: #fce6d2;
-  --color-ember-200: #f5c9a0;
-  --color-ember-300: #e5a66d;
-  --color-ember-400: #D4884D;
-  --color-ember-500: #BE7339;
-  --color-ember-600: #9C5A2B;
+  --color-amber-50: #fffbeb;
+  --color-amber-100: #fef3c7;
+  --color-amber-200: #fde68a;
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-600: #d97706;
 
-  /* ── Gold — highlight accent, from logo sparkle ── */
-  --color-gold-50: #fdf8ed;
-  --color-gold-100: #f8edd0;
-  --color-gold-200: #EDDA9E;
-  --color-gold-300: #D4A050;
-  --color-gold-400: #C08E3A;
-  --color-gold-500: #A07628;
+  --color-forest-50: #f0fdf4;
+  --color-forest-100: #dcfce7;
+  --color-forest-200: #bbf7d0;
+  --color-forest-300: #86efac;
+  --color-forest-400: #4ade80;
+  --color-forest-500: #22c55e;
+  --color-forest-600: #16a34a;
+  --color-forest-700: #15803d;
 
-  /* ── Cream — surfaces, from logo background ── */
-  --color-cream-50: #F7F2EB;
-  --color-cream-100: #F0E6D6;
-  --color-cream-200: #E5D9C8;
-  --color-cream-300: #D6C9B5;
+  --color-olive-50: #f7fee7;
+  --color-olive-100: #ecfccb;
+  --color-olive-200: #d9f99d;
+  --color-olive-300: #bef264;
+  --color-olive-400: #a3e635;
+  --color-olive-500: #84cc16;
+  --color-olive-600: #65a30d;
 
-  /* ── Warm — neutrals for text and borders ── */
-  --color-warm-100: #EDE7DD;
-  --color-warm-200: #DDD5C8;
-  --color-warm-300: #C4BAA9;
-  --color-warm-400: #9E9284;
-  --color-warm-500: #827568;
-  --color-warm-600: #665A4E;
-  --color-warm-700: #4D4237;
-  --color-warm-800: #352D24;
+  --color-ember-50: #fff7ed;
+  --color-ember-100: #ffedd5;
+  --color-ember-200: #fed7aa;
+  --color-ember-300: #fdba74;
+  --color-ember-400: #fb923c;
+  --color-ember-500: #f97316;
+  --color-ember-600: #ea580c;
 
-  /* ── Semantic: minimal, one stop each ── */
-  --color-rose-50: #fef2f2;
-  --color-rose-500: #e05252;
-  --color-sky-50: #eef6ff;
-  --color-sky-500: #3b82f6;
+  --color-gold-50: #fefce8;
+  --color-gold-100: #fef9c3;
+  --color-gold-200: #fef08a;
+  --color-gold-300: #fde047;
+  --color-gold-400: #facc15;
+  --color-gold-500: #eab308;
 
-  /* Compat aliases */
-  --color-brand-400: #D4A050;
-  --color-brand-500: #C08E3A;
-  --color-brand-600: #A07628;
-  --color-slate-300: #C4BAA9;
-  --color-slate-500: #827568;
-  --color-slate-700: #4D4237;
-  --color-slate-800: #352D24;
+  --color-sky-50: #f0f9ff;
+  --color-sky-100: #e0f2fe;
+  --color-sky-200: #bae6fd;
+  --color-sky-300: #7dd3fc;
+  --color-sky-400: #38bdf8;
+  --color-sky-500: #0ea5e9;
 
-  /* Legacy mappings — keep until full migration */
-  --color-sage-300: #a4b47a;
-  --color-sage-400: #7E8E4E;
-  --color-sage-500: #677640;
-  --color-peach-50: #fef5ee;
-  --color-peach-100: #fce6d2;
-  --color-peach-400: #D4884D;
-  --color-peach-500: #BE7339;
-  --color-peach-600: #9C5A2B;
-  --color-mustard-50: #fdf8ed;
-  --color-mustard-100: #f8edd0;
-  --color-mustard-300: #EDDA9E;
-  --color-mustard-400: #D4A050;
-  --color-mustard-500: #C08E3A;
-  --color-lavender-50: #f5f0ff;
-  --color-lavender-400: #a78bfa;
-  --color-lavender-600: #7c3aed;
+  --color-rose-50: #fff1f2;
+  --color-rose-100: #ffe4e6;
+  --color-rose-200: #fecdd3;
+  --color-rose-400: #fb7185;
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+
+  /* ── Navy — brand color (Gilt Meridian) ── */
+  --color-navy-50: #f0f4f8;
+  --color-navy-100: #d9e2ec;
+  --color-navy-200: #bcccdc;
+  --color-navy-300: #9fb3c8;
+  --color-navy-400: #627d98;
+  --color-navy-500: #243b53;
+  --color-navy-600: #1B3A5C;
+  --color-navy-700: #152E4A;
+
+  /* ── Gold accent ── */
+  --color-gilt-400: #C9952B;
+  --color-gilt-500: #B8862A;
+
+  /* ── Violet — kept for code highlights ── */
+  --color-violet-50: #f5f3ff;
+  --color-violet-100: #ede9fe;
+  --color-violet-200: #ddd6fe;
+  --color-violet-300: #c4b5fd;
+  --color-violet-400: #a78bfa;
+  --color-violet-500: #8b5cf6;
+  --color-violet-600: #7c3aed;
+  --color-violet-700: #6d28d9;
+
+  --color-lavender-50: #faf5ff;
+  --color-lavender-100: #f3e8ff;
+  --color-lavender-200: #e9d5ff;
+  --color-lavender-400: #c084fc;
+  --color-lavender-600: #9333ea;
+
+  --color-peach-50: #fff7ed;
+  --color-peach-100: #ffedd5;
+  --color-peach-400: #fb923c;
+  --color-peach-500: #f97316;
+  --color-peach-600: #ea580c;
+
+  --color-warm-100: #f1f5f9;
+  --color-warm-200: #e2e8f0;
+  --color-warm-300: #cbd5e1;
+  --color-warm-400: #94a3b8;
+  --color-warm-500: #64748b;
+  --color-warm-600: #475569;
+  --color-warm-700: #334155;
+  --color-warm-800: #1e293b;
+
+  --color-cream-50: #f8fafc;
+  --color-cream-100: #f1f5f9;
+  --color-cream-200: #e2e8f0;
+  --color-cream-300: #cbd5e1;
 }
 
 body {
   margin: 0;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #F7F2EB;
-  color: #352D24;
+  font-family: 'Onest Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
   -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 * { box-sizing: border-box; }
 
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.font-reading {
+  font-family: 'Lora Variable', Georgia, 'Times New Roman', serif;
+}
 
-.btn-press { transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); }
-.btn-press:active { transform: scale(0.96); }
+.btn-press { transition: transform 0.1s ease; }
+.btn-press:active { transform: scale(0.97); }
 
-/* Layered shadow — Josh Comeau style, hue-matched to warm cream */
 .card-shadow {
-  box-shadow:
-    0 1px 1px rgba(77, 66, 55, 0.04),
-    0 2px 4px rgba(77, 66, 55, 0.04),
-    0 4px 8px rgba(77, 66, 55, 0.03);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
-.card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.card-hover { transition: box-shadow 0.15s ease; }
 .card-hover:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 2px 4px rgba(77, 66, 55, 0.06),
-    0 4px 8px rgba(77, 66, 55, 0.05),
-    0 8px 16px rgba(77, 66, 55, 0.04);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-@keyframes rank-slide {
-  from { opacity: 0; transform: translateX(-6px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-.animate-rank { animation: rank-slide 0.25s ease-out backwards; }
-
-@keyframes pill-slide {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-.animate-pill { animation: pill-slide 0.2s ease-out; }
-
-/* Dark card top-edge highlight — simulates light hitting the top edge */
-.edge-highlight { box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); }
-
-/* Elevated card — deeper layered shadow for hero/achievement cards */
 .card-elevated {
-  box-shadow:
-    0 1px 2px rgba(77, 66, 55, 0.05),
-    0 2px 4px rgba(77, 66, 55, 0.05),
-    0 4px 8px rgba(77, 66, 55, 0.04),
-    0 8px 16px rgba(77, 66, 55, 0.03),
-    0 16px 32px rgba(77, 66, 55, 0.02);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 12px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* Hue-matched shadows for colored cards */
-.shadow-forest { box-shadow: 0 2px 8px rgba(45,94,59,0.15), 0 8px 24px rgba(45,94,59,0.1); }
-.shadow-ember { box-shadow: 0 2px 8px rgba(190,115,57,0.2), 0 8px 20px rgba(190,115,57,0.12); }
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-/* ── Staggered card entrance ── */
-@keyframes card-enter {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.card-stagger {
-  animation: card-enter 0.3s ease-out both;
-  animation-delay: calc(var(--i) * 60ms);
-}
-
-/* ── Progress bar shimmer (active quests near completion) ── */
-@keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-.progress-shimmer {
-  position: relative;
-  overflow: hidden;
-}
-.progress-shimmer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  animation: shimmer 2s ease-in-out infinite;
-}
-
-/* ── Streak flame tiers ── */
-@keyframes flame-idle {
-  0%, 100% { transform: scaleY(1) scaleX(1); }
-  50% { transform: scaleY(1.08) scaleX(0.95); }
-}
-@keyframes flame-hot {
-  0%, 100% { transform: scaleY(1) scaleX(1); filter: brightness(1); }
-  25% { transform: scaleY(1.12) scaleX(0.92); filter: brightness(1.15); }
-  75% { transform: scaleY(1.05) scaleX(1.02); filter: brightness(1.05); }
-}
-.flame-idle { animation: flame-idle 2s ease-in-out infinite; transform-origin: bottom center; display: inline-flex; }
-.flame-hot  { animation: flame-hot 1.2s ease-in-out infinite; transform-origin: bottom center; display: inline-flex; }
-
-/* ── Goal ring completion pulse ── */
-@keyframes ring-complete {
-  0% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(164,180,122,0)); }
-  50% { transform: scale(1.06); filter: drop-shadow(0 0 18px rgba(164,180,122,0.5)); }
-  100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(164,180,122,0.25)); }
-}
-.animate-ring-complete { animation: ring-complete 0.6s ease-out; }
-
-/* ── Nudge card entrance + attention pulse ── */
-@keyframes nudge-enter {
-  0% { opacity: 0; transform: translateY(8px) scale(0.98); }
-  60% { transform: translateY(-2px) scale(1.01); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes nudge-pulse {
-  0%, 100% { box-shadow: 0 2px 8px rgba(190,115,57,0.2), 0 8px 20px rgba(190,115,57,0.12); }
-  50% { box-shadow: 0 2px 16px rgba(190,115,57,0.35), 0 8px 24px rgba(190,115,57,0.2); }
-}
-.nudge-card {
-  animation: nudge-enter 0.4s ease-out, nudge-pulse 3s ease-in-out 1s infinite;
-}
-
-/* ── Badge / trophy shine sweep ── */
-@keyframes badge-shine {
-  0% { background-position: -100% 0; }
-  100% { background-position: 200% 0; }
-}
-.badge-shine {
-  background-image: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
-  background-size: 200% 100%;
-  animation: badge-shine 3s ease-in-out infinite;
-}
-
-/* ── Progress bar fill animation ── */
-@keyframes bar-fill {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-.animate-bar-fill {
-  transform-origin: left;
-  animation: bar-fill 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* ── Zone bar color transition ── */
-.zone-bar {
-  transition: background-color 0.8s ease-out, box-shadow 0.8s ease-out;
-}
-
-/* ── Accessibility: respect reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .btn-press,
-  .card-hover,
-  .animate-rank,
-  .animate-pill,
-  .card-stagger,
-  .progress-shimmer::after,
-  .flame-idle,
-  .flame-hot,
-  .animate-ring-complete,
-  .nudge-card,
-  .badge-shine,
-  .animate-bar-fill,
-  .zone-bar {
-    animation: none !important;
-    transition: none !important;
-  }
+  .btn-press, .card-hover { animation: none !important; transition: none !important; }
 }
