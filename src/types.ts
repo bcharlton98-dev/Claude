@@ -49,6 +49,8 @@ export interface AppState {
   excerpts: Record<ID, Excerpt>;
   codebookTemplates: Record<ID, CodebookTemplate>;
   descriptorSchema: string[];
+  researchQuestion: string;
+  analyticMemo: string;
   schemaVersion: 1;
 }
 

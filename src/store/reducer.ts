@@ -240,6 +240,12 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, excerpts: rest };
     }
 
+    case 'project/setResearchQuestion':
+      return { ...state, researchQuestion: action.payload.question };
+
+    case 'project/setAnalyticMemo':
+      return { ...state, analyticMemo: action.payload.memo };
+
     case 'schema/addDescriptorKey': {
       const key = action.payload.key.trim();
       if (!key || (state.descriptorSchema ?? []).includes(key)) return state;
@@ -310,6 +316,8 @@ export function reducer(state: AppState, action: Action): AppState {
         excerpts: (typeof p.excerpts === 'object' && p.excerpts) ? p.excerpts : {},
         codebookTemplates: (typeof p.codebookTemplates === 'object' && p.codebookTemplates) ? p.codebookTemplates : {},
         descriptorSchema: Array.isArray(p.descriptorSchema) ? p.descriptorSchema : [],
+        researchQuestion: typeof p.researchQuestion === 'string' ? p.researchQuestion : '',
+        analyticMemo: typeof p.analyticMemo === 'string' ? p.analyticMemo : '',
         schemaVersion: 1,
       };
     }

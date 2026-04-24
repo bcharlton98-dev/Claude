@@ -21,5 +21,7 @@ export type Action =
   | { type: 'template/save'; payload: { name: string } }
   | { type: 'template/apply'; payload: { templateId: ID } }
   | { type: 'template/delete'; payload: { id: ID } }
+  | { type: 'project/setResearchQuestion'; payload: { question: string } }
+  | { type: 'project/setAnalyticMemo'; payload: { memo: string } }
   | { type: 'state/hydrate'; payload: AppState }
   | { type: 'state/resetToSeed' };

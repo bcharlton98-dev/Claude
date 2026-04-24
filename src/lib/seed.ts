@@ -119,6 +119,8 @@ Participant: I wish I'd started sooner. I spent so long hesitating, weighing pro
     excerpts: Object.fromEntries(excerpts.map(e => [e.id, e])),
     codebookTemplates: {},
     descriptorSchema: ['Institution Type', 'Region', 'Grant Program'],
+    researchQuestion: '',
+    analyticMemo: '',
     schemaVersion: 1,
   };
 }
